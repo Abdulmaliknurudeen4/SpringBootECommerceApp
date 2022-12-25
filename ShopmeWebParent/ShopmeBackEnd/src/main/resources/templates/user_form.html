@@ -55,8 +55,8 @@
 			<h1>Manage Users | Create New User</h1>
 		</div>
 
-		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]</div>
+		<div th:if="${message}"
+			class="alert alert-success text-center" th:text="${message}">[[${message}]]</div>
 
 		<form th:action="@{/users/save}" method="post"
 			style="max-width: 700px; margin: 0 auto;" th:object="${user}">

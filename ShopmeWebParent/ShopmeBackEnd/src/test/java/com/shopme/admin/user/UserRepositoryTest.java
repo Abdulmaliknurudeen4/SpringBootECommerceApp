@@ -75,11 +75,11 @@ public class UserRepositoryTest {
 	@Test
 	public void testUserUpdateRoles() {
 		User user = userRepo.findById(3).get();
-		user.getRole().remove(new Role(3));
-		user.getRole().add(new Role(2));
+		user.getRoles().remove(new Role(3));
+		user.getRoles().add(new Role(2));
 		
 		User savedUser = userRepo.save(user);
-		assertThat(savedUser.getRole()).contains(new Role(2));
+		assertThat(savedUser.getRoles()).contains(new Role(2));
 		
 	}
 	
