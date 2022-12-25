@@ -37,21 +37,16 @@ public class User {
 	@Column(length = 64)
 	private String photos;
 	private boolean enabled;
-	
-	// many to many, joincolumn refers to the primary key of users, inverse join refers to Roles
+
+	// many to many, joincolumn refers to the primary key of users, inverse join
+	// refers to Roles
 	@ManyToMany
-	@JoinTable(
-			name = "users_roles",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name= "role_id")
-			)
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	public Set<Role> roles = new HashSet<Role>();
-	
+
 	public User() {
-		
+
 	}
-	
-	
 
 	public User(String email, String password, String firstName, String lastName) {
 		this.email = email;
@@ -59,10 +54,6 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	
-	
-
-
 
 	public Integer getId() {
 		return id;
@@ -120,14 +111,14 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public Set<Role> getRole() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRole(Set<Role> role) {
-		this.roles = role;
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
-	
+
 	public void addRole(Role role) {
 		this.roles.add(role);
 	}
@@ -152,18 +143,11 @@ public class User {
 				&& Objects.equals(photos, other.photos) && Objects.equals(roles, other.roles);
 	}
 
-
-
 	@Override
 	public String toString() {
-		return "User [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", roles=" + roles
-				+ "]";
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", photos=" + photos + ", enabled=" + enabled + ", roles=" + roles + "]";
 	}
 
 
-
-	
-	
-	
-	
 }
