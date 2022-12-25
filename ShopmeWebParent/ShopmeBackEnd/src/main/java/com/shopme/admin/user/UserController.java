@@ -16,6 +16,7 @@ import com.shopme.entity.User;
 public class UserController {
 	@Autowired
 	private UserService service;
+	
 
 	@GetMapping("/users")
 	public String listAll(Model model) {
