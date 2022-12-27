@@ -1,6 +1,7 @@
 package com.shopme.admin.user;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +30,19 @@ public class UserService {
 	}
 
 	public void save(User user) {
-		encodeUserPassword(user);
+
+		if (user.getId() != null) {
+			// Updating an existing User.
+			User exitingUser = repo.findById(user.getId()).get();
+			if (user.getPassword() == null) {
+				// if the password is null, set to previous password.
+				user.setPassword(exitingUser.getPassword());
+			} else {
+				encodeUserPassword(user);
+			}
+		} else {
+			encodeUserPassword(user);
+		}
 		repo.save(user);
 
 	}
@@ -38,8 +51,36 @@ public class UserService {
 		String encodedPassword = encoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
 	}
-	
-	public boolean isEmailUnique(String email) {
-		return repo.getUserByEmail(email) ==null;
+
+	// Under Review
+	public boolean isEmailUnique(Integer id, String email) {
+		boolean isCreatingNew = (id == null);
+		User userByEmail = repo.getUserByEmail(email);
+		if (userByEmail == null)
+			return true;
+		if (isCreatingNew) {
+			if (userByEmail != null)
+				return false;
+		} else {
+			if (userByEmail.getId() != id) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public User getUser(Integer id) throws UserNotFoundExcpetion {
+		// TODO Auto-generated method stub
+		try {
+			return repo.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new UserNotFoundExcpetion("could not find any user with the id" + id);
+		}
+	}
+
+	public void deleteUser(Integer id) {
+		repo.delete(repo.findById(id).get());
+
 	}
 }

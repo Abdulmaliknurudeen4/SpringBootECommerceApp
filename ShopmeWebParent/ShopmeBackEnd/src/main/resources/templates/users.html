@@ -84,22 +84,47 @@
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
-						<td>
-							<a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green cursor-hand" href=""></a>
-							<a th:if="${user.enabled == false}" class="fas fa-check-circle fa-2x icon-dark cursor-hand" href=""></a>
-						</td>
-						
-						
-						<td>
-							<a class="fas fa-edit fa-2x icon-green cursor-hand" th:href="@{/}"></a>
-						 &nbsp; 
-						 	<a class="fas fa-trash fa-2x icon-dark cursor-hand" th:href="@{/}"></a>
-						 </td>
-						
-						
+						<td><a th:if="${user.enabled == true}"
+							class="fas fa-check-circle fa-2x icon-green cursor-hand"></a> <a
+							th:if="${user.enabled == false}"
+							class="fas fa-check-circle fa-2x icon-dark cursor-hand"></a></td>
+
+
+						<td><a title="Edit this User" class="cursor-hand"
+							th:href="@{'/users/edit/'+${user.id} }"> <i
+								class="fas fa-edit fa-2x icon-green"></i>
+						</a> &nbsp; <a th:href="@{'/users/delete/'+${user.id}}"
+							class="cursor-hand link-delete"> <i
+								class="fas fa-trash fa-2x icon-dark"> </i></a></td>
+
+
 					</tr>
 				</tbody>
 			</table>
+		</div>
+
+
+		<div class="modal fade text-center" id="modalDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle">Confirmation Message</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+
+					<div class="modal-body">
+						<span id="modalBody"></span>
+					</div>
+
+					<div class="modal-footer">
+						<a class="btn btn-success confirm-dialog"
+							style="color: white;">Yes</a>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+					</div>
+
+				</div>
+			</div>
 		</div>
 
 
@@ -107,5 +132,22 @@
 			<p>Shopme Control Panel - Copyright &copy;shopme</p>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.link-delete').on('click',
+				function(event) {
+					event.preventDefault();
+						link = $(this).attr('href');
+						console.log(link);
+				showModalDialog("Are you Sure you want to Delete the User with the id ?");
+					$('.confirm-dialog').attr('href', link);
+
+											});
+						});
+		function showModalDialog(message) {
+			$('#modalBody').text(message);
+			$('#modalDialog').modal();
+		}
+	</script>
 </body>
 </html>

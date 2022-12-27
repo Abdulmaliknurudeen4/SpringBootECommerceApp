@@ -16,3 +16,6 @@
 .cursor-hand{
 	cursor: pointer;
 }
+.cursor-hand:hover{
+	text-decoration: none;
+}
