@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import com.shopme.entity.Role;
 import com.shopme.entity.User;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserService {
 	@Autowired
 	private UserRepository repo;
@@ -86,5 +89,13 @@ public class UserService {
 		}
 		repo.deleteById(id);
 
+	}
+
+	public void setEnableUser(boolean status, Integer id) throws UserNotFoundExcpetion {
+		Long userCount = repo.countById(id);
+		if (userCount == null || userCount == 0) {
+			throw new UserNotFoundExcpetion("User not Present !!");
+		}
+		repo.EnableStatusUser(id, status);
 	}
 }

@@ -74,4 +74,20 @@ public class UserController {
 		}
 		return "redirect:/users";
 	}
+
+	@GetMapping("/users/setUserStatus/{id}/{status}")
+	public String changeUserEnableStatus(@PathVariable(name = "id") Integer id,
+			@PathVariable(name = "status") boolean status, RedirectAttributes redirectAttributes, Model model) {
+		String enabled = (status) ? "enabled" : "disabled";
+		try {
+			service.setEnableUser(status, id);
+			redirectAttributes.addFlashAttribute("message",
+					"The User with the ID : " + id + " has been " + enabled + " Successfully!");
+		} catch (UserNotFoundExcpetion e) {
+			// TODO Auto-generated catch block
+			redirectAttributes.addFlashAttribute("message",
+					"The User with the ID : " + id + " has been " + enabled + " Successfully!");
+		}
+		return "redirect:/users";
+	}
 }

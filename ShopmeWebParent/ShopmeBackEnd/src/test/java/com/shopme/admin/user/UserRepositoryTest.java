@@ -100,4 +100,11 @@ public class UserRepositoryTest {
 		assertThat(userRepo.countById(52)).isGreaterThan(0);
 	}
 
+	@Test
+	public void testEnableUserStatus() {
+		Integer id = 52;
+		userRepo.EnableStatusUser(id, true);
+		assertThat(userRepo.findById(id).get().isEnabled()).isTrue();
+	}
+
 }

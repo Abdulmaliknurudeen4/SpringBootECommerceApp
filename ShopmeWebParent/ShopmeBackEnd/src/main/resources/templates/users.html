@@ -84,10 +84,13 @@
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
-						<td><a th:if="${user.enabled == true}"
-							class="fas fa-check-circle fa-2x icon-green cursor-hand"></a> <a
+						<td><a th:if="${user.enabled == true}" class="cursor-hand"
+							th:href="@{'/users/setUserStatus/'+${user.id}+'/false'}"> <i
+								class="fas fa-check-circle fa-2x icon-green"></i></a> <a
 							th:if="${user.enabled == false}"
-							class="fas fa-check-circle fa-2x icon-dark cursor-hand"></a></td>
+							th:href="@{'/users/setUserStatus/'+${user.id}+'/true'}"
+							class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
+						</a></td>
 
 
 						<td><a title="Edit this User" class="cursor-hand"
@@ -118,8 +121,7 @@
 					</div>
 
 					<div class="modal-footer">
-						<a class="btn btn-success confirm-dialog"
-							style="color: white;">Yes</a>
+						<a class="btn btn-success confirm-dialog" style="color: white;">Yes</a>
 						<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
 					</div>
 
@@ -133,14 +135,19 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$('.link-delete').on('click',
-				function(event) {
-					event.preventDefault();
-						link = $(this).attr('href');
-						console.log(link);
-				showModalDialog("Are you Sure you want to Delete the User with the id ?");
-					$('.confirm-dialog').attr('href', link);
+		$(document)
+				.ready(
+						function() {
+							$('.link-delete')
+									.on(
+											'click',
+											function(event) {
+												event.preventDefault();
+												link = $(this).attr('href');
+												console.log(link);
+												showModalDialog("Are you Sure you want to Delete the User with the id ?");
+												$('.confirm-dialog').attr(
+														'href', link);
 
 											});
 						});
