@@ -9,6 +9,11 @@
 <title>Welcome to the Admin Page</title>
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/font-awesome/5.15.1/css/all.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+<script type="text/javascript"
+	th:src="@{/webjars/font-awesome/5.15.1/js/all.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript"
 	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -57,7 +62,8 @@
 		</div>
 
 		<div>
-			<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
 				<thead class="thead-dark">
 					<tr>
 						<th>User ID</th>
@@ -73,15 +79,24 @@
 				<tbody>
 					<tr th:each="user : ${listUsers}">
 						<td>[[${user.id}]]</td>
-						<td></td>
+						<td class="fas fa-portrait fa-3x icon-dark"></td>
 						<td>[[${user.email}]]</td>
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
-						<td>[[${user.enabled}]]</td>
 						<td>
-							Edit &nbsp; Delete
+							<a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green cursor-hand" href=""></a>
+							<a th:if="${user.enabled == false}" class="fas fa-check-circle fa-2x icon-dark cursor-hand" href=""></a>
 						</td>
+						
+						
+						<td>
+							<a class="fas fa-edit fa-2x icon-green cursor-hand" th:href="@{/}"></a>
+						 &nbsp; 
+						 	<a class="fas fa-trash fa-2x icon-dark cursor-hand" th:href="@{/}"></a>
+						 </td>
+						
+						
 					</tr>
 				</tbody>
 			</table>

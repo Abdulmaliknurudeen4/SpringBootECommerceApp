@@ -1,0 +1,18 @@
+*.icon-white {
+	color: white;
+}
+
+*.icon-silver {
+	color: silver;
+}
+
+*.icon-green {
+	color: green;
+}
+
+*.icon-dark {
+	color: gray;
+}
+.cursor-hand{
+	cursor: pointer;
+}
