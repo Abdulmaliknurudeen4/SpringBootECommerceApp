@@ -94,4 +94,10 @@ public class UserRepositoryTest {
 		assertThat(userRepo.getUserByEmail(email).getEmail()).isEqualTo(email);
 	}
 
+	@Test
+	public void testCountById() {
+		Integer id = 52;
+		assertThat(userRepo.countById(52)).isGreaterThan(0);
+	}
+
 }

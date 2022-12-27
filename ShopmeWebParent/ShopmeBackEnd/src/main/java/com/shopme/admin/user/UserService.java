@@ -79,8 +79,12 @@ public class UserService {
 		}
 	}
 
-	public void deleteUser(Integer id) {
-		repo.delete(repo.findById(id).get());
+	public void deleteUser(Integer id) throws UserNotFoundExcpetion {
+		Long userCount = repo.countById(id);
+		if (userCount == null || userCount == 0) {
+			throw new UserNotFoundExcpetion("User not Present !!");
+		}
+		repo.deleteById(id);
 
 	}
 }
