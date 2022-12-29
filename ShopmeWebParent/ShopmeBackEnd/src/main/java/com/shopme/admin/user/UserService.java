@@ -32,7 +32,7 @@ public class UserService {
 		return (List<Role>) roleRepo.findAll();
 	}
 
-	public void save(User user) {
+	public User save(User user) {
 
 		if (user.getId() != null) {
 			// Updating an existing User.
@@ -46,7 +46,7 @@ public class UserService {
 		} else {
 			encodeUserPassword(user);
 		}
-		repo.save(user);
+	return repo.save(user);
 
 	}
 

@@ -133,6 +133,8 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+ShopmeWebParent/ShopmeBackEnd/user-photos/**
+
 # Windows shortcuts
 *.lnk
 
