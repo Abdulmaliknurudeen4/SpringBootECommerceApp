@@ -61,6 +61,19 @@
 			<a th:href="@{/users/new}">Create New User</a>
 		</div>
 
+<!-- 		<div th:if="${totalItems > 0}"
+			class="input-group mb-3 justify-content-center">
+			Set the Page Size
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="PageSizeSelect">PageSize:
+				</label>
+			</div>
+			<select class="custom-select" id="PageSizeSelect">
+				<option th:each="page : ${pageSize}" th:value="${page}"
+					th:text="${page}" th:selected="${page==3}"></option>
+			</select>
+		</div> -->
+
 		<div>
 			<table
 				class="table table-bordered table-striped table-hover table-responsive-xl">
@@ -96,9 +109,9 @@
 						</a></td>
 
 
-						<td><a title="Edit this User" class="cursor-hand"
-							th:href="@{'/users/edit/'+${user.id} }"> <i
-								class="fas fa-edit fa-2x icon-green"></i>
+						<td style="width: 150px;"><a title="Edit this User"
+							class="cursor-hand" th:href="@{'/users/edit/'+${user.id} }">
+								<i class="fas fa-edit fa-2x icon-green"></i>
 						</a> &nbsp; <a th:href="@{'/users/delete/'+${user.id}}"
 							class="cursor-hand link-delete"> <i
 								class="fas fa-trash fa-2x icon-dark"> </i></a></td>
@@ -107,6 +120,43 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+
+		<div class="text-center m-1" th:if="${totalItems > 0}">
+			<span>Showing Users # [[${startCount}]] to [[${endCount}]] of
+				[[${totalItems}]]</span>
+		</div>
+
+		<div class="text-center m-1" th:if="${totalItems == 0}">
+			<span>No users found</span>
+		</div>
+
+		<div th:if="${totalItems > 0}">
+			<nav>
+				<ul class="pagination justify-content-center">
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}"><a
+						class="page-link" th:href="@{/users/page/1}">First</a></li>
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}"><a
+						class="page-link"
+						th:href="@{'/users/page/' + ${(currentPage - 1 <= 0) ? 1 : (currentPage -1)} }">Previous</a></li>
+
+					<li
+						th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
+						th:each="i : ${#numbers.sequence(1, totalPages)}"><a
+						class="page-link" th:href="@{'/users/page/' + ${i} }">
+							[[${i}]]</a></li>
+
+					<li
+						th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}"><a
+						class="page-link"
+						th:href="@{'/users/page/' + ${(currentPage+1)} }">Next</a></li>
+					<li
+						th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}"><a
+						class="page-link" th:href="@{'/users/page/' + ${totalPages}}">Last</a></li>
+				</ul>
+			</nav>
 		</div>
 
 

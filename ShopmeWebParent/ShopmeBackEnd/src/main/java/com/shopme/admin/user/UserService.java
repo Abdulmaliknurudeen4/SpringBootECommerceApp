@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.rest.RepositoryRestProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,9 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class UserService {
+	
+	public static final int USER_PER_PAGE = 4;
+	
 	@Autowired
 	private UserRepository repo;
 
@@ -30,6 +37,11 @@ public class UserService {
 
 	public List<Role> listRoles() {
 		return (List<Role>) roleRepo.findAll();
+	}
+	
+	public Page<User> listByPage(int pageNum){
+		Pageable pageable = PageRequest.of(pageNum-1, USER_PER_PAGE);
+		return repo.findAll(pageable);
 	}
 
 	public User save(User user) {
