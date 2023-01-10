@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -27,21 +29,17 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String listFirstPage(Model model) {
-		return listByPage(1, model);
+		return listByPage(1, model, "firstName", "asc");
 	}
 
 	@GetMapping("/users/page/{pageNum}")
-	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model) {
+	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
+			@Param("sortField") String sortField, @Param("sortDir") String sortDir) {
 		
-		/*
-		 * List<Integer> pageSize = Arrays.asList(3, 5, 7, 9 , 10, 20);
-		 * model.addAttribute("pageSize", pageSize); HashMap<String, Integer> valueMap =
-		 * new HashMap<>(); valueMap.put("Three", 3); valueMap.put("Five", 5);
-		 * valueMap.put("Seven", 7); valueMap.put("Ten", 10); valueMap.put("Twenty",
-		 * 20);
-		 */
+		System.out.println("Sort Field " + sortField);
+		System.out.println("Sort Order " + sortDir);
 		
-		Page<User> page = service.listByPage(pageNum);
+		Page<User> page = service.listByPage(pageNum, sortField, sortDir);
 		List<User> listUsers = page.getContent();
 		pageNum = (pageNum <= 0) ? 0 : pageNum;
 
@@ -52,6 +50,8 @@ public class UserController {
 		if (endCount > page.getTotalElements()) {
 			endCount = page.getTotalElements();
 		}
+		
+		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
 		model.addAttribute("currentPage", pageNum);
 		model.addAttribute("totalPages", page.getTotalPages());
@@ -59,6 +59,9 @@ public class UserController {
 		model.addAttribute("endCount", endCount);
 		model.addAttribute("totalItems", page.getTotalElements());
 		model.addAttribute("listUsers", listUsers);
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sortDir", sortDir);
+		model.addAttribute("reverseSortDir", reverseSortDir);
 		return "users";
 	}
 
