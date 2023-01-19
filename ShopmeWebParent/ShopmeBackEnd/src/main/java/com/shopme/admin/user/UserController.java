@@ -29,21 +29,22 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String listFirstPage(Model model) {
-		return listByPage(1, model, "firstName", "asc");
+		return listByPage(1, model, "firstName", "asc", null);
 	}
 
 	@GetMapping("/users/page/{pageNum}")
 	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
-			@Param("sortField") String sortField, @Param("sortDir") String sortDir) {
+			@Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
 		
 		System.out.println("Sort Field " + sortField);
 		System.out.println("Sort Order " + sortDir);
+		System.out.println("Keyword " + keyword);
 		
-		Page<User> page = service.listByPage(pageNum, sortField, sortDir);
+		Page<User> page = service.listByPage(pageNum, sortField, sortDir, keyword);
 		List<User> listUsers = page.getContent();
 		pageNum = (pageNum <= 0) ? 0 : pageNum;
 
-		long startCount = (pageNum - 1) * UserService.USER_PER_PAGE + 1;
+		long startCount = (long) (pageNum - 1) * UserService.USER_PER_PAGE + 1;
 		long endCount = startCount + UserService.USER_PER_PAGE - 1;
 
 		// Getting to the last page with uneven elements
@@ -62,6 +63,7 @@ public class UserController {
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSortDir", reverseSortDir);
+		model.addAttribute("keyword", keyword);
 		return "users";
 	}
 
@@ -81,7 +83,7 @@ public class UserController {
 			@RequestParam(name = "image") MultipartFile photoMultipart) throws IOException {
 		if (!photoMultipart.isEmpty()) {
 			String fileName = StringUtils.cleanPath(photoMultipart.getOriginalFilename());
-			user.setPhotos(fileName.toString());
+			user.setPhotos(fileName);
 			System.out.println(user.getPhotos());
 			User savedUser = service.save(user);
 			String uploadDir = "user-photos/" + savedUser.getId();
