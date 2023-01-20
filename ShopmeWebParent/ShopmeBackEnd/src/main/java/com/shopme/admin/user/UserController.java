@@ -1,11 +1,9 @@
 package com.shopme.admin.user;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -150,6 +148,26 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("message",
 					"The User with the ID : " + id + " has been " + enabled + " Successfully!");
 		}
+		return "redirect:/users";
+	}
+
+	@GetMapping("/users/export/csv")
+	public String exportToCSV(HttpServletResponse response) throws IOException {
+		List<User> userList = service.listAll();
+		UserCSVExporter exporter = new UserCSVExporter();
+		exporter.export(userList, response);
+		return "redirect:/users";
+	}
+	/*@GetMapping("/users/export/pdf")
+	public void exportToPDF(HttpServletResponse response) throws IOException {
+		UserCSVExporter exporter = new UserCSVExporter();
+		exporter.exportPDF(service.listAll(), response);
+	}*/
+	@GetMapping("/users/export/excel")
+	public String exportToExcel(HttpServletResponse response) throws IOException {
+		List<User>  userList = service.listAll();
+		UserExcelExporter exporter = new UserExcelExporter();
+		exporter.export(userList, response);
 		return "redirect:/users";
 	}
 }

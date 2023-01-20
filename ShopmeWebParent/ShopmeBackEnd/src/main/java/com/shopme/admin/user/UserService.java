@@ -33,7 +33,7 @@ public class UserService {
 	private RoleRepository roleRepo;
 
 	public List<User> listAll() {
-		return (List<User>) repo.findAll();
+		return (List<User>) repo.findAll(Sort.by("firstName").ascending());
 	}
 
 	public List<Role> listRoles() {
