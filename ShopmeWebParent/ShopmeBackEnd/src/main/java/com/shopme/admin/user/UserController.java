@@ -158,11 +158,13 @@ public class UserController {
 		exporter.export(userList, response);
 		return "redirect:/users";
 	}
-	/*@GetMapping("/users/export/pdf")
-	public void exportToPDF(HttpServletResponse response) throws IOException {
-		UserCSVExporter exporter = new UserCSVExporter();
-		exporter.exportPDF(service.listAll(), response);
-	}*/
+	@GetMapping("/users/export/pdf")
+	public String exportToPDF(HttpServletResponse response) throws IOException {
+		List<User> userList = service.listAll();
+		UserPdfExporter exporter = new UserPdfExporter();
+		exporter.export(userList, response);
+		return "redirect:/users";
+	}
 	@GetMapping("/users/export/excel")
 	public String exportToExcel(HttpServletResponse response) throws IOException {
 		List<User>  userList = service.listAll();
