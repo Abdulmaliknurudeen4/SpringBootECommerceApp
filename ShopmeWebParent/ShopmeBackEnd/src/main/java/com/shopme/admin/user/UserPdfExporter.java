@@ -32,7 +32,7 @@ public class UserPdfExporter extends UserExcelExporter{
         PdfPTable table  = new PdfPTable(6);
         table.setWidthPercentage(100f);
         table.setSpacingAfter(10);
-        table.setWidths(new float[] {1.5f, 3.5f, 3.0f, 3.0f, 1.5f});
+        table.setWidths(new float[] {1.5f, 3.5f, 3.0f, 3.0f, 3.0f, 1.5f});
         
         writeTableHeader(table);
         writeTableData(userList, table);
