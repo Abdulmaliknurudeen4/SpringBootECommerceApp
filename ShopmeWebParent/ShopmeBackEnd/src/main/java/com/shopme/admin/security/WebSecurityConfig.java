@@ -13,9 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.io.Serializable;
+
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig implements Serializable {
 
     @Autowired
     public ShopmeUserDetialService userDetialService;
@@ -35,6 +37,9 @@ public class WebSecurityConfig {
                 .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
+                .permitAll()
+                .and()
+                .logout()
                 .permitAll()
                 .and().build();
     }

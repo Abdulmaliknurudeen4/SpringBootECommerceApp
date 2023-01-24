@@ -13,6 +13,8 @@
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/font-awesome/5.15.1/css/all.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+    <script type="text/javascript"
+            th:src="@{/webjars/font-awesome/5.15.1/js/all.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript"
             th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -21,6 +23,11 @@
 <div class="container-fluid">
 
     <div>
+
+        <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+            <input type="submit" />
+        </form>
+
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
             <a class="navbar-brand" th:href="@{/}"> <img
                     th:src="@{/images/ShopmeAdminSmall.png}"/>
@@ -57,9 +64,9 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle"
                            data-toggle="dropdown"
-                           sec:authentication="principal.fullname"></a>
+                           sec:authentication="principal.getUsername()">Username</a>
                         <div class="dropdown-menu">
-                            <a href="@{/logout}" class="dropdown-item">LogOut</a>
+                            <a class="dropdown-item" id="logoutLink">LogOut</a>
                         </div>
                     </li>
                 </ul>
@@ -76,5 +83,13 @@
         <p>Shopme Control Panel - Copyright &copy;shopme</p>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#logoutLink').on('click', function(e){
+           e.preventDefault();
+           document.logoutForm.submit();
+        });
+    });
+</script>
 </body>
 </html>
