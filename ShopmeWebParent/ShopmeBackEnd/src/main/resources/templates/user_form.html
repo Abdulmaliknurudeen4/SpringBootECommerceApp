@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: head('Shopme - Add User')"></head>
+<head th:replace="~{fragments :: head('Shopme - Add User')}"></head>
 <body>
 	<div class="container-fluid">
-		<div th:replace="fragments :: topNavBar"></div>
+		<div th:replace="~{fragments :: topNavBar}"></div>
 
 		<div>
 			<h1>Manager Users | [[${pageTitle}]]</h1>
@@ -116,7 +116,7 @@
 			</div>
 		</div>
 
-		<footer th:replace="fragments :: footer"></footer>
+		<footer th:replace="~{fragments :: footer}"></footer>
 
 	</div>
 

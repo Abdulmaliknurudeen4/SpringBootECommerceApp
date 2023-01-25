@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: head('Please Sign In')"></head>
+<head th:replace="~{fragments :: head('Please Sign In')}"></head>
 <body>
 <div class="container-fluid text-center">
 
@@ -33,7 +33,7 @@
     </div>
   </form>
 
-  <footer th:replace="fragments :: footer"></footer>
+  <footer th:replace="~{fragments :: footer}"></footer>
 </div>
 </body>
 </html>
