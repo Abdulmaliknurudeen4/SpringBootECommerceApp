@@ -116,4 +116,8 @@ public class UserService {
 		}
 		repo.EnableStatusUser(id, status);
 	}
+
+    public User getUser(String userMail) {
+		return repo.getUserByEmail(userMail);
+    }
 }
