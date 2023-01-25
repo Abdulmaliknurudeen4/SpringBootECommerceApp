@@ -41,6 +41,10 @@ public class WebSecurityConfig implements Serializable {
                 .and()
                 .logout()
                 .permitAll()
+                .and()
+                .rememberMe()
+                .key("ADASDFKJLJLDFJoijklajdflkajd_1233k##kl")
+                .tokenValiditySeconds(7*60*60*24)
                 .and().build();
     }
 
