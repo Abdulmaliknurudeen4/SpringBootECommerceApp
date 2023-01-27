@@ -7,6 +7,12 @@
 <div class="container-fluid">
 
    <div th:replace="~{navigation :: topNavBar}"></div>
+
+    <div class="text-center">
+        Welcome <a th:href="@{/account}" sec:authentication="principal.fullname"></a>
+        <span sec:authentication="principal.authorities"></span>
+    </div>
+
     <div>
         <h1>Developed by Nurudeen Abdulmalik</h1>
         <h1>Developed by Nurudeen Abubakr</h1>
