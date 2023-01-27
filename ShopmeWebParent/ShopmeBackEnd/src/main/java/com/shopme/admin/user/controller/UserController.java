@@ -1,8 +1,10 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.controller;
 
 import java.io.IOException;
 import java.util.List;
 
+import com.shopme.admin.user.UserNotFoundExcpetion;
+import com.shopme.admin.user.UserService;
 import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.admin.user.export.UserExcelExporter;
 import com.shopme.admin.user.export.UserPdfExporter;
@@ -65,7 +67,7 @@ public class UserController {
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);
-		return "users";
+		return "users/users";
 	}
 
 	@GetMapping("/users/new")
@@ -76,7 +78,7 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("listRoles", service.listRoles());
 		model.addAttribute("pageTitle", "Create New User");
-		return "user_form";
+		return "users/user_form";
 	}
 
 	@PostMapping("/users/save")
@@ -115,7 +117,7 @@ public class UserController {
 		try {
 			User user = service.getUser(id);
 			model.addAttribute("user", user);
-			return "user_form";
+			return "users/user_form";
 		} catch (UserNotFoundExcpetion e) {
 			// Review
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
@@ -125,8 +127,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/delete/{id}")
-	public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes,
-			Model model) {
+	public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
 		try {
 			service.deleteUser(id);
 			redirectAttributes.addFlashAttribute("message",
@@ -140,7 +141,7 @@ public class UserController {
 
 	@GetMapping("/users/setUserStatus/{id}/{status}")
 	public String changeUserEnableStatus(@PathVariable(name = "id") Integer id,
-			@PathVariable(name = "status") boolean status, RedirectAttributes redirectAttributes, Model model) {
+			@PathVariable(name = "status") boolean status, RedirectAttributes redirectAttributes) {
 		String enabled = (status) ? "enabled" : "disabled";
 		try {
 			service.setEnableUser(status, id);
