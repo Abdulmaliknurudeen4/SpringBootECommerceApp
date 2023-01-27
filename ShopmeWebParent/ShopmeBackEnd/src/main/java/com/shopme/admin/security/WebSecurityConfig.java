@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,6 +31,12 @@ public class WebSecurityConfig implements Serializable {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests()
+                .requestMatchers("/users/**", "/settings/**").hasAuthority("Admin")
+                .requestMatchers("/questions/**", "/reviews/**").hasAnyAuthority("Admin", "Assistant")
+                .requestMatchers("/categories/**", "/brands/**", "/articles/**", "/menus/**").hasAnyAuthority("Admin", "Editor")
+                .requestMatchers("/products/**").hasAnyAuthority("Admin", "Editor", "Salesperson", "Shipper")
+                .requestMatchers("/orders/**", "/customers/**", "/Shipping/**", "/report/**").hasAnyAuthority("Admin", "Salesperson")
+                .requestMatchers("/orders/**").hasAuthority("Shipper")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,7 +51,7 @@ public class WebSecurityConfig implements Serializable {
                 .and()
                 .rememberMe()
                 .key("ADASDFKJLJLDFJoijklajdflkajd_1233k##kl")
-                .tokenValiditySeconds(7*60*60*24)
+                .tokenValiditySeconds(7 * 60 * 60 * 24)
                 .and().build();
     }
 
