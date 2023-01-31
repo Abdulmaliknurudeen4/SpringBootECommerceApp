@@ -15,7 +15,7 @@ public class Category {
     private Integer id;
     @Column(length = 128, nullable = false, unique = true)
     private String name;
-    @Column(length = 128,  unique = true)
+    @Column(length = 128, nullable = false,  unique = true)
     private String alias;
 
     @Column(length = 64)
@@ -26,7 +26,7 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
     private Set<Category> children = new HashSet<>();
 
     public Category() {
@@ -34,6 +34,14 @@ public class Category {
 
     public Category(String name) {
         this.name = name;
+        this.alias = name;
+        this.photo = "default.png";
+    }
+    public Category(String name, Category parent) {
+        this.name = name;
+        this.alias = name;
+        this.photo = "default.png";
+        this.parent = parent;
     }
     public Category(String name, String alias, String photo) {
         this.name = name;
