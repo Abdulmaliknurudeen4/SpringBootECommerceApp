@@ -1,10 +1,9 @@
 package com.shopme.admin.user;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
+import com.shopme.entity.Role;
+import com.shopme.entity.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.rest.RepositoryRestProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,10 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.shopme.entity.Role;
-import com.shopme.entity.User;
-
-import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
