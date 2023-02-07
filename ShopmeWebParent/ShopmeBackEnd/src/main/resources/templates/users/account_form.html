@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments :: head('Shopme - Update User Info')}"></head>
+<head th:replace="~{fragments/fragments :: head('Shopme - Update User Info')}"></head>
 <body>
 	<div class="container-fluid">
-		<div th:replace="~{navigation :: topNavBar}"></div>
+		<div th:replace="~{fragments/navigation :: topNavBar}"></div>
 
 		<div class="text-center">
 			<h1 class="text-center">Your Account Information.</h1>
@@ -100,7 +100,7 @@
 
 			</div>
 		</form>
-		<footer th:replace="~{fragments :: footer}"></footer>
+		<footer th:replace="~{fragments/fragments :: footer}"></footer>
 
 	</div>
 	<script type="text/javascript"

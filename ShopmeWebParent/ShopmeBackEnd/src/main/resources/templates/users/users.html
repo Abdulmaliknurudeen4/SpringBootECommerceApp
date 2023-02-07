@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments :: head('Shopme - Users')}"></head>
+<head th:replace="~{fragments/fragments :: head('Shopme - Users')}"></head>
 <body>
 <div class="container-fluid">
 
-    <div th:replace="~{navigation :: topNavBar}"></div>
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
 
     <div>
         <h1>Manage Users</h1>
@@ -43,16 +43,16 @@
             <thead class="thead-dark">
             <tr>
                 <th class="hideable-column">
-                <th th:replace="~{fragments :: column_link('id', 'ID', 'tag')}"></th>
+                <th th:replace="~{fragments/fragments :: column_link('id', 'ID', 'tag')}"></th>
                 </th>
                 <th>Photos</th>
                 <th class="hideable-column">
-                <th th:replace="~{fragments :: column_link('email', 'E-mail', 'tag')}"></th>
+                <th th:replace="~{fragments/fragments :: column_link('email', 'E-mail', 'tag')}"></th>
                 </th>
-                <th th:replace="~{fragments :: column_link('firstName', 'First Name', 'none')}"></th>
-                <th th:replace="~{fragments :: column_link('lastName', 'Last Name', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: column_link('firstName', 'First Name', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: column_link('lastName', 'Last Name', 'none')}"></th>
                 <th>Roles</th>
-                <th th:replace="~{fragments :: column_link('enabled', 'Enabled', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: column_link('enabled', 'Enabled', 'none')}"></th>
                 <th></th>
             </tr>
             </thead>
@@ -126,29 +126,29 @@
             <ul class="pagination justify-content-center">
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(1, 'First')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(1, 'First')}"></a>
                 </li>
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
                 </li>
 
                 <li
                         th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments :: hyperlink(${i}, ${i.toString()})}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${i}, ${i.toString()})}"></a>
 
                 </li>
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(${(currentPage+1)}, 'Next')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage+1)}, 'Next')}"></a>
                 </li>
 
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(${(totalPages)}, 'Last')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${(totalPages)}, 'Last')}"></a>
                 </li>
             </ul>
         </nav>
@@ -178,7 +178,7 @@
     </div>
 
 
-    <footer th:replace="~{fragments :: footer}"></footer>
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
 </div>
 <script type="text/javascript">
     $(document)
