@@ -2,7 +2,6 @@ package com.shopme.entity;
 
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -103,6 +102,36 @@ public class Category {
 
     public void setChildren(Set<Category> children) {
         this.children = children;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return id.equals(category.id) && name.equals(category.name) && alias.equals(category.alias);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, alias);
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", alias='" + alias + '\'' +
+                ", enabled=" + enabled +
+                '}';
+    }
+    @Transient
+    public String getPhotosImagePath() {
+        if (id == null || photo == null)
+            return "/images/ShopmeAdminSmall.png";
+// for testing purposes
+        return "/user-photos/1/namhm.png";
     }
 }
 

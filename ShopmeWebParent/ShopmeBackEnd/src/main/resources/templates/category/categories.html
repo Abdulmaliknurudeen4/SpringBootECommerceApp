@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments :: head('Shopme - Category')}"></head>
+<head th:replace="~{fragments/fragments :: head('Shopme - Category')}"></head>
 <body>
 <div class="container-fluid">
 
-    <div th:replace="~{navigation :: topNavBar}"></div>
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
 
     <div>
         <h1>Manage Categories</h1>
@@ -43,43 +43,39 @@
             <thead class="thead-dark">
             <tr>
                 <th class="hideable-column">
-                <th th:replace="~{fragments :: column_link('id', 'ID', 'tag')}"></th>
+                <th th:replace="~{fragments/fragments :: category_column_link('id', 'ID', 'tag')}"></th>
                 </th>
-                <th>Photos</th>
-                <th class="hideable-column">
-                <th th:replace="~{fragments :: column_link('email', 'E-mail', 'tag')}"></th>
+                <th>Category Image</th>
+                <th th:replace="~{fragments/fragments :: category_column_link('name', 'Category Name', 'none')}"></th>
                 </th>
-                <th th:replace="~{fragments :: column_link('firstName', 'First Name', 'none')}"></th>
-                <th th:replace="~{fragments :: column_link('lastName', 'Last Name', 'none')}"></th>
-                <th>Roles</th>
-                <th th:replace="~{fragments :: column_link('enabled', 'Enabled', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: category_column_link('alias', 'Alias', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: category_column_link('enabled', 'Enabled', 'none')}"></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${listUsers}">
-                <td class="hideable-column">[[${user.id}]]</td>
-                <td><i th:if="${user.id == null}"
-                       class="fas fa-portrait fa-3x icon-dark"></i> <img
-                        th:src="@{${user.photosImagePath}}" class="img-fluid"
-                        style="max-width: 100px; max-height: 100px;"/></td>
-                <td class="hideable-column">[[${user.email}]]</td>
-                <td>[[${user.firstName}]]</td>
-                <td>[[${user.lastName}]]</td>
-                <td>[[${user.roles}]]</td>
-                <td><a th:if="${user.enabled == true}" class="cursor-hand"
-                       th:href="@{'/users/setUserStatus/'+${user.id}+'/false'}"> <i
+            <tr th:each="category : ${listCategories}">
+                <td class="hideable-column">[[${category.id}]]</td>
+                <td><i th:if="${category.id == null}"
+                       class="fas fa-portrait fa-3x icon-dark"></i>
+                    <img th:src="@{${category.photosImagePath}}" class="img-fluid"
+                        style="max-width: 100px; max-height: 100px;"/>
+                </td>
+                <td class="hideable-column">[[${category.name}]]</td>
+                <td>[[${category.alias}]]</td>
+                <td><a th:if="${category.enabled == true}" class="cursor-hand"
+                       th:href="@{'/categories/setCategoryStatus/'+${category.id}+'/false'}"> <i
                         class="fas fa-check-circle fa-2x icon-green"></i></a> <a
-                        th:if="${user.enabled == false}"
-                        th:href="@{'/users/setUserStatus/'+${user.id}+'/true'}"
+                        th:if="${category.enabled == false}"
+                        th:href="@{'/categories/setCategoryStatus/'+${category.id}+'/true'}"
                         class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
                 </a></td>
 
 
                 <td style="width: 150px;"><a title="Edit this User"
-                                             class="cursor-hand" th:href="@{'/users/edit/'+${user.id} }">
+                                             class="cursor-hand" th:href="@{'/users/edit/'+${category.id} }">
                     <i class="fas fa-edit fa-2x icon-green"></i>
-                </a> &nbsp; <a th:href="@{'/users/delete/'+${user.id}}"
+                </a> &nbsp; <a th:href="@{'/users/delete/'+${category.id}}"
                                class="cursor-hand link-delete"> <i
                         class="fas fa-trash fa-2x icon-dark"> </i></a></td>
 
@@ -89,22 +85,22 @@
         </table>
     </div>
     <div class="less-details">
-        <div th:each="user: ${listUsers}" class="row m-1">
+        <div th:each="category: ${listCategories}" class="row m-1">
             <div class="col">
-                <i th:if="${user.id == null}"
+                <i th:if="${category.id == null}"
                    class="fas fa-portrait fa-3x icon-dark"></i>
-                <img th:src="@{${user.photosImagePath}}" class="img-fluid"
+                <img th:src="@{${category.photosImagePath}}" class="img-fluid"
                      style="max-width: 100px; max-height: 100px;"/>
             </div>
             <div class="col">
-                <div>[[${user.fullName}]]</div>
-                <div>[[${user.roles}]]</div>
+                <div>[[${category.name}]]</div>
+                <div>[[${category.alias}]]</div>
             </div>
             <div class="mt-2">
 
-                <a title="Edit this User" class="cursor-hand" th:href="@{'/users/edit/'+${user.id} }"> <i
+                <a title="Edit this User" class="cursor-hand" th:href="@{'/users/edit/'+${category.id} }"> <i
                         class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
-                <a th:href="@{'/users/delete/'+${user.id}}" class="cursor-hand link-delete"> <i
+                <a th:href="@{'/users/delete/'+${category.id}}" class="cursor-hand link-delete"> <i
                         class="fas fa-trash fa-2x icon-dark"> </i></a>
 
             </div>
@@ -113,12 +109,12 @@
     </div>
 
     <div class="text-center m-1" th:if="${totalItems > 0}">
-			<span>Showing Users # [[${startCount}]] to [[${endCount}]] of
+			<span>Showing Categories # [[${startCount}]] to [[${endCount}]] of
 				[[${totalItems}]]</span>
     </div>
 
     <div class="text-center m-1" th:if="${totalItems == 0}">
-        <span>No users found</span>
+        <span>No categories found</span>
     </div>
 
     <div th:if="${totalPages > 0}">
@@ -126,29 +122,29 @@
             <ul class="pagination justify-content-center">
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(1, 'First')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(1, 'First')}"></a>
                 </li>
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
                 </li>
 
                 <li
                         th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments :: hyperlink(${i}, ${i.toString()})}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${i}, ${i.toString()})}"></a>
 
                 </li>
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(${(currentPage+1)}, 'Next')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage+1)}, 'Next')}"></a>
                 </li>
 
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: hyperlink(${(totalPages)}, 'Last')}"></a>
+                    <a th:replace="~{fragments/fragments :: hyperlink(${(totalPages)}, 'Last')}"></a>
                 </li>
             </ul>
         </nav>
@@ -178,7 +174,7 @@
     </div>
 
 
-    <footer th:replace="~{fragments :: footer}"></footer>
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
 </div>
 <script type="text/javascript">
     $(document)
@@ -204,7 +200,7 @@
     }
 
     function clearFilter() {
-        window.location = "[[@{/users}]]"
+        window.location = "[[@{/categories}]]"
     }
 </script>
 </body>

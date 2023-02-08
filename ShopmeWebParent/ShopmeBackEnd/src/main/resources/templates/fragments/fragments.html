@@ -39,6 +39,16 @@
         th:href="@{'/users/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''}  }">
     [[${text}]]</a>
 
+<th th:fragment="category_column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+
+    <a
+            th:href="@{'/categories/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' +${(sortField != fieldName ? sortDir : reverseSortDir)} +${(keyword!=null) ? '&keyword='+keyword : ''} }"
+            class="cursor-hand text-white">[[${columnLabel}]]</a>
+    <span th:if="${sortField == fieldName}"
+          th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down' }"
+    ></span>
+
+</th>
 
 <footer th:fragment="footer">
     <div>

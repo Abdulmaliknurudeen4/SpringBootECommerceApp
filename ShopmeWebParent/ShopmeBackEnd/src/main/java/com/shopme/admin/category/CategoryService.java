@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 @Transactional
 public class CategoryService {
 
-    public static final int USER_PER_PAGE = 8;
+    public static final int CATEGORIES_PER_PAGE = 8;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -29,7 +29,7 @@ public class CategoryService {
     public Page<Category> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-        Pageable pageable = PageRequest.of(pageNum - 1, USER_PER_PAGE, sort);
+        Pageable pageable = PageRequest.of(pageNum - 1, CATEGORIES_PER_PAGE, sort);
         if (keyword != null) {
             return categoryRepository.findAll(keyword, pageable);
         }
@@ -69,7 +69,7 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public void setEnableUser(boolean status, Integer id) throws CategoryNotFoundException {
+    public void setEnableCategory(boolean status, Integer id) throws CategoryNotFoundException {
         Long categoryCount = categoryRepository.countById(id);
         if (categoryCount == null || categoryCount == 0) {
             throw new CategoryNotFoundException("Category Not Present");
