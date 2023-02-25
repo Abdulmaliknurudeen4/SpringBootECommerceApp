@@ -1,10 +1,7 @@
 package com.shopme.admin.category.controller;
 
 import com.shopme.admin.category.CategoryService;
-import com.shopme.admin.user.UserNotFoundExcpetion;
-import com.shopme.admin.user.UserService;
 import com.shopme.entity.Category;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
