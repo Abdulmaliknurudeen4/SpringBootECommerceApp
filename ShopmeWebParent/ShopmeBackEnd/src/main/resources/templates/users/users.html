@@ -43,16 +43,16 @@
             <thead class="thead-dark">
             <tr>
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: column_link('id', 'ID', 'tag')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag', 'users')}"></th>
                 </th>
                 <th>Photos</th>
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: column_link('email', 'E-mail', 'tag')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('email', 'E-mail', 'tag', 'users')}"></th>
                 </th>
-                <th th:replace="~{fragments/fragments :: column_link('firstName', 'First Name', 'none')}"></th>
-                <th th:replace="~{fragments/fragments :: column_link('lastName', 'Last Name', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('firstName', 'First Name', 'none', 'users')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('lastName', 'Last Name', 'none', 'users')}"></th>
                 <th>Roles</th>
-                <th th:replace="~{fragments/fragments :: column_link('enabled', 'Enabled', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'users')}"></th>
                 <th></th>
             </tr>
             </thead>
@@ -126,29 +126,29 @@
             <ul class="pagination justify-content-center">
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(1, 'First')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(1, 'First', 'users')}"></a>
                 </li>
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous', 'users')}"></a>
                 </li>
 
                 <li
                         th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${i}, ${i.toString()})}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${i}, ${i.toString()}, 'users')}"></a>
 
                 </li>
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage+1)}, 'Next')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage+1)}, 'Next', 'users')}"></a>
                 </li>
 
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${(totalPages)}, 'Last')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(totalPages)}, 'Last', 'users')}"></a>
                 </li>
             </ul>
         </nav>

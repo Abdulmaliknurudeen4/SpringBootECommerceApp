@@ -24,10 +24,14 @@
 
 <body>
 
-<th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+<a th:fragment="pagination_link(page, text, context)" class="page-link"
+   th:href="@{'/'+${context}+'/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''}  }">
+    [[${text}]]</a>
+
+<th th:fragment="tablehead_link(fieldName, columnLabel, removeTag, context)" th:remove="${removeTag}">
 
     <a
-            th:href="@{'/users/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' +${(sortField != fieldName ? sortDir : reverseSortDir)} +${(keyword!=null) ? '&keyword='+keyword : ''} }"
+            th:href="@{'/'+${context}+'/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' +${(sortField != fieldName ? sortDir : reverseSortDir)} +${(keyword!=null) ? '&keyword='+keyword : ''} }"
             class="cursor-hand text-white">[[${columnLabel}]]</a>
     <span th:if="${sortField == fieldName}"
           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down' }"
@@ -35,24 +39,6 @@
 
 </th>
 
-<a th:fragment="hyperlink(page, text)" class="page-link"
-        th:href="@{'/users/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''}  }">
-    [[${text}]]</a>
-
-<th th:fragment="category_column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
-
-    <a
-            th:href="@{'/categories/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' +${(sortField != fieldName ? sortDir : reverseSortDir)} +${(keyword!=null) ? '&keyword='+keyword : ''} }"
-            class="cursor-hand text-white">[[${columnLabel}]]</a>
-    <span th:if="${sortField == fieldName}"
-          th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down' }"
-    ></span>
-
-</th>
-
-<a th:fragment="category_hyperlink(page, text)" class="page-link"
-   th:href="@{'/categories/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''}  }">
-    [[${text}]]</a>
 
 <footer th:fragment="footer">
     <div>

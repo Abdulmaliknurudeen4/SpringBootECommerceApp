@@ -43,13 +43,13 @@
             <thead class="thead-dark">
             <tr>
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: category_column_link('id', 'ID', 'tag')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag', 'categories')}"></th>
                 </th>
                 <th>Category Image</th>
-                <th th:replace="~{fragments/fragments :: category_column_link('name', 'Category Name', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Category Name', 'none', 'categories')}"></th>
                 </th>
-                <th th:replace="~{fragments/fragments :: category_column_link('alias', 'Alias', 'none')}"></th>
-                <th th:replace="~{fragments/fragments :: category_column_link('enabled', 'Enabled', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('alias', 'Alias', 'none', 'categories')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'categories')}"></th>
                 <th></th>
             </tr>
             </thead>
@@ -122,29 +122,29 @@
             <ul class="pagination justify-content-center">
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: category_hyperlink(1, 'First')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(1, 'First', 'categories')}"></a>
                 </li>
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: category_hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous', 'categories')}"></a>
                 </li>
 
                 <li
                         th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments/fragments :: category_hyperlink(${i}, ${i.toString()})}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${i}, ${i.toString()}, 'categories')}"></a>
 
                 </li>
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: category_hyperlink(${(currentPage+1)}, 'Next')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage+1)}, 'Next', 'categories')}"></a>
                 </li>
 
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: category_hyperlink(${(totalPages)}, 'Last')}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(totalPages)}, 'Last', 'categories')}"></a>
                 </li>
             </ul>
         </nav>
