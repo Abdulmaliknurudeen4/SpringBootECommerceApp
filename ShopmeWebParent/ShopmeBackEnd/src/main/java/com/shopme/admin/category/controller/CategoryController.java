@@ -83,6 +83,17 @@ public class CategoryController {
         exporter.export(categoryList, response);
         return "redirect:/categories";
     }
+    @GetMapping("/categories/new")
+    public String newUser(Model model) {
+        List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+        Category category = new Category();
+        category.setEnabled(true);
+        model.addAttribute("editMode", false);
+        model.addAttribute("category", category);
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("pageTitle", "Create New Category");
+        return "category/category_form";
+    }
 
 
 }

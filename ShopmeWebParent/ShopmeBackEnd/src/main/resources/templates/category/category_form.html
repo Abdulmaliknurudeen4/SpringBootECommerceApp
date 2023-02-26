@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head('Shopme - Add Category')}"></head>
+<body>
+	<div class="container-fluid">
+		<div th:replace="~{fragments/navigation :: topNavBar}"></div>
+
+		<div>
+			<h1>Manager Categories | [[${pageTitle}]]</h1>
+		</div>
+
+		<div th:if="${message}" class="alert alert-success text-center"
+			th:text="${message}">[[${message}]]</div>
+
+		<form th:action="@{/categories/save}" method="post"
+			style="max-width: 500px; margin: 0 auto;" th:object="${category}"
+			enctype="multipart/form-data" id="userForm"
+			onsubmit="return checkEmailUnique(this);">
+			<input type="hidden" th:field="*{id}" />
+			<div class="border border-secondary rounded p-3">
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Category Name:</label>
+					<div class="col-sm-8">
+						<input type="email" th:field="*{name}" class="form-control"
+							required minlength="8" maxlength="128" id="email" />
+					</div>
+				</div>
+
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Alias:</label>
+					<div class="col-sm-8">
+						<input type="text" th:field="*{alias}" class="form-control"
+							required minlength="2" maxlength="45" />
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Parent Category:</label>
+					<div class="col-sm-8">
+						<select class="form-control" th:field="*{parent}">
+							<option value="0">[No Parent]</option>
+							<th:block th:each="cat: ${listCategories}">
+								<option value="${cat.id}">[[${cat.name}]]</option>
+							</th:block>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Enabled:</label>
+					<div class="col-sm-8">
+						<input type="checkbox" th:field="*{enabled}" />
+					</div>
+				</div>
+
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Image:</label>
+					<div class="col-sm-8">
+						<input type="hidden" th:field="*{photo}" />
+						<input type="file"
+							id="imageInput" name="image" accept="image/png, image/jpeg" />
+						<div class="mt-2">
+							<img th:src="@{/images/image-thumbnail.png}" id="imageView"
+								 alt="Image Preview" style="max-width: 200px; max-height: 200px;" />
+						</div>
+					</div>
+
+				</div>
+
+				<div class="text-center">
+					<input type="submit" value="Save" class="btn btn-primary m-3" /> <input
+						type="button" value="Cancel" class="btn btn-secondary"
+						id="buttonCancel" />
+				</div>
+
+			</div>
+		</form>
+
+		<div class="modal fade text-center" id="modalDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle"></h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+
+					<div class="modal-body">
+						<span id="modalBody"></span>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="~{fragments/fragments :: footer}"></footer>
+
+	</div>
+	<script type="text/javascript"
+			th:src="@{/js/common_form.js}"></script>
+	<script type="text/javascript">
+		moduleURL = "[[@{/categories}]]";
+		function checkEmailUnique(form) {
+
+			var url = "[[@{/users/check_email}]]";
+			var userEmail = $("#email").val();
+			var csrfValue = $("input[name='_csrf']").val();
+			var userId = $("#id").val();
+			params = {
+				id : userId,
+				email : userEmail,
+				_csrf : csrfValue
+			};
+
+			$.post(
+					url,
+					params,
+					function(response) {
+						if (response == "OK") {
+							form.submit();
+						} else if (response == "Duplicated") {
+							showModalDialog("Warning!",
+									"There is another User having the Email"
+											+ userEmail);
+						} else {
+							showModalDialog("Error",
+									"Unknown response from Server");
+						}
+
+					}).fail(function() {
+				showModalDialog("Error", "Could not Connect to Server.");
+			});
+
+			return false;
+		}
+
+		function showModalDialog(title, message) {
+			$('#modalTitle').text(title);
+			$('#modalBody').text(message);
+			$('#modalDialog').modal();
+		}
+	</script>
+
+</body>
+</html>

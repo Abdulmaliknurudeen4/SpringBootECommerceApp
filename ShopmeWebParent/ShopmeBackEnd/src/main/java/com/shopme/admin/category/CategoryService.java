@@ -10,8 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -79,5 +81,41 @@ public class CategoryService {
 
     public Category getCategory(String name) {
         return categoryRepository.getCategoriesByName(name);
+    }
+
+    public List<Category> listCategoriesUsedInForm(){
+       List<Category> categoriesUsedInForm = new ArrayList<>();
+       Iterable<Category> categoriesInDB = categoryRepository.findAll();
+        for (Category cat : categoriesInDB) {
+            if(cat.getParent()==null){
+                categoriesUsedInForm.add(new Category(cat.getName()));
+
+                Set<Category> children = cat.getChildren();
+                for(Category subCategory: children){
+                    String name = "--"+subCategory.getName();
+                    categoriesUsedInForm.add(new Category(name));
+
+                    listChildren(categoriesUsedInForm,subCategory, 1);
+                }
+            }
+        }
+
+        return categoriesUsedInForm;
+
+    }
+
+    private void listChildren(List<Category> categoriesUsedInForm, Category parent, int subLevel) {
+        int newSubLevel = subLevel+1;
+        Set<Category> children = parent.getChildren();
+
+        for(Category subCategory: children){
+            String name = "";
+            for(int i = 0; i < newSubLevel; i++){
+                name+="--";
+            }
+            name +=subCategory.getName();
+            categoriesUsedInForm.add(new Category(name));
+            listChildren(categoriesUsedInForm, subCategory, newSubLevel);
+        }
     }
 }
