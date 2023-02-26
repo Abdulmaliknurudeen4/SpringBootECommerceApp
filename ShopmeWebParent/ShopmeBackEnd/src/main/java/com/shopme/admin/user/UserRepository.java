@@ -13,15 +13,15 @@ import com.shopme.entity.User;
 public interface UserRepository extends CrudRepository<User, Integer>, PagingAndSortingRepository<User, Integer> {
 
 	@Query("SELECT u from User u WHERE u.email = :email")
-	public User getUserByEmail(@Param("email") String email);
+    User getUserByEmail(@Param("email") String email);
 
-	public Long countById(Integer Id);
+	Long countById(Integer Id);
 
 	@Query("SELECT u FROM User u WHERE CONCAT(u.id, ' ', u.email, ' ', u.firstName, ' ', u.lastName) LIKE %?1%")
-	public Page<User> findAll(String keyword, Pageable pageable);
+    Page<User> findAll(String keyword, Pageable pageable);
 
 	@Query("UPDATE User u SET u.enabled = ?2 WHERE u.id = ?1")
 	@Modifying
-	public void EnableStatusUser(Integer id, boolean status);
+    void EnableStatusUser(Integer id, boolean status);
 
 }

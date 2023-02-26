@@ -18,7 +18,7 @@ public class Category implements Serializable {
     @Column(length = 128, nullable = false, unique = true)
     private String alias;
 
-    @Column(length = 64)
+    @Column(length = 64, nullable = true)
     private String photo;
     private boolean enabled;
 
@@ -30,6 +30,20 @@ public class Category implements Serializable {
     private Set<Category> children = new HashSet<>();
 
     public Category() {
+    }
+
+    public static Category copyIdAndName(Category category){
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+        return copyCategory;
+    }
+
+    public static Category copyIdAndName(Integer id, String name){
+        Category copyCategory = new Category();
+        copyCategory.setId(id);
+        copyCategory.setName(name);
+        return copyCategory;
     }
 
     public Category(String name) {
@@ -134,7 +148,7 @@ public class Category implements Serializable {
     public String getPhotosImagePath() {
         if (id == null || photo == null)
             return "/images/ShopmeAdminSmall.png";
-        return "/categories-images/" + this.id + "/" + this.name;
+        return "/categories-images/" + this.id + "/" + this.photo;
     }
 }
 

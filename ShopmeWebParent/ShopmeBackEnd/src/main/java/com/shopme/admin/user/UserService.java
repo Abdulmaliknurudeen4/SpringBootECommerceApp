@@ -77,15 +77,10 @@ public class UserService {
 		if (userByEmail == null)
 			return true;
 		if (isCreatingNew) {
-			if (userByEmail != null)
-				return false;
+			return userByEmail == null;
 		} else {
-			if (userByEmail.getId() != id) {
-				return false;
-			}
+			return userByEmail.getId() == id;
 		}
-
-		return true;
 	}
 
 	public User getUser(Integer id) throws UserNotFoundExcpetion {

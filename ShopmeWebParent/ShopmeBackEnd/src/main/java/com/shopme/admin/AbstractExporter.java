@@ -12,8 +12,7 @@ public class AbstractExporter {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String timestamp = dateFormatter.format(new Date());
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(fileName).append(timestamp).append(extension);
+        String sb = fileName + timestamp + extension;
 
         response.setContentType(contentType);
         String headerKey = "Content-Disposition";

@@ -88,13 +88,12 @@ public class CategoryService {
        Iterable<Category> categoriesInDB = categoryRepository.findAll();
         for (Category cat : categoriesInDB) {
             if(cat.getParent()==null){
-                categoriesUsedInForm.add(new Category(cat.getName()));
+                categoriesUsedInForm.add(Category.copyIdAndName(cat));
 
                 Set<Category> children = cat.getChildren();
                 for(Category subCategory: children){
                     String name = "--"+subCategory.getName();
-                    categoriesUsedInForm.add(new Category(name));
-
+                    categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
                     listChildren(categoriesUsedInForm,subCategory, 1);
                 }
             }
@@ -114,7 +113,7 @@ public class CategoryService {
                 name+="--";
             }
             name +=subCategory.getName();
-            categoriesUsedInForm.add(new Category(name));
+            categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
             listChildren(categoriesUsedInForm, subCategory, newSubLevel);
         }
     }

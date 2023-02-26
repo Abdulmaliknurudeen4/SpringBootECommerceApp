@@ -15,15 +15,15 @@
 		<form th:action="@{/categories/save}" method="post"
 			style="max-width: 500px; margin: 0 auto;" th:object="${category}"
 			enctype="multipart/form-data" id="userForm"
-			onsubmit="return checkEmailUnique(this);">
+			onsubmit="return checkNameIsUnique(this);">
 			<input type="hidden" th:field="*{id}" />
 			<div class="border border-secondary rounded p-3">
 
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-label">Category Name:</label>
 					<div class="col-sm-8">
-						<input type="email" th:field="*{name}" class="form-control"
-							required minlength="8" maxlength="128" id="email" />
+						<input type="text" th:id="nameInput" th:field="*{name}" class="form-control"
+							required minlength="4" maxlength="128" />
 					</div>
 				</div>
 
@@ -42,7 +42,7 @@
 						<select class="form-control" th:field="*{parent}">
 							<option value="0">[No Parent]</option>
 							<th:block th:each="cat: ${listCategories}">
-								<option value="${cat.id}">[[${cat.name}]]</option>
+								<option th:value="${cat.id}">[[${cat.name}]]</option>
 							</th:block>
 						</select>
 					</div>
@@ -107,15 +107,15 @@
 			th:src="@{/js/common_form.js}"></script>
 	<script type="text/javascript">
 		moduleURL = "[[@{/categories}]]";
-		function checkEmailUnique(form) {
+		function checkNameIsUnique(form) {
 
-			var url = "[[@{/users/check_email}]]";
-			var userEmail = $("#email").val();
+			var url = "[[@{/categories/check_name}]]";
+			var name = $("#nameInput").val();
 			var csrfValue = $("input[name='_csrf']").val();
 			var userId = $("#id").val();
 			params = {
 				id : userId,
-				email : userEmail,
+				name : name,
 				_csrf : csrfValue
 			};
 
@@ -123,12 +123,12 @@
 					url,
 					params,
 					function(response) {
-						if (response == "OK") {
+						if (response === "OK") {
 							form.submit();
-						} else if (response == "Duplicated") {
+						} else if (response === "Duplicated") {
 							showModalDialog("Warning!",
-									"There is another User having the Email"
-											+ userEmail);
+									"There is another Category Having the Same Name "
+											+ name);
 						} else {
 							showModalDialog("Error",
 									"Unknown response from Server");
