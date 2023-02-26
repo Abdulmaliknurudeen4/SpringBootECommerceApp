@@ -50,6 +50,10 @@
 
 </th>
 
+<a th:fragment="category_hyperlink(page, text)" class="page-link"
+   th:href="@{'/categories/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''}  }">
+    [[${text}]]</a>
+
 <footer th:fragment="footer">
     <div>
         <p>Shopme Control Panel - Copyright &copy;shopme</p>

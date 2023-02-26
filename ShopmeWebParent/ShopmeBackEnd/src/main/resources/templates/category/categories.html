@@ -122,29 +122,29 @@
             <ul class="pagination justify-content-center">
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(1, 'First')}"></a>
+                    <a th:replace="~{fragments/fragments :: category_hyperlink(1, 'First')}"></a>
                 </li>
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
+                    <a th:replace="~{fragments/fragments :: category_hyperlink(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
                 </li>
 
                 <li
                         th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${i}, ${i.toString()})}"></a>
+                    <a th:replace="~{fragments/fragments :: category_hyperlink(${i}, ${i.toString()})}"></a>
 
                 </li>
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${(currentPage+1)}, 'Next')}"></a>
+                    <a th:replace="~{fragments/fragments :: category_hyperlink(${(currentPage+1)}, 'Next')}"></a>
                 </li>
 
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: hyperlink(${(totalPages)}, 'Last')}"></a>
+                    <a th:replace="~{fragments/fragments :: category_hyperlink(${(totalPages)}, 'Last')}"></a>
                 </li>
             </ul>
         </nav>
