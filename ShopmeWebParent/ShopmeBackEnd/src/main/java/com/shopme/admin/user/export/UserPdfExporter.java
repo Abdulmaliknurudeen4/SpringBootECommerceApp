@@ -13,7 +13,7 @@ import java.util.List;
 public class UserPdfExporter extends UserExcelExporter{
 
     public void export(List<User> userList, HttpServletResponse response) throws IOException {
-        super.setResponseHeader(response, "application/pdf", ".pdf");
+        super.setResponseHeader(response, "application/pdf", ".pdf", "user");
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());

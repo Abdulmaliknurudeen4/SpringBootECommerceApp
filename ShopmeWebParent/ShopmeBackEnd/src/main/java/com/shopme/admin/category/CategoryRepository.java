@@ -15,7 +15,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer>, P
 
     public Long countById(Integer Id);
 
-    @Query("SELECT c FROM Category c WHERE CONCAT(c.id, ' ', c.name, ' ', c.alias) LIKE %?1%")
+    @Query("SELECT c FROM Category c WHERE CONCAT(c.name, ' ', c.alias) LIKE %?1%")
     public Page<Category> findAll(String keyword, Pageable pageable);
 
     @Query("UPDATE Category c SET c.enabled = ?2 WHERE c.id = ?1")

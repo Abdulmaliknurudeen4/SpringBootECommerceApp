@@ -1,7 +1,10 @@
 package com.shopme.admin.category.controller;
 
+import com.shopme.admin.category.CategoryCSVExporter;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.entity.Category;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller()
@@ -21,7 +25,7 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public String listFirstPage(Model model) {
-        return listByPage(1, model, "Name", "asc", null);
+        return listByPage(1, model, "name", "asc", null);
     }
 
     @GetMapping("/categories/page/{pageNum}")
@@ -72,6 +76,14 @@ public class CategoryController {
         }
         return "redirect:/categories";
     }
+    @GetMapping("/categories/export/csv")
+    public String exportToCSV(HttpServletResponse response) throws IOException {
+        List<Category> categoryList = categoryService.listAll();
+        CategoryCSVExporter exporter = new CategoryCSVExporter();
+        exporter.export(categoryList, response);
+        return "redirect:/categories";
+    }
+
 
 }
 /*
@@ -149,26 +161,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/export/csv")
-    public String exportToCSV(HttpServletResponse response) throws IOException {
-        List<User> userList = service.listAll();
-        UserCSVExporter exporter = new UserCSVExporter();
-        exporter.export(userList, response);
-        return "redirect:/users";
-    }
-    @GetMapping("/users/export/pdf")
-    public String exportToPDF(HttpServletResponse response) throws IOException {
-        List<User> userList = service.listAll();
-        UserPdfExporter exporter = new UserPdfExporter();
-        exporter.export(userList, response);
-        return "redirect:/users";
-    }
-    @GetMapping("/users/export/excel")
-    public String exportToExcel(HttpServletResponse response) throws IOException {
-        List<User>  userList = service.listAll();
-        UserExcelExporter exporter = new UserExcelExporter();
-        exporter.export(userList, response);
-        return "redirect:/users";
-    }
+
 }
 */
