@@ -31,5 +31,5 @@ public interface CategoryRepository extends CrudRepository<Category, Integer>, P
     Category findByAlias(String alias);
 
     @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
-    public List<Category> findRootCategories();
+    List<Category> findRootCategories();
 }

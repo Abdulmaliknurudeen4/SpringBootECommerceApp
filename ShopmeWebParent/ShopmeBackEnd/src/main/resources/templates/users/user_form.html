@@ -95,26 +95,7 @@
 			</div>
 		</form>
 
-		<div class="modal fade text-center" id="modalDialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-					<div class="modal-header">
-						<h4 class="modal-title" id="modalTitle"></h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-
-					<div class="modal-body">
-						<span id="modalBody"></span>
-					</div>
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					</div>
-
-				</div>
-			</div>
-		</div>
+		<div th:replace="~{fragments/modal :: modal_dialog}"></div>
 
 		<footer th:replace="~{fragments/fragments :: footer}"></footer>
 
@@ -139,19 +120,17 @@
 					url,
 					params,
 					function(response) {
-						if (response == "OK") {
+						if (response === "OK") {
 							form.submit();
-						} else if (response == "Duplicated") {
-							showModalDialog("Warning!",
-									"There is another User having the Email"
-											+ userEmail);
+						} else if (response === "Duplicated") {
+							showWarningModal("There is another User having the Email"
+									+ userEmail)
 						} else {
-							showModalDialog("Error",
-									"Unknown response from Server");
+							showErrorModal("Unknown response from Server")
 						}
 
 					}).fail(function() {
-				showModalDialog("Error", "Could not Connect to Server.");
+				showErrorModal("Could not Connect to Server.");
 			});
 
 			return false;
@@ -161,6 +140,13 @@
 			$('#modalTitle').text(title);
 			$('#modalBody').text(message);
 			$('#modalDialog').modal();
+		}
+
+		function showErrorModal(message){
+			showModalDialog("Error", message);
+		}
+		function showWarningModal(message){
+			showModalDialog("Warning", message);
 		}
 	</script>
 

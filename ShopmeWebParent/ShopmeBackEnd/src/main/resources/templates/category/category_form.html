@@ -79,26 +79,7 @@
 			</div>
 		</form>
 
-		<div class="modal fade text-center" id="modalDialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-					<div class="modal-header">
-						<h4 class="modal-title" id="modalTitle"></h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-
-					<div class="modal-body">
-						<span id="modalBody"></span>
-					</div>
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					</div>
-
-				</div>
-			</div>
-		</div>
+		<div th:replace="~{fragments/modal :: modal_dialog}"></div>
 
 		<footer th:replace="~{fragments/fragments :: footer}"></footer>
 
@@ -128,20 +109,17 @@
 						if (response === "OK") {
 							form.submit();
 						} else if (response === "DuplicateName") {
-							showModalDialog("Warning!",
-									"There is another Category Having the Same Name "
+							showWarningModal("There is another Category Having the Same Name "
 											+ name);
 						}else if (response === "DuplicateAlias"){
-							showModalDialog("Warning!",
-									"There is another Category Having the Same Alias "
+							showWarningModal("There is another Category Having the Same Alias "
 									+ alias);
 						} else {
-							showModalDialog("Error",
-									"Unknown response from Server");
+							showErrorModal("Unknown response from Server");
 						}
 
 					}).fail(function() {
-				showModalDialog("Error", "Could not Connect to Server.");
+				showErrorModal("Could not Connect to Server.");
 			});
 
 			return false;
