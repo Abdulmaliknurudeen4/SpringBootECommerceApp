@@ -28,5 +28,5 @@ public interface CategoryRepository extends CrudRepository<Category, Integer>, P
     Category getCategoriesByName(@Param("name") String name);
 
     @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
-    public List<Category> listRootCategories();
+    public List<Category> findRootCategories();
 }
