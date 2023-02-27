@@ -169,5 +169,9 @@ public class Category implements Serializable {
             return "/images/ShopmeAdminSmall.png";
         return "/categories-images/" + this.id + "/" + this.photo;
     }
+
+    public boolean hasChildren(){
+        return !this.children.isEmpty();
+    }
 }
 

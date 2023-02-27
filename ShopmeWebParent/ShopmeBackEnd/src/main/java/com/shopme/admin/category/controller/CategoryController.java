@@ -3,8 +3,6 @@ package com.shopme.admin.category.controller;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.category.CategoryCSVExporter;
 import com.shopme.admin.category.CategoryService;
-import com.shopme.admin.user.UserNotFoundExcpetion;
-import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.entity.Category;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,18 +29,28 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    private static String getRedirectURLToAffectedCategory(Category category) {
+        String keyPart = category.getName();
+        return "redirect:/categories/page/1?sortField=name&sortDir=asc&keyword=" + keyPart;
+    }
+
     @GetMapping("/categories")
     public String listFirstPage(Model model) {
         return listByPage(1, model, "name", "asc", null);
     }
 
     @GetMapping("/categories/page/{pageNum}")
-    public String listByPage(@PathVariable(name="pageNum") int pageNum, Model model,
+    public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
                              @Param("sortField") String sortField, @Param("sortDir") String sortDir,
-                             @Param("keyword") String keyword){
+                             @Param("keyword") String keyword) {
 
         Page<Category> page = categoryService.listByPage(pageNum, sortField, sortDir, keyword);
         List<Category> listCategories = page.getContent();
+
+//        listCategories = categoryService.listAll("name");
+        // I need to get the whole list of categories and Convert it to a Pageable and this needs to be Sorted with Children.
+
+
         pageNum = (pageNum <= 0) ? 0 : pageNum;
 
         long startCount = (long) (pageNum - 1) * CategoryService.CATEGORIES_PER_PAGE + 1;
@@ -69,7 +78,7 @@ public class CategoryController {
 
     @GetMapping("/categories/setCategoryStatus/{id}/{status}")
     public String changeCategoryStatus(@PathVariable(name = "id") Integer id,
-                                         @PathVariable(name = "status") boolean status,
+                                       @PathVariable(name = "status") boolean status,
                                        RedirectAttributes redirectAttributes) {
         String enabled = (status) ? "enabled" : "disabled";
         try {
@@ -83,13 +92,15 @@ public class CategoryController {
         }
         return "redirect:/categories";
     }
+
     @GetMapping("/categories/export/csv")
     public String exportToCSV(HttpServletResponse response) throws IOException {
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listAll("name");
         CategoryCSVExporter exporter = new CategoryCSVExporter();
         exporter.export(categoryList, response);
         return "redirect:/categories";
     }
+
     @GetMapping("/categories/new")
     public String newUser(Model model) {
         List<Category> listCategories = categoryService.listCategoriesUsedInForm();
@@ -148,7 +159,10 @@ public class CategoryController {
     @GetMapping("/categories/delete/{id}")
     public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
+            String dir = "./categories-images/"+id;
             categoryService.deleteCategory(id);
+            System.out.println(Paths.get(dir).toAbsolutePath());
+            FileUploadUtil.removeDir(dir);
             redirectAttributes.addFlashAttribute("message",
                     "The Category with the ID : " + id + " has been deleted Successfully!");
         } catch (CategoryNotFoundException e) {
@@ -157,11 +171,36 @@ public class CategoryController {
         }
         return "redirect:/categories";
     }
-
-
-    private static String getRedirectURLToAffectedCategory(Category category) {
-        String keyPart = category.getName();
-        return "redirect:/categories/page/1?sortField=name&sortDir=asc&keyword=" + keyPart;
-    }
 }
 
+/*    @GetMapping("/categories/page/{pageNum}")
+    public String listByPage(@PathVariable(name="pageNum") int pageNum, Model model,
+                             @Param("sortField") String sortField, @Param("sortDir") String sortDir,
+                             @Param("keyword") String keyword){
+
+        Page<Category> page = categoryService.listByPage(pageNum, sortField, sortDir, keyword);
+        List<Category> listCategories = page.getContent();
+        pageNum = (pageNum <= 0) ? 0 : pageNum;
+
+        long startCount = (long) (pageNum - 1) * CategoryService.CATEGORIES_PER_PAGE + 1;
+        long endCount = startCount + CategoryService.CATEGORIES_PER_PAGE - 1;
+
+        // Getting to the last page with uneven elements
+        if (endCount > page.getTotalElements()) {
+            endCount = page.getTotalElements();
+        }
+
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", reverseSortDir);
+        model.addAttribute("keyword", keyword);
+        return "category/categories";
+    }*/

@@ -3,6 +3,7 @@ package com.shopme.admin.category;
 import com.shopme.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -31,5 +32,5 @@ public interface CategoryRepository extends CrudRepository<Category, Integer>, P
     Category findByAlias(String alias);
 
     @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
-    List<Category> findRootCategories();
+    List<Category> findRootCategories(Sort sort);
 }
