@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -118,6 +117,23 @@ public class CategoryRepositoryTest {
     public void testListRootCategories(){
         List<Category> rootCategories = repo.findRootCategories();
         rootCategories.forEach(cat -> System.out.println(cat.getName()));
+    }
+
+    @Test
+    public void testFindByName(){
+        String name = "Computers";
+        Category category = repo.findByName(name);
+        assertThat(category).isNotNull();
+        assertThat(category.getName()).isEqualTo(name);
+    }
+
+
+    @Test
+    public void testFindByAlias(){
+        String alias = "computers";
+        Category category = repo.findByAlias(alias);
+        assertThat(category).isNotNull();
+        assertThat(category.getAlias()).isEqualTo(alias);
     }
 
 }

@@ -62,16 +62,23 @@ public class CategoryService {
     }
 
     // Under Review
-    public boolean isCategoryUnique(Integer id, String categoryName) {
-        boolean isCreatingNew = (id == null);
-        Category categoryByName = categoryRepository.getCategoriesByName(categoryName);
-        if (categoryByName == null)
-            return true;
-        if (isCreatingNew) {
-            return false;
-        } else {
-            return categoryByName.getId() == id;
+    public String isCategoryUnique(Integer id, String categoryName, String alias) {
+        boolean isCreatingNew = (id == null || id == 0);
+        Category categoryByName = categoryRepository.findByName(categoryName);
+        if(isCreatingNew){
+            if(categoryByName != null){
+                return "DuplicateName";
+            }else {
+                return (categoryRepository.findByAlias(alias) != null) ? "DuplicateAlias" : "";
+            }
+        }else{
+            if(categoryByName != null && categoryByName.getId() != id)
+                return "DuplicateName";
+
+            Category categoryByAlias = categoryRepository.findByAlias(alias);
+            if(categoryByAlias != null && categoryByAlias.getId() != id) return "DuplicateAlias";
         }
+        return "OK";
     }
 
     public Category getCategory(Integer id) throws CategoryNotFoundException {

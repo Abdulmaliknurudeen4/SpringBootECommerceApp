@@ -13,7 +13,7 @@ public class CategoryRestController {
     private CategoryService service;
 
     @PostMapping("categories/check_name")
-    public String checkDuplicateCategory(@Param("name") String name, @Param("id") Integer id) {
-        return service.isCategoryUnique(id, name) ? "OK" : "Duplicated";
+    public String checkDuplicateCategory(@Param("name") String name, @Param("alias") String alias, @Param("id") Integer id) {
+        return service.isCategoryUnique(id, name, alias);
     }
 }

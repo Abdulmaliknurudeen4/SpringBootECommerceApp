@@ -3,6 +3,7 @@ package com.shopme.admin.category.controller;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.category.CategoryCSVExporter;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.user.UserNotFoundExcpetion;
 import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.entity.Category;
 import jakarta.servlet.http.HttpServletResponse;
@@ -124,86 +125,43 @@ public class CategoryController {
         return getRedirectURLToAffectedCategory(category);
     }
 
+    @GetMapping("/categories/edit/{id}")
+    public String editUser(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+
+        List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+        model.addAttribute("editMode", true);
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("pageTitle", "Edit Category (ID: " + id + " )");
+
+        try {
+            Category editCategory = categoryService.getCategory(id);
+            model.addAttribute("category", editCategory);
+            return "category/category_form";
+        } catch (CategoryNotFoundException e) {
+            // Review
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/categories";
+        }
+
+    }
+
+    @GetMapping("/categories/delete/{id}")
+    public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            categoryService.deleteCategory(id);
+            redirectAttributes.addFlashAttribute("message",
+                    "The Category with the ID : " + id + " has been deleted Successfully!");
+        } catch (CategoryNotFoundException e) {
+            // TODO Auto-generated catch block
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
+        return "redirect:/categories";
+    }
+
+
     private static String getRedirectURLToAffectedCategory(Category category) {
         String keyPart = category.getName();
         return "redirect:/categories/page/1?sortField=name&sortDir=asc&keyword=" + keyPart;
     }
 }
-/*
 
-@Controller
-public class UserController {
-
-    @GetMapping("/users/new")
-    public String newUser(Model model) {
-        User user = new User();
-        user.setEnabled(true);
-        model.addAttribute("editMode", false);
-        model.addAttribute("user", user);
-        model.addAttribute("listRoles", service.listRoles());
-        model.addAttribute("pageTitle", "Create New User");
-        return "users/user_form";
-    }
-
-    @PostMapping("/users/save")
-    public String saveUser(User user, RedirectAttributes redirectAttributes, Model model,
-                           @RequestParam(name = "image") MultipartFile photoMultipart) throws IOException {
-        if (!photoMultipart.isEmpty()) {
-            String fileName = StringUtils.cleanPath(photoMultipart.getOriginalFilename());
-            user.setPhotos(fileName);
-            System.out.println(user.getPhotos());
-            User savedUser = service.save(user);
-            String uploadDir = "user-photos/" + savedUser.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, photoMultipart);
-
-        } else {
-            if (user.getPhotos().isEmpty())
-                user.setPhotos(null);
-            service.save(user);
-        }
-
-        // Review
-        redirectAttributes.addFlashAttribute("message", "The user has been saved successfully. !");
-        return getRedirectURLToAffectedUser(user);
-    }
-
-    private static String getRedirectURLToAffectedUser(User user) {
-        String keyPart = user.getEmail().split("@")[0];
-        return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=" + keyPart;
-    }
-
-    @GetMapping("/users/edit/{id}")
-    public String editUser(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-        model.addAttribute("pageTitle", "Edit User (ID: " + id + " )");
-        model.addAttribute("listRoles", service.listRoles());
-        model.addAttribute("editMode", true);
-        try {
-            User user = service.getUser(id);
-            model.addAttribute("user", user);
-            return "users/user_form";
-        } catch (UserNotFoundExcpetion e) {
-            // Review
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            return "redirect:/users";
-        }
-
-    }
-
-    @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
-        try {
-            service.deleteUser(id);
-            redirectAttributes.addFlashAttribute("message",
-                    "The User with the ID : " + id + " has been deleted Successfully!");
-        } catch (UserNotFoundExcpetion e) {
-            // TODO Auto-generated catch block
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-        }
-        return "redirect:/users";
-    }
-
-
-
-}
-*/

@@ -27,6 +27,9 @@ public interface CategoryRepository extends CrudRepository<Category, Integer>, P
     @Query("SELECT c from Category c WHERE c.name = :name")
     Category getCategoriesByName(@Param("name") String name);
 
+    Category findByName(String name);
+    Category findByAlias(String alias);
+
     @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
     public List<Category> findRootCategories();
 }
