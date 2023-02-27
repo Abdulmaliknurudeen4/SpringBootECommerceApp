@@ -64,14 +64,8 @@
                 </a></td>
 
 
-                <td style="width: 150px;"><a title="Edit this User"
-                                             class="cursor-hand" th:href="@{'/categories/edit/'+${category.id} }">
-                    <i class="fas fa-edit fa-2x icon-green"></i>
-                </a> &nbsp;
-                    <a th:href="@{'/categories/delete/'+${category.id}}"
-                       th:if="${!category.hasChildren()}"
-                               class="cursor-hand link-delete"> <i
-                        class="fas fa-trash fa-2x icon-dark"> </i></a></td>
+                <td style="width: 150px;">
+                    <div th:replace="~{fragments/fragments :: category_actions}"></div></td>
 
 
             </tr>
