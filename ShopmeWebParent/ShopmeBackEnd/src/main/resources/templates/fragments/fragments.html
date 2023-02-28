@@ -70,6 +70,8 @@
         <button class="btn btn-outline-secondary my-2 my-sm-0 fas fa-eraser fa-3x" type="button"
                 onclick="clearFilter()"></button>
     </form>
+    <div th:if="${message}" class="alert alert-success text-center"
+         th:text="${message}">[[${message}]]</div>
 </div>
 
 

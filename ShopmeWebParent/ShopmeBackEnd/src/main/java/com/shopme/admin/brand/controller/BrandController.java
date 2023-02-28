@@ -1,15 +1,18 @@
 package com.shopme.admin.brand.controller;
 
 import com.shopme.admin.brand.BrandService;
+import com.shopme.admin.category.CategoryService;
 import com.shopme.admin.user.UserService;
 import com.shopme.admin.user.export.UserExcelExporter;
 import com.shopme.entity.Brand;
+import com.shopme.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -18,12 +21,34 @@ public class BrandController {
 
     @Autowired
     private BrandService brandService;
+
+    @Autowired
+    private CategoryService categoryService;
     @GetMapping("/brands")
     public String listFirstPage(Model model) {
         List<Brand> brandList = brandService.listAll();
         model.addAttribute("brands", brandList);
         return "brand/brands";
     }
+
+    @GetMapping("/brands/new")
+    public String newBrand(Model model) {
+
+        List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+        Brand brand = new Brand();
+        model.addAttribute("editMode", false);
+        model.addAttribute("brand", brand);
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("pageTitle", "Create New Brand");
+        return "brand/brand_form";
+    }
+
+    @PostMapping("brands/save")
+    public String saveBrand(){
+        return "";
+    }
+
+
 
     /*@GetMapping("/brands/page/{pageNum}")
     public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
