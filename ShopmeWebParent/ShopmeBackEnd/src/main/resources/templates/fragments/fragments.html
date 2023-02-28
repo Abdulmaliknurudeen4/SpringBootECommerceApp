@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head th:fragment="head(title)">
     <meta charset="ISO-8859-1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -50,6 +50,28 @@
                 class="fas fa-trash fa-2x icon-dark"> </i></a>
     </th:block>
 </div>
+
+<a th:fragment="edit(context, link)"
+   class="cursor-hand"
+   th:href="@{${link}}">
+    <i class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
+<a th:fragment="delete(context, Id, link)"
+   th:href="@{${link}}"
+   class="cursor-hand link-delete">
+    <i class="fas fa-trash fa-2x icon-dark"> </i></a>
+
+<div th:fragment="search_form_and_message(link)" class="m-1">
+    <form class="form-inline" th:action="@{${link}}">
+        <input type="hidden" name="sortField" th:value="${sortField}">
+        <input type="hidden" name="sortDir" th:value="${sortDir}">
+        <input class="form-control mr-sm-2" type="search" placeholder="Filter" aria-label="Search" name="keyword"
+               id="keyword" required th:value="${keyword}">
+        <button class="btn btn-outline-primary my-2 my-sm-0 fas fa-search fa-3x" type="submit"></button>&nbsp;&nbsp;
+        <button class="btn btn-outline-secondary my-2 my-sm-0 fas fa-eraser fa-3x" type="button"
+                onclick="clearFilter()"></button>
+    </form>
+</div>
+
 
 
 <footer th:fragment="footer">

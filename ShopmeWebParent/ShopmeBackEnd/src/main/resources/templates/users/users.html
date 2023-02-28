@@ -25,17 +25,7 @@
         </a>
     </div>
 
-    <div class="m-1">
-        <form class="form-inline" th:action="@{/users/page/1}">
-            <input type="hidden" name="sortField" th:value="${sortField}">
-            <input type="hidden" name="sortDir" th:value="${sortDir}">
-            <input class="form-control mr-sm-2" type="search" placeholder="Filter" aria-label="Search" name="keyword"
-                   id="keyword" required th:value="${keyword}">
-            <button class="btn btn-outline-primary my-2 my-sm-0 fas fa-search fa-3x" type="submit"></button>&nbsp;&nbsp;
-            <button class="btn btn-outline-secondary my-2 my-sm-0 fas fa-eraser fa-3x" type="button"
-                    onclick="clearFilter()"></button>
-        </form>
-    </div>
+    <div th:replace="~{fragments/fragments :: search_form_and_message('/users/page/1')}"></div>
 
     <div class="full-details">
         <table
@@ -76,12 +66,14 @@
                 </a></td>
 
 
-                <td style="width: 150px;"><a title="Edit this User"
+                <td style="width: 150px;">
+                    <a title="Edit this User"
                                              class="cursor-hand" th:href="@{'/users/edit/'+${user.id} }">
                     <i class="fas fa-edit fa-2x icon-green"></i>
                 </a> &nbsp; <a th:href="@{'/users/delete/'+${user.id}}"
                                class="cursor-hand link-delete"> <i
-                        class="fas fa-trash fa-2x icon-dark"> </i></a></td>
+                        class="fas fa-trash fa-2x icon-dark"> </i></a>
+                </td>
 
 
             </tr>
