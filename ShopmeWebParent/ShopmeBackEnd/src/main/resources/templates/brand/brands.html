@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head('Shopme - Brands')}"></head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
+
+    <div>
+        <h1>Manage Categories</h1>
+        <a th:href="@{/categories/new}">
+            <i class="fas fa-folder-plus fa-3x icon-dark cursor-hand"></i>
+        </a>
+        &nbsp;&nbsp;
+        <a th:href="@{/categories/export/csv}">
+            <i class="fas fa-file-csv fa-3x icon-dark cursor-hand"></i>
+        </a>
+    </div>
+
+    <div class="m-1">
+        <form class="form-inline" th:action="@{/categories/page/1}">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Filter" aria-label="Search" name="keyword"
+                   id="keyword" required th:value="${keyword}">
+            <button class="btn btn-outline-primary my-2 my-sm-0 fas fa-search fa-3x" type="submit"></button>&nbsp;&nbsp;
+            <button class="btn btn-outline-secondary my-2 my-sm-0 fas fa-eraser fa-3x" type="button"
+                    onclick="clearFilter()"></button>
+        </form>
+    </div>
+
+    <div class="full-details">
+        <table
+                class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr>
+                <th class="hideable-column">
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'Brand ID', 'tag', 'brands')}"></th>
+                <th>Logo</th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Brand Name', 'none', 'brands')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('categories', 'Categories', 'none', 'brands')}"></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="brand : ${brands}">
+                <td class="hideable-column">[[${brand.id}]]</td>
+                <td><i th:if="${brand.id == null}"
+                       class="fas fa-portrait fa-3x icon-dark">
+                </i>
+                    <img th:src="@{${brand.logo}}" class="img-fluid"
+                         style="max-width: 100px; max-height: 100px;"/>
+                </td>
+                <td class="hideable-column">[[${brand.name}]]</td>
+                <td>
+                    <th:block th:each="category: ${brand.categories}">
+                        <span class="badge badge-secondary">[[${category.name}]]</span>
+                    </th:block>
+                </td>
+
+
+                <td style="width: 150px;">
+
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="less-details">
+        <div th:each="brand : ${brands}" class="row m-1">
+            <div class="col">
+                <i th:if="${brand.id == null}"
+                   class="fas fa-portrait fa-3x icon-dark"></i>
+                <img th:src="@{${brand.logo}}" class="img-fluid"
+                     style="max-width: 100px; max-height: 100px;"/>
+            </div>
+            <div class="col">
+                <div>[[${brand.name}]]</div>
+            </div>
+            <div class="mt-2">
+
+                <a title="Edit this Brand" class="cursor-hand" th:href="@{'/brands/edit/'+${brand.id} }"> <i
+                        class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
+                <a th:href="@{'/brands/delete/'+${brand.id}}" class="cursor-hand link-delete"> <i
+                        class="fas fa-trash fa-2x icon-dark"> </i></a>
+
+            </div>
+            <div>&nbsp;</div>
+        </div>
+    </div>
+
+
+    <div th:replace="~{fragments/modal :: modal_dialog}"></div>
+
+
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
+</div>
+<script type="text/javascript">
+    $(document)
+        .ready(
+            function () {
+                $('.link-delete')
+                    .on(
+                        'click',
+                        function (event) {
+                            event.preventDefault();
+                            link = $(this).attr('href');
+                            console.log(link);
+                            showModalDialog("Are you Sure you want to Delete the User with the id ?");
+                            $('.confirm-dialog').attr(
+                                'href', link);
+
+                        });
+            });
+
+    function showModalDialog(message) {
+        $('#modalBody').text(message);
+        $('#modalDialog').modal();
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/brands}]]"
+    }
+</script>
+</body>
+</html>
