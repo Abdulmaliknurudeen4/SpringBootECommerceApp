@@ -3,6 +3,7 @@ package com.shopme.entity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,14 @@ public class Brand {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    public Brand() {
+    }
+
+    public Brand(String name, String logo) {
+        this.name = name;
+        this.logo = logo;
+    }
 
     public Integer getId() {
         return id;
@@ -54,5 +63,26 @@ public class Brand {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Brand brand = (Brand) o;
+        return id.equals(brand.id) && name.equals(brand.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "name='" + name + '\'' +
+                ", categories=" + categories +
+                '}';
     }
 }

@@ -12,3 +12,6 @@ truncate users;
 SET SQL_SAFE_UPDATES = 1;
 delete from users;
 delete from roles;
+
+select * from brands;
+select * from brands_categories;
