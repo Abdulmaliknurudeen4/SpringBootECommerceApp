@@ -7,7 +7,7 @@
     <div th:replace="~{fragments/navigation :: topNavBar}"></div>
 
     <div>
-        <h1>Manage Categories</h1>
+        <h1>Manage Brands</h1>
         <a th:href="@{/brands/new}">
             <i class="fas fa-folder-plus fa-3x icon-dark cursor-hand"></i>
         </a>
@@ -38,7 +38,7 @@
                 <td><i th:if="${brand.id == null}"
                        class="fas fa-portrait fa-3x icon-dark">
                 </i>
-                    <img th:src="@{${brand.logo}}" class="img-fluid"
+                    <img th:src="@{${brand.logoPath}}" class="img-fluid"
                          style="max-width: 100px; max-height: 100px;"/>
                 </td>
                 <td class="hideable-column">[[${brand.name}]]</td>
