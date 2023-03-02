@@ -16,7 +16,7 @@ import java.util.*;
 @Transactional
 public class CategoryService {
 
-    public static final int CATEGORIES_PER_PAGE = 8;
+    public static final int CATEGORIES_PER_PAGE = 4;
 
     @Autowired
     private CategoryRepository categoryRepository;
