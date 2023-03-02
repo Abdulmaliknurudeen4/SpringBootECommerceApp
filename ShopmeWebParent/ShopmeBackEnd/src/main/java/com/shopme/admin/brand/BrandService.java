@@ -3,8 +3,13 @@ package com.shopme.admin.brand;
 import com.shopme.admin.brand.controller.BrandNotFoundException;
 import com.shopme.admin.user.UserNotFoundExcpetion;
 import com.shopme.entity.Brand;
+import com.shopme.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +18,23 @@ import java.util.NoSuchElementException;
 @Service
 @Transactional
 public class BrandService {
-    public static final int BRANDS_PER_PAGE = 4;
+    public static final int BRANDS_PER_PAGE = 6;
 
     @Autowired
     private BrandRepository brandRepository;
 
     public List<Brand> listAll() {
-        return (List<Brand>) brandRepository.findAll();
+        return (List<Brand>) brandRepository.findAll(Sort.by("name").ascending());
+    }
+
+    public Page<Brand> listByPage(int pageNum, String sortField, String sortDir, String keyword){
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNum-1, BRANDS_PER_PAGE, sort);
+        if(keyword!=null){
+            return brandRepository.findAll(keyword, pageable);
+        }
+        return brandRepository.findAll(pageable);
     }
 
     public Brand save(Brand brand){

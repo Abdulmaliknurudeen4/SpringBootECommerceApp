@@ -82,6 +82,39 @@
         </div>
     </div>
 
+    <div th:if="${totalPages > 0}">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li
+                        th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="~{fragments/fragments :: pagination_link(1, 'First', 'brands')}"></a>
+                </li>
+                <li
+                        th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous', 'brands')}"></a>
+                </li>
+
+                <li
+                        th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
+                        th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:replace="~{fragments/fragments :: pagination_link(${i}, ${i.toString()}, 'brands')}"></a>
+
+                </li>
+
+                <li
+                        th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage+1)}, 'Next', 'brands')}"></a>
+                </li>
+
+
+                <li
+                        th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(totalPages)}, 'Last', 'brands')}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
 
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
 
