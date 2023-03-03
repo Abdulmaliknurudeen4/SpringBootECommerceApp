@@ -59,6 +59,16 @@
         <i class="fas fa-trash fa-2x icon-dark"> </i></a>
 </div>
 
+<div th:fragment="status(status, context, routingPass, id)">
+    <a th:if="${status == true}" class="cursor-hand"
+       th:href="@{'/'+${context}+'/'+${routingPass}+'/'+${id}+'/false'}"> <i
+            class="fas fa-check-circle fa-2x icon-green"></i></a>
+    <a
+            th:if="${status == false}"
+            th:href="@{'/'+${context}+'/'+${routingPass}+'/'+${id}+'/true'}"
+            class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
+    </a>
+</div>
 
 <div th:fragment="search_form_and_message(link)" class="m-1">
     <form class="form-inline" th:action="@{${link}}">

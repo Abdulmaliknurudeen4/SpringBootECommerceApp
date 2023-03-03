@@ -38,6 +38,7 @@ public class ProductRepositoryTest {
 
         product.setBrand(brand);
         product.setCategory(category);
+        product.setEnabled(true);
 
         product.setPrice(456);
         product.setCreatedTime(new Date());

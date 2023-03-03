@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head('Shopme - Products')}"></head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
+
+    <div>
+        <h1>Manage Products</h1>
+        <a th:href="@{/products/new}">
+            <i class="fas fa-folder-plus fa-3x icon-dark cursor-hand"></i>
+        </a>
+        &nbsp;&nbsp;
+        <a th:href="@{/products/export/csv}">
+            <i class="fas fa-file-csv fa-3x icon-dark cursor-hand"></i>
+        </a>
+    </div>
+    <div th:replace="~{fragments/fragments :: search_form_and_message('/products/page/1')}"></div>
+
+    <div class="full-details">
+        <table
+                class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Main Image</th>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Enabled</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${listProducts}">
+                <td>[[${product.id}]]</td>
+                <td></td>
+                <td>[[${product.name}]]</td>
+                <td>[[${product.brand.name}]]</td>
+                <td>[[${product.category.name}]]</td>
+                <td>
+                    <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'products', 'setProductStatus', ${product.id})}"></div>
+                </td>
+                <td>
+                    <div style="display: inline"><a class="fas fa-file-alt fa-2x icon-green"
+                            title="View details of this products"
+                            th:href="@{'/products/detail/'+${product.id}}"></a>
+                    </div>
+                    <div th:replace="~{fragments/fragments :: edit_delete_fn('products',${product.id})}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="~{fragments/modal :: modal_dialog}"></div>
+
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
+</div>
+<script type="text/javascript">
+    $(document)
+        .ready(
+            function () {
+                $('.link-delete')
+                    .on(
+                        'click',
+                        function (event) {
+                            event.preventDefault();
+                            link = $(this).attr('href');
+                            console.log(link);
+                            showModalDialog("Are you Sure you want to Delete the User with the id ?");
+                            $('.confirm-dialog').attr(
+                                'href', link);
+
+                        });
+            });
+
+    function showModalDialog(message) {
+        $('#modalBody').text(message);
+        $('#modalDialog').modal();
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/categories}]]"
+    }
+</script>
+</body>
+</html>
