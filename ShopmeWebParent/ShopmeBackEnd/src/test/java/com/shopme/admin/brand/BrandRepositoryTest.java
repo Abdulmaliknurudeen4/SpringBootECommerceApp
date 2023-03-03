@@ -80,4 +80,11 @@ public class BrandRepositoryTest {
         brandRepository.deleteById(id);
         assertThat(brandRepository.findById(id).isPresent()).isFalse();
     }
+
+    @Test
+    public void testFindAll(){
+        Iterable<Brand> brands = brandRepository.findAll();
+        brands.forEach(System.out::println);
+        assertThat(brands).isNotEmpty();
+    }
 }

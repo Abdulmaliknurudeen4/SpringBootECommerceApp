@@ -3,6 +3,7 @@ package com.shopme.admin.brand;
 import com.shopme.admin.brand.controller.BrandNotFoundException;
 import com.shopme.admin.user.UserNotFoundExcpetion;
 import com.shopme.entity.Brand;
+import com.shopme.entity.Category;
 import com.shopme.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

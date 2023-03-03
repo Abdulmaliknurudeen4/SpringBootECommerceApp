@@ -32,6 +32,10 @@ public class Brand {
         this.name = name;
         this.logo = logo;
     }
+    public Brand(Integer id, String name) {
+        this.name = name;
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
