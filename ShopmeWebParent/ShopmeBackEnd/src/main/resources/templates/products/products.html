@@ -43,11 +43,7 @@
                     <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'products', 'setProductStatus', ${product.id})}"></div>
                 </td>
                 <td>
-                    <div style="display: inline"><a class="fas fa-file-alt fa-2x icon-green"
-                            title="View details of this products"
-                            th:href="@{'/products/detail/'+${product.id}}"></a>
-                    </div>
-                    <div th:replace="~{fragments/fragments :: edit_delete_fn('products',${product.id})}"></div>
+                    <div th:replace="~{fragments/fragments :: detail_edit_delete_fn('products',${product.id})}"></div>
                 </td>
             </tr>
             </tbody>
