@@ -14,24 +14,16 @@ $(document).ready(function (event) {
         window.location = moduleURL;
     });
 
-    $('#imageInput')
-        .on(
-            'change',
-            function (event) {
-                var image = this.files[0];
-                var fileSize = this.files[0].size;
-                if (fileSize > MAX_FILE_SIZE) {
-                    this
-                        .setCustomValidity("You must choose an image less than 1MB!");
-                    showModalDialog("Error",
-                        "You must choose an image less than 1MB!");
-                    this.reportValidity();
-                } else {
-                    this.setCustomValidity("");
-                    showImageThumbnail(this);
-                }
+    $('#imageInput').on(
+        'change',
+        function (event) {
+            var fileSize = this.files[0].size;
+            if (!checkFileSize(this)) {
+                return;
+            }
+            showImageThumbnail(this);
 
-            });
+        });
 
 });
 
@@ -47,4 +39,16 @@ function showErrorModal(message) {
 
 function showWarningModal(message) {
     showModalDialog("Warning", message);
+}
+
+function checkFileSize(fileInput) {
+    fileSize = fileInput.files[0].size;
+    if (fileSize > MAX_FILE_SIZE) {
+        fileInput.setCustomValidity("You must choose an image less than 1MB!");
+        fileInput.reportValidity();
+        return false;
+    } else {
+        fileInput.setCustomValidity("");
+        return true;
+    }
 }

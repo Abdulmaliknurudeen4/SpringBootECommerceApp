@@ -82,67 +82,13 @@
 </div>
 <script type="text/javascript"
         th:src="@{/js/common_form.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/product_form.js}"></script>
 <script type="text/javascript">
     moduleURL = "[[@{/products}]]";
     brandModuleURL = "[[@{/brands}]]";
-    dropDownBrand = $('#brandSelect');
-    categorySelect = $('#categorySelect');
     MAX_FILE_SIZE = 502400; // 500KB
-
-    $(document).ready(function () {
-        dropDownBrand.change(function () {
-            categorySelect.empty();
-            categorySelect.prop('disabled', false);
-            getCategories();
-        });
-        getCategories();
-
-    });
-
-    function getCategories() {
-        brandId = dropDownBrand.val();
-        url = brandModuleURL + "/listCategoriesByBrand/" + brandId
-
-        $.get(url, function (responseJson) {
-            $.each(responseJson, function (index, category) {
-                $("<option>").val(category.id).text(category.name).appendTo(categorySelect);
-            });
-        });
-
-    }
-
-    var longDesc = new RichTextEditor('#longDesc');
-    var shortDesc = new RichTextEditor('#shortDesc');
-
-    function checkIsProductUnique(form) {
-
-        var url = "[[@{/products/check_name}]]";
-        var name = $("#nameInput").val();
-        var csrfValue = $("input[name='_csrf']").val();
-        var productId = $("#id").val();
-        params = {
-            id: productId,
-            name: name,
-            _csrf: csrfValue,
-        };
-
-        $.post(
-            url,
-            params,
-            function (response) {
-                if (response === "OK") {
-                    form.submit();
-                } else if (response === "Duplicated") {
-                    showErrorModal("There is another Product Having the Same Name: " + name);
-                } else {
-                    showErrorModal("Unknown response from Server");
-                }
-
-            }).fail(function () {
-            showErrorModal("Could not Connect to Server.");
-        });
-        return false;
-    }
+    defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
 
 </script>
 

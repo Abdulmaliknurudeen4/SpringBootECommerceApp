@@ -136,15 +136,28 @@
 </div>
 
 <div th:fragment="images" th:remove="tag">
-    <div class="row">
+    <div class="row" id="divProductImages">
+
         <div class="col border m-3 p-2">
         <div><label >Main Image: </label></div>
             <div class="m-2"><img id="imageView" alt="Main image preview" class="img-fluid" th:src="@{${product.mainImagePath}}"></div>
             <div><input type="file" name="image"
                         accept="image/png, image/jpeg"
                         id="imageInput"
-                        required></div>
+                        required>
+            </div>
         </div>
+
+        <div class="col border m-3 p-2" id="divExtraImage0">
+            <div id="extraImageHeader0">
+                <label >Extra Image #1: </label></div>
+            <div class="m-2"><img id="extraThumbnail0" alt="Extra Image #1 preview" class="img-fluid" th:src="@{/images/image-thumbnail.png}"></div>
+            <div><input type="file" name="extraImage"
+                        accept="image/png, image/jpeg"
+                        id="extraImage1">
+            </div>
+        </div>
+
 
 
     </div>
