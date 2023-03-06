@@ -21,4 +21,4 @@ truncate brands_categories;
 select * from brands_categories;
 
 desc products;
-drop table products;
+select * from products;
