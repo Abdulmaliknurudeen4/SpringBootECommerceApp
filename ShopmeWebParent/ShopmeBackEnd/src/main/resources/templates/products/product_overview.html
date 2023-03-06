@@ -133,6 +133,22 @@
             <input type="number" class="form-control" th:field="*{weight}" required/>
         </div>
     </div>
+</div>
+
+<div th:fragment="images" th:remove="tag">
+    <div class="row">
+        <div class="col border m-3 p-2">
+        <div><label >Main Image: </label></div>
+            <div class="m-2"><img id="imageView" alt="Main image preview" class="img-fluid" th:src="@{${product.mainImagePath}}"></div>
+            <div><input type="file" name="image"
+                        accept="image/png, image/jpeg"
+                        id="imageInput"
+                        required></div>
+        </div>
+
+
+    </div>
+</div>
 
 </body>
 </html>

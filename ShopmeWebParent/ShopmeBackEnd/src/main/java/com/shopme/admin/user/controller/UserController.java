@@ -82,8 +82,8 @@ public class UserController {
 	}
 
 	@PostMapping("/users/save")
-	public String saveUser(User user, RedirectAttributes redirectAttributes, Model model,
-			@RequestParam(name = "image") MultipartFile photoMultipart) throws IOException {
+	public String saveUser(User user, RedirectAttributes redirectAttributes,
+						   @RequestParam(name = "image") MultipartFile photoMultipart) throws IOException {
 		if (!photoMultipart.isEmpty()) {
 			String fileName = StringUtils.cleanPath(photoMultipart.getOriginalFilename());
 			user.setPhotos(fileName);

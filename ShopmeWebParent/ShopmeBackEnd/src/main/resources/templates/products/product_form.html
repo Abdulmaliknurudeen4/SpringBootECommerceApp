@@ -52,7 +52,11 @@
                     <div th:replace="~{products/product_overview :: description}"></div>
                 </div>
 
-                <div class="tab-pane drop" id="images" role="tabpanel" aria-labelledby="images-tab">Images Tab</div>
+                <div class="tab-pane drop" id="images" role="tabpanel" aria-labelledby="images-tab">
+                    <div th:replace="~{products/product_overview :: images}">
+                    </div>
+                </div>
+
                 <div class="tab-pane drop" id="details" role="tabpanel" aria-labelledby="details-tab">Details</div>
 
                 <div class="tab-pane drop" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
@@ -83,6 +87,7 @@
     brandModuleURL = "[[@{/brands}]]";
     dropDownBrand = $('#brandSelect');
     categorySelect = $('#categorySelect');
+    MAX_FILE_SIZE = 502400; // 500KB
 
     $(document).ready(function () {
         dropDownBrand.change(function () {
@@ -105,6 +110,7 @@
         });
 
     }
+
     var longDesc = new RichTextEditor('#longDesc');
     var shortDesc = new RichTextEditor('#shortDesc');
 
@@ -115,24 +121,24 @@
         var csrfValue = $("input[name='_csrf']").val();
         var productId = $("#id").val();
         params = {
-            id : productId,
-            name : name,
-            _csrf : csrfValue,
+            id: productId,
+            name: name,
+            _csrf: csrfValue,
         };
 
         $.post(
             url,
             params,
-            function(response) {
+            function (response) {
                 if (response === "OK") {
                     form.submit();
-                } else if (response === "Duplicated"){
+                } else if (response === "Duplicated") {
                     showErrorModal("There is another Product Having the Same Name: " + name);
                 } else {
                     showErrorModal("Unknown response from Server");
                 }
 
-            }).fail(function() {
+            }).fail(function () {
             showErrorModal("Could not Connect to Server.");
         });
         return false;

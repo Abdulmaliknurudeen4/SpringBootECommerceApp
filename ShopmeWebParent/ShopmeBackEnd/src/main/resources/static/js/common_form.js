@@ -10,7 +10,7 @@ function showImageThumbnail(fileInput) {
 
 $(document).ready(function (event) {
 
-    $("#buttonCancel").on('click', function() {
+    $("#buttonCancel").on('click', function () {
         window.location = moduleURL;
     });
 
@@ -20,7 +20,7 @@ $(document).ready(function (event) {
             function (event) {
                 var image = this.files[0];
                 var fileSize = this.files[0].size;
-                if (fileSize > 1048576) {
+                if (fileSize > MAX_FILE_SIZE) {
                     this
                         .setCustomValidity("You must choose an image less than 1MB!");
                     showModalDialog("Error",
@@ -34,15 +34,17 @@ $(document).ready(function (event) {
             });
 
 });
+
 function showModalDialog(title, message) {
     $('#modalTitle').text(title);
     $('#modalBody').text(message);
     $('#modalDialog').modal();
 }
 
-function showErrorModal(message){
+function showErrorModal(message) {
     showModalDialog("Error", message);
 }
-function showWarningModal(message){
+
+function showWarningModal(message) {
     showModalDialog("Warning", message);
 }

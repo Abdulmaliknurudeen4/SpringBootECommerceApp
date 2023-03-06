@@ -103,6 +103,7 @@
     <footer th:replace="~{fragments/fragments :: footer}"></footer>
 </div>
 <script type="text/javascript">
+    MAX_FILE_SIZE = 502400; // 500KB
     $(document)
         .ready(
             function () {
@@ -126,7 +127,8 @@
     }
 
     function clearFilter() {
-        window.location = "[[@{/users}]]"
+        window.location = "[[@{/users}]]";
+        window.MAX_FILE_SIZE = 502400; // 500KB
     }
 </script>
 </body>
