@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,26 +50,51 @@ public class ProductController {
     }
 
     @PostMapping("/products/save")
-    public String saveProduct(Product product, RedirectAttributes ra, @RequestParam(name = "image") MultipartFile photoMultipart) throws IOException {
-
-
-        if (!photoMultipart.isEmpty()) {
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(photoMultipart.getOriginalFilename()));
-            product.setMainImage(fileName);
-            System.out.println(product.getMainImagePath());
-            Product savedProduct = productService.save(product);
-            String uploadDir = "product-images/" + savedProduct.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, photoMultipart);
-
-        } else {
-            if (product.getMainImage().isEmpty())
-                product.setMainImage(null);
-            productService.save(product);
-        }
+    public String saveProduct(Product product,
+                              RedirectAttributes ra,
+                              @RequestParam(name = "image") MultipartFile photoMultipart,
+                              @RequestParam(name = "extraImage") MultipartFile[] extraImageMultiparts) throws IOException {
+        setMainImageName(photoMultipart, product);
+        setExtraImageNames(extraImageMultiparts, product);
+        Product savedProduct = productService.save(product);
+        saveUploadedImages(photoMultipart, extraImageMultiparts, savedProduct);
 
         ra.addFlashAttribute("message", "The product has been saved Succesfully.");
         return "redirect:/products";
+    }
+
+    private void setMainImageName(MultipartFile mainImageMultipart, Product product) {
+
+        if (!mainImageMultipart.isEmpty()) {
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(mainImageMultipart.getOriginalFilename()));
+            product.setMainImage(fileName);
+        }
+    }
+
+    private void setExtraImageNames(MultipartFile[] extraImageMultipart, Product product) {
+        if (extraImageMultipart.length > 0) {
+            Arrays.stream(extraImageMultipart).forEach(multipartFile -> {
+                product.addExtraImage(StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename())));
+            });
+        }
+    }
+
+    private void saveUploadedImages(MultipartFile main, MultipartFile[] extras, Product product) throws IOException {
+        if(!main.isEmpty()){
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(main.getOriginalFilename()));
+            String uploadDir = "product-images/" + product.getId();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, fileName, main);
+        }
+        if(extras.length > 0){
+            String uploadDir = "product-images/" + product.getId() + "/extras";
+            for (MultipartFile extra : extras) {
+                if (extra.isEmpty()) continue;
+                String fileName = StringUtils.cleanPath(Objects.requireNonNull(extra.getOriginalFilename()));
+                FileUploadUtil.saveFile(uploadDir, fileName, extra);
+
+            }
+        }
     }
 
     @GetMapping("/products/setProductStatus/{id}/{status}")
@@ -92,6 +118,10 @@ public class ProductController {
     public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             productService.deleteProduct(id);
+            String productImageDir = "product-images/" + id + "/extras";
+            String productImageDirParent = "product-images/" + id;
+            FileUploadUtil.removeDir(productImageDir);
+            FileUploadUtil.removeDir(productImageDirParent);
             redirectAttributes.addFlashAttribute("message",
                     "The User with the ID : " + id + " has been deleted Successfully!");
         } catch (ProductNotFoundException e) {

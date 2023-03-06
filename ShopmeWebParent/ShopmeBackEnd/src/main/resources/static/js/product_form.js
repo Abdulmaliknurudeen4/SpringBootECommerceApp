@@ -73,8 +73,6 @@ var longDesc = new RichTextEditor('#longDesc');
 var shortDesc = new RichTextEditor('#shortDesc');
 
 function checkIsProductUnique(form) {
-
-    var url = "[[@{/products/check_name}]]";
     var name = $("#nameInput").val();
     var csrfValue = $("input[name='_csrf']").val();
     var productId = $("#id").val();
@@ -85,7 +83,7 @@ function checkIsProductUnique(form) {
     };
 
     $.post(
-        url,
+        checkUniqueURL,
         params,
         function (response) {
             if (response === "OK") {
