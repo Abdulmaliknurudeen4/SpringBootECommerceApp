@@ -58,6 +58,13 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductImage> images = new HashSet<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductDetail> details = new HashSet<>();
+
+    public Set<ProductDetail> getDetails() {
+        return details;
+    }
+
     public String getMainImage() {
         return mainImage;
     }
@@ -204,13 +211,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", alias='" + alias + '\'' +
-                ", enabled=" + enabled +
-                ", price=" + price +
-                '}';
+        return "Product{" + "id=" + id + ", name='" + name + '\'' + ", alias='" + alias + '\'' + ", enabled=" + enabled + ", price=" + price + '}';
     }
 
     public Set<ProductImage> getImages() {
@@ -221,13 +222,17 @@ public class Product {
         this.images = images;
     }
 
-    public void addExtraImage(String imageName){
+    public void addExtraImage(String imageName) {
         this.images.add(new ProductImage(imageName, this));
     }
 
+    public void addDetails(String name, String value){
+        this.getDetails().add(new ProductDetail(name, value, this));
+    }
+
     @Transient
-    public String getMainImagePath(){
-        if(id == null || mainImage == null) return "/images/image-thumbnail.png";
-        return "/product-images/" + this.id+"/" + this.mainImage;
+    public String getMainImagePath() {
+        if (id == null || mainImage == null) return "/images/image-thumbnail.png";
+        return "/product-images/" + this.id + "/" + this.mainImage;
     }
 }

@@ -9,10 +9,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
+
 import java.util.Date;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(false)
@@ -25,7 +27,7 @@ public class ProductRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
-    public void testCreateProduct(){
+    public void testCreateProduct() {
         // Get Category and Brand
         Brand brand = entityManager.find(Brand.class, 38);
         Category category = entityManager.find(Category.class, 6);
@@ -44,28 +46,28 @@ public class ProductRepositoryTest {
         product.setCreatedTime(new Date());
         product.setUpdatedTime(new Date());
 
-       Product product1 = productRepository.save(product);
-       assertThat(product1).isNotNull();
-       assertThat(product1.getId()).isGreaterThan(0);
+        Product product1 = productRepository.save(product);
+        assertThat(product1).isNotNull();
+        assertThat(product1.getId()).isGreaterThan(0);
 
     }
 
     @Test
-    public void listAllProduct(){
+    public void listAllProduct() {
         Iterable<Product> products = productRepository.findAll();
         products.forEach(System.out::println);
         assertThat(0).isEqualTo(0);
     }
 
     @Test
-    public void testGetProduct(){
+    public void testGetProduct() {
         Integer id = 2;
         Product p = productRepository.findById(id).get();
         assertThat(p).isNotNull();
     }
 
     @Test
-    public void updateProduct(){
+    public void updateProduct() {
         Integer id = 1;
         Product p = productRepository.findById(id).get();
         p.setPrice(499);
@@ -76,7 +78,7 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void deleteProduct(){
+    public void deleteProduct() {
         Integer id = 2;
         productRepository.deleteById(id);
 
@@ -85,7 +87,7 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void testSaveProductWithImages(){
+    public void testSaveProductWithImages() {
         Integer productId = 6;
         Product product = productRepository.findById(productId).get();
 
@@ -94,8 +96,21 @@ public class ProductRepositoryTest {
         product.addExtraImage("extra_image_3.png");
         product.addExtraImage("extra_image_4.png");
 
-        Product saved  =productRepository.save(product);
+        Product saved = productRepository.save(product);
         assertThat(saved.getImages().size()).isEqualTo(3);
+    }
+
+    @Test
+    public void testSaveProductWithDetails() {
+        Integer productId = 9;
+        Product product = productRepository.findById(productId).get();
+
+        product.addDetails("Device Memory", "128 GB");
+        product.addDetails("CPU Model", "MediaTek");
+        product.addDetails("OS", "Andriod 11");
+
+        Product saved = productRepository.save(product);
+        assertThat(saved.getDetails()).isNotEmpty();
     }
 
 }
