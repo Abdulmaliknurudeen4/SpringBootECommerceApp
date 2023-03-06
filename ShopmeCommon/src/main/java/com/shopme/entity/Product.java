@@ -50,6 +50,17 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
+    @Column(name = "main_image", nullable = false)
+    private String mainImage;
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(String mainImage) {
+        this.mainImage = mainImage;
+    }
+
     public Integer getId() {
         return id;
     }

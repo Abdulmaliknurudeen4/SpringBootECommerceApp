@@ -15,8 +15,9 @@
 
     <form th:action="@{/products/save}" method="post"
           th:object="${product}"
-          enctype="multipart/form-data" id="userForm">
-
+          onsubmit="return checkIsProductUnique(this);"
+          enctype="multipart/form-data" id="productForm">
+        <input type="hidden" th:field="*{id}">
         <div>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
@@ -36,6 +37,10 @@
                     <a class="nav-link" id="details-tab" data-toggle="tab" href="#details" role="tab"
                        aria-controls="details" aria-selected="false">Details</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="shipping-tab" data-toggle="tab" href="#shipping" role="tab"
+                       aria-controls="shipping" aria-selected="false">Shipping</a>
+                </li>
             </ul>
             <div class="tab-content" id="myTabContent">
 
@@ -44,10 +49,15 @@
                 </div>
 
                 <div class="tab-pane drop" id="description" role="tabpanel" aria-labelledby="description-tab">
-                    Description
+                    <div th:replace="~{products/product_overview :: description}"></div>
                 </div>
+
                 <div class="tab-pane drop" id="images" role="tabpanel" aria-labelledby="images-tab">Images Tab</div>
                 <div class="tab-pane drop" id="details" role="tabpanel" aria-labelledby="details-tab">Details</div>
+
+                <div class="tab-pane drop" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+                    <div th:replace="~{products/product_overview :: shipping}"></div>
+                </div>
             </div>
 
         </div>
@@ -75,24 +85,59 @@
     categorySelect = $('#categorySelect');
 
     $(document).ready(function () {
-        dropDownBrand.change(function (){
+        dropDownBrand.change(function () {
             categorySelect.empty();
-            categorySelect.prop('disabled',false);
+            categorySelect.prop('disabled', false);
             getCategories();
         });
         getCategories();
-    });
-    function getCategories(){
-        brandId = dropDownBrand.val();
-        url = brandModuleURL+"/listCategoriesByBrand/"+brandId
 
-        $.get(url, function(responseJson){
-           $.each(responseJson, function(index, category){
-             $("<option>").val(category.id).text(category.name).appendTo(categorySelect);
-           });
+    });
+
+    function getCategories() {
+        brandId = dropDownBrand.val();
+        url = brandModuleURL + "/listCategoriesByBrand/" + brandId
+
+        $.get(url, function (responseJson) {
+            $.each(responseJson, function (index, category) {
+                $("<option>").val(category.id).text(category.name).appendTo(categorySelect);
+            });
         });
 
     }
+    var longDesc = new RichTextEditor('#longDesc');
+    var shortDesc = new RichTextEditor('#shortDesc');
+
+    function checkIsProductUnique(form) {
+
+        var url = "[[@{/products/check_name}]]";
+        var name = $("#nameInput").val();
+        var csrfValue = $("input[name='_csrf']").val();
+        var productId = $("#id").val();
+        params = {
+            id : productId,
+            name : name,
+            _csrf : csrfValue,
+        };
+
+        $.post(
+            url,
+            params,
+            function(response) {
+                if (response === "OK") {
+                    form.submit();
+                } else if (response === "Duplicated"){
+                    showErrorModal("There is another Product Having the Same Name: " + name);
+                } else {
+                    showErrorModal("Unknown response from Server");
+                }
+
+            }).fail(function() {
+            showErrorModal("Could not Connect to Server.");
+        });
+        return false;
+    }
+
 </script>
 
 </body>

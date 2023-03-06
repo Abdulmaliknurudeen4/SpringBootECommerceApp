@@ -20,6 +20,9 @@
             th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <script type="text/javascript"
             th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" th:href="@{/styles/rte_theme_default.css}">
+    <script type="text/javascript" th:src="@{/js/all_plugins.js}"></script>
+    <script type="text/javascript" th:src="@{/js/rte.js}"></script>
 </head>
 
 <body>
@@ -60,9 +63,10 @@
 </div>
 
 <div th:fragment="detail_edit_delete_fn(context,Id)">
-    <a class="fas fa-file-alt fa-2x icon-green"
-       title="View details of this products"
-       th:href="@{'/'+${context}+'/detail/'+${Id}}"></a>&nbsp;
+    <a class="cursor-hand"
+       th:href="@{'/'+${context}+'/detail/'+${Id}}">
+        <i class="fas fa-file-alt fa-2x icon-green"></i>
+    </a>&nbsp;
     <a class="cursor-hand" th:href="@{'/'+${context}+'/edit/'+${Id} }">
         <i class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
     <a th:href="@{'/'+${context}+'/delete/'+${Id} }"

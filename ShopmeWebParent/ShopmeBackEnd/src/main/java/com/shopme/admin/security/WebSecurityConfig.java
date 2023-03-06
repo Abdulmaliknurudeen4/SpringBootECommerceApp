@@ -59,7 +59,7 @@ public class WebSecurityConfig implements Serializable {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.debug(false)
                 .ignoring()
-                .requestMatchers("/images/**", "/js/**", "/webjars/**");
+                .requestMatchers("/images/**", "/js/**", "/webjars/**", "/styles/**");
     }
 
     @Bean
