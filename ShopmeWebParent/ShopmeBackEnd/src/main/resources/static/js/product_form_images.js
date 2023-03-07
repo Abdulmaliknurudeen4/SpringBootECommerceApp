@@ -1,23 +1,29 @@
-dropDownBrand = $('#brandSelect');
-categorySelect = $('#categorySelect');
 var extraImagesCount = 0;
 
 $(document).ready(function () {
-    dropDownBrand.change(function () {
-        categorySelect.empty();
-        categorySelect.prop('disabled', false);
-        getCategories();
-    });
-    getCategories();
-
     $("input[name='extraImage']").each(function (index) {
         extraImagesCount++;
         $(this).change(function () {
+            if (!checkFileSize(this)) {
+                return;
+            }
             showExtraImageThumbnail(this, index);
         });
     });
 
 });
+
+function checkFileSize(fileInput) {
+    fileSize = fileInput.files[0].size;
+    if (fileSize > MAX_FILE_SIZE) {
+        fileInput.setCustomValidity("You must choose an image less than 1MB!");
+        fileInput.reportValidity();
+        return false;
+    } else {
+        fileInput.setCustomValidity("");
+        return true;
+    }
+}
 
 function showExtraImageThumbnail(fileInput, index) {
     var file = fileInput.files[0];
@@ -57,45 +63,5 @@ function removeExtraImage(index) {
     $("#divExtraImage" + index).remove();
 }
 
-function getCategories() {
-    brandId = dropDownBrand.val();
-    url = brandModuleURL + "/listCategoriesByBrand/" + brandId
-
-    $.get(url, function (responseJson) {
-        $.each(responseJson, function (index, category) {
-            $("<option>").val(category.id).text(category.name).appendTo(categorySelect);
-        });
-    });
-
-}
-
 var longDesc = new RichTextEditor('#longDesc');
 var shortDesc = new RichTextEditor('#shortDesc');
-
-function checkIsProductUnique(form) {
-    var name = $("#nameInput").val();
-    var csrfValue = $("input[name='_csrf']").val();
-    var productId = $("#id").val();
-    params = {
-        id: productId,
-        name: name,
-        _csrf: csrfValue,
-    };
-
-    $.post(
-        checkUniqueURL,
-        params,
-        function (response) {
-            if (response === "OK") {
-                form.submit();
-            } else if (response === "Duplicated") {
-                showErrorModal("There is another Product Having the Same Name: " + name);
-            } else {
-                showErrorModal("Unknown response from Server");
-            }
-
-        }).fail(function () {
-        showErrorModal("Could not Connect to Server.");
-    });
-    return false;
-}

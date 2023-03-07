@@ -57,7 +57,12 @@
                     </div>
                 </div>
 
-                <div class="tab-pane drop" id="details" role="tabpanel" aria-labelledby="details-tab">Details</div>
+                <div class="tab-pane drop" id="details" role="tabpanel" aria-labelledby="details-tab">
+                    <div th:replace="~{products/product_overview :: details}"></div>
+                    <div>
+                        <input type="button" value="Add More Details" class="btn btn-secondary" onclick="addNextDetailSection()">
+                    </div>
+                </div>
 
                 <div class="tab-pane drop" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
                     <div th:replace="~{products/product_overview :: shipping}"></div>
@@ -83,7 +88,11 @@
 <script type="text/javascript"
         th:src="@{/js/common_form.js}"></script>
 <script type="text/javascript"
-        th:src="@{/js/product_form.js}"></script>
+        th:src="@{/js/product_form_images.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/product_form_overview.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/product_form_details.js}"></script>
 <script type="text/javascript">
     moduleURL = "[[@{/products}]]";
     brandModuleURL = "[[@{/brands}]]";
