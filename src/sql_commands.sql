@@ -26,3 +26,4 @@ select * from product_detail;
 
 desc product_images;
 select * from product_images;
+DELETE from product_images WHERE name = "";

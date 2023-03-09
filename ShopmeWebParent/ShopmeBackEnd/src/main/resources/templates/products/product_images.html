@@ -21,7 +21,7 @@
             <input type="hidden" th:field="*{mainImage}">
         </div>
 
-        <th:block th:each="productImage, status : ${product.images}">
+        <th:block th:each="productImage, status : ${product.images}" th:if="${product.images != null}">
             <div class="col border m-3 p-2" th:id="${'divExtraImage'+status.count}">
                 <div>
                     <label>Extra Image #[[${status.index +1}]]: [[${productImage.name}]]</label>
@@ -40,17 +40,17 @@
             </div>
         </th:block>
 
-        <div class="col border m-3 p-2" th:id="${'divExtraImage' + numberOfExistingExtraImages}">
-            <div th:id="${'extraImageHeader' + numberOfExistingExtraImages}">
-                <label>Extra Image #[[${numberOfExistingExtraImages +1}]]: </label></div>
+        <div class="col border m-3 p-2" th:id="${'divExtraImage' + #lists.size(product.images)}">
+            <div th:id="${'extraImageHeader' + #lists.size(product.images)}">
+                <label>Extra Image #[[${#lists.size(product.images) +1}]]: </label></div>
             <div class="m-2">
-                <img th:id="${'extraThumbnail' + numberOfExistingExtraImages}"
-                     th:alt="${'Extra Image ' + numberOfExistingExtraImages + ' preview'}"
+                <img th:id="${'extraThumbnail' + #lists.size(product.images)}"
+                     th:alt="${'Extra Image ' + #lists.size(product.images) + ' preview'}"
                      class="img-fluid"
                      th:src="@{/images/image-thumbnail.png}"></div>
             <div><input type="file" name="extraImage"
                         accept="image/png, image/jpeg"
-                        th:id="${'extraImage' + numberOfExistingExtraImages}">
+                        th:id="${'extraImage' + #lists.size(product.images)}">
             </div>
         </div>
 

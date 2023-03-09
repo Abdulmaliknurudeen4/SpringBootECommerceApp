@@ -64,12 +64,14 @@ public class ProductController {
                               @RequestParam(value = "detailIDs", required = false) String[] detailIDs,
                               @RequestParam(value = "imageIDs", required = false) String[] imageIDs,
                               @RequestParam(value = "imageNames", required = false) String[] imageNames) throws IOException {
+        // trim the multipart for the extra files
+       List<MultipartFile> filtered =Arrays.stream(extraImageMultiparts).filter(multipartFile -> !multipartFile.isEmpty()).toList();
         setMainImageName(photoMultipart, product);
         setExistingExtraImageNames(imageIDs, imageNames, product);
-        setNewExtraImageNames(extraImageMultiparts, product);
+        setNewExtraImageNames(filtered, product);
         setProductDetails(detailIDs,detialsNames, detailValues, product);
         Product savedProduct = productService.save(product);
-        saveUploadedImages(photoMultipart, extraImageMultiparts, savedProduct);
+        saveUploadedImages(photoMultipart, filtered, savedProduct);
 
         deleteExtraImagesWereRemovedOnForm(product);
 
@@ -137,25 +139,23 @@ public class ProductController {
         }
     }
 
-    private void setNewExtraImageNames(MultipartFile[] extraImageMultipart, Product product) {
-        if (extraImageMultipart.length > 0) {
-            Arrays.stream(extraImageMultipart).forEach(multipartFile -> {
-                String name = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-                if (!product.containsImageName(name)) {
-                    product.addExtraImage(name);
-                }
-            });
-        }
+    private void setNewExtraImageNames(List<MultipartFile> extraImageMultipart, Product product) {
+        extraImageMultipart.forEach(multipartFile -> {
+            String name = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+            if (!product.containsImageName(name)) {
+                product.addExtraImage(name);
+            }
+        });
     }
 
-    private void saveUploadedImages(MultipartFile main, MultipartFile[] extras, Product product) throws IOException {
+    private void saveUploadedImages(MultipartFile main, List<MultipartFile> extras, Product product) throws IOException {
         if (!main.isEmpty()) {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(main.getOriginalFilename()));
             String uploadDir = "product-images/" + product.getId();
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, main);
         }
-        if (extras.length > 0) {
+        if (!extras.isEmpty()) {
             String uploadDir = "product-images/" + product.getId() + "/extras";
             for (MultipartFile extra : extras) {
                 if (extra.isEmpty()) continue;
