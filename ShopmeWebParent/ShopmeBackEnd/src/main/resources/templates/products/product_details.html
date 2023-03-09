@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="content" id="divProductDetails">
+
+    <th:block th:each="detail, status: ${product.details}" th:if="${product.details !=null}">
+        <div class="form-inline" th:id="${'divDetail'+status.index}">
+            <label class="m-3">Name</label>
+            <input type="text" name="detailNames" maxlength="255" class="form-control w-25" th:value="${detail.name}">
+            <label class="m-3">Value</label>
+            <input type="text" name="detailValues" maxlength="255" class="form-control w-25" th:value="${detail.value}">
+            <a class="btn fas fa-times-circle fa-4x icon-dark float-right linkRemoveExtraDetails"></a>
+        </div>
+    </th:block>
+
+
+    <div class="form-inline" th:id="${'divDetail'+#lists.size(product.details)}">
+        <label class="m-3">Name</label>
+        <input type="text" name="detailNames" maxlength="255" class="form-control w-25">
+        <label class="m-3">Value</label>
+        <input type="text" name="detailValues" maxlength="255" class="form-control w-25">
+    </div>
+</div>
+
+</body>
+</html>

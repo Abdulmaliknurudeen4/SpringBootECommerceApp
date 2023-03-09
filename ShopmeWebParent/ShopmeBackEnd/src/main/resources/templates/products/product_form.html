@@ -50,23 +50,24 @@
                 </div>
 
                 <div class="tab-pane drop" id="description" role="tabpanel" aria-labelledby="description-tab">
-                    <div th:replace="~{products/product_overview :: description}"></div>
+                    <div th:replace="~{products/product_description :: content}"></div>
                 </div>
 
                 <div class="tab-pane drop" id="images" role="tabpanel" aria-labelledby="images-tab">
-                    <div th:replace="~{products/product_overview :: images}">
+                    <div th:replace="~{products/product_images :: content}">
                     </div>
                 </div>
 
                 <div class="tab-pane drop" id="details" role="tabpanel" aria-labelledby="details-tab">
-                    <div th:replace="~{products/product_overview :: details}"></div>
+                    <div th:replace="~{products/product_details :: content}"></div>
                     <div>
-                        <input type="button" value="Add More Details" class="btn btn-secondary" onclick="addNextDetailSection()">
+                        <input type="button" value="Add More Details" class="btn btn-secondary"
+                               onclick="addNextDetailSection()">
                     </div>
                 </div>
 
                 <div class="tab-pane drop" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
-                    <div th:replace="~{products/product_overview :: shipping}"></div>
+                    <div th:replace="~{products/product_shipping :: content}"></div>
                 </div>
             </div>
 
@@ -86,14 +87,6 @@
     <footer th:replace="~{fragments/fragments :: footer}"></footer>
 
 </div>
-<script type="text/javascript"
-        th:src="@{/js/common_form.js}"></script>
-<script type="text/javascript"
-        th:src="@{/js/product_form_images.js}"></script>
-<script type="text/javascript"
-        th:src="@{/js/product_form_overview.js}"></script>
-<script type="text/javascript"
-        th:src="@{/js/product_form_details.js}"></script>
 <script type="text/javascript">
     moduleURL = "[[@{/products}]]";
     brandModuleURL = "[[@{/brands}]]";
@@ -102,6 +95,13 @@
     checkUniqueURL = "[[@{/products/check_name}]]";
 
 </script>
-
+<script type="text/javascript"
+        th:src="@{/js/common_form.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/product_form_images.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/product_form_overview.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/product_form_details.js}"></script>
 </body>
 </html>
