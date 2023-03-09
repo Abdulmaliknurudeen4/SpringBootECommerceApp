@@ -5,6 +5,9 @@ import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.product.ProductService;
 import com.shopme.entity.Brand;
 import com.shopme.entity.Product;
+import com.shopme.entity.ProductImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Controller
 public class ProductController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
     @Autowired
     private ProductService productService;
-
     @Autowired
     private BrandService brandService;
 
@@ -56,25 +60,69 @@ public class ProductController {
                               @RequestParam(name = "image") MultipartFile photoMultipart,
                               @RequestParam(name = "extraImage", required = false) MultipartFile[] extraImageMultiparts,
                               @RequestParam(value = "detailNames", required = false) String[] detialsNames,
-                              @RequestParam(value = "detailValues", required = false) String[] detailValues) throws IOException {
+                              @RequestParam(value = "detailValues", required = false) String[] detailValues,
+                              @RequestParam(value = "detailIDs", required = false) String[] detailIDs,
+                              @RequestParam(value = "imageIDs", required = false) String[] imageIDs,
+                              @RequestParam(value = "imageNames", required = false) String[] imageNames) throws IOException {
         setMainImageName(photoMultipart, product);
-        setExtraImageNames(extraImageMultiparts, product);
-        setProductDetails(detialsNames, detailValues, product);
+        setExistingExtraImageNames(imageIDs, imageNames, product);
+        setNewExtraImageNames(extraImageMultiparts, product);
+        setProductDetails(detailIDs,detialsNames, detailValues, product);
         Product savedProduct = productService.save(product);
         saveUploadedImages(photoMultipart, extraImageMultiparts, savedProduct);
+
+        deleteExtraImagesWereRemovedOnForm(product);
 
         ra.addFlashAttribute("message", "The product has been saved Succesfully.");
         return "redirect:/products";
     }
 
-    private void setProductDetails(String[] detialsNames, String[] detailValues, Product product) {
+    private void deleteExtraImagesWereRemovedOnForm(Product product) {
+        String extraImage = "/product-images/" + product.getId() + "/extras";
+        Path dirpaths = Paths.get(extraImage);
+
+        try {
+            Files.list(dirpaths).forEach(file -> {
+                String filename = file.toFile().getName();
+                if (!product.containsImageName(filename)) {
+                    try {
+                        Files.delete(file);
+                        LOGGER.info("Deleted extra images " + filename);
+                    } catch (IOException e) {
+                        LOGGER.error("could not delete extra image" + filename);
+                    }
+                }
+            });
+        } catch (IOException ignored) {
+            LOGGER.error("Could not list directory " + dirpaths);
+        }
+    }
+
+    private void setExistingExtraImageNames(String[] imageIDs, String[] imageNames, Product product) {
+        if (imageIDs == null || imageIDs.length == 0) return;
+        if (imageNames == null || imageNames.length == 0) return;
+
+        Set<ProductImage> images = new HashSet<>();
+        for (int count = 0; count < imageNames.length; count++) {
+            Integer id = Integer.parseInt(imageIDs[count]);
+            String name = imageNames[count];
+            images.add(new ProductImage(id, name, product));
+        }
+        product.setImages(images);
+    }
+
+    private void setProductDetails(String[] detailIDs, String[] detialsNames, String[] detailValues, Product product) {
         if (detialsNames == null || detialsNames.length == 0) return;
         if (detailValues == null || detailValues.length == 0) return;
 
         for (int i = 0; i < detialsNames.length; i++) {
             String name = detialsNames[i];
             String value = detailValues[i];
-            if (!name.isEmpty() && !value.isEmpty()) {
+
+            Integer id = Integer.valueOf(detailIDs[i]);
+            if(id != 0){
+                product.addDetails(id, name, value);
+            }else if (!name.isEmpty() && !value.isEmpty()) {
                 product.addDetails(name, value);
             }
         }
@@ -89,10 +137,13 @@ public class ProductController {
         }
     }
 
-    private void setExtraImageNames(MultipartFile[] extraImageMultipart, Product product) {
+    private void setNewExtraImageNames(MultipartFile[] extraImageMultipart, Product product) {
         if (extraImageMultipart.length > 0) {
             Arrays.stream(extraImageMultipart).forEach(multipartFile -> {
-                product.addExtraImage(StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename())));
+                String name = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+                if (!product.containsImageName(name)) {
+                    product.addExtraImage(name);
+                }
             });
         }
     }

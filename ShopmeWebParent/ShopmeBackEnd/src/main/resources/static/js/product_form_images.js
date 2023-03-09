@@ -33,6 +33,13 @@ function checkFileSize(fileInput) {
 
 function showExtraImageThumbnail(fileInput, index) {
     var file = fileInput.files[0];
+
+    fileName = file.name;
+    imageNameHidden = $('#imageName'+index);
+    if(imageNameHidden.length){
+        imageNameHidden.val(fileName);
+    }
+
     var reader = new FileReader();
     reader.onload = function (e) {
         $('#extraThumbnail' + index).attr("src", e.target.result);

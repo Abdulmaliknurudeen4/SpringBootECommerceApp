@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -55,10 +56,10 @@ public class Product {
     @Column(name = "main_image", nullable = false)
     private String mainImage;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductImage> images = new HashSet<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductDetail> details = new HashSet<>();
 
     public Set<ProductDetail> getDetails() {
@@ -226,7 +227,7 @@ public class Product {
         this.images.add(new ProductImage(imageName, this));
     }
 
-    public void addDetails(String name, String value){
+    public void addDetails(String name, String value) {
         this.getDetails().add(new ProductDetail(name, value, this));
     }
 
@@ -234,5 +235,19 @@ public class Product {
     public String getMainImagePath() {
         if (id == null || mainImage == null) return "/images/image-thumbnail.png";
         return "/product-images/" + this.id + "/" + this.mainImage;
+    }
+
+    @Transient
+    public boolean containsImageName(String name) {
+        for (ProductImage image : images) {
+            if (image.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addDetails(Integer id, String name, String value) {
+        this.details.add(new ProductDetail(id, name, value, this));
     }
 }
