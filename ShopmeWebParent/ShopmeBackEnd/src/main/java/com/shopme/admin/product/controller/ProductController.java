@@ -42,10 +42,11 @@ public class ProductController {
         Product product = new Product();
         product.setEnabled(true);
         product.setInStock(true);
-
+        model.addAttribute("numberOfExistingExtraImages", 0);
         model.addAttribute("product", product);
         model.addAttribute("listBrands", listBrand);
         model.addAttribute("pageTitle", "Create New Product");
+
         return "products/product_form";
     }
 
@@ -67,13 +68,13 @@ public class ProductController {
     }
 
     private void setProductDetails(String[] detialsNames, String[] detailValues, Product product) {
-        if(detialsNames == null || detialsNames.length == 0) return;
-        if(detailValues == null || detailValues.length == 0) return;
+        if (detialsNames == null || detialsNames.length == 0) return;
+        if (detailValues == null || detailValues.length == 0) return;
 
         for (int i = 0; i < detialsNames.length; i++) {
             String name = detialsNames[i];
             String value = detailValues[i];
-            if(!name.isEmpty() && !value.isEmpty()){
+            if (!name.isEmpty() && !value.isEmpty()) {
                 product.addDetails(name, value);
             }
         }
@@ -97,13 +98,13 @@ public class ProductController {
     }
 
     private void saveUploadedImages(MultipartFile main, MultipartFile[] extras, Product product) throws IOException {
-        if(!main.isEmpty()){
+        if (!main.isEmpty()) {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(main.getOriginalFilename()));
             String uploadDir = "product-images/" + product.getId();
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, main);
         }
-        if(extras.length > 0){
+        if (extras.length > 0) {
             String uploadDir = "product-images/" + product.getId() + "/extras";
             for (MultipartFile extra : extras) {
                 if (extra.isEmpty()) continue;
@@ -148,4 +149,24 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/products/edit/{id}")
+    public String editProduct(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+        try {
+            Product product = productService.getProduct(id);
+            Integer numberOfExistingExtraImages = product.getImages().size();
+            Integer numberOfExistingProductDetails = product.getDetails().size();
+            List<Brand> listBrands = brandService.listAll();
+            model.addAttribute("product", product);
+            model.addAttribute("listBrands", listBrands);
+            model.addAttribute("pageTitle", "Edit Product (ID: " + id + " )");
+            model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
+            model.addAttribute("numberOfExistingProductDetails", numberOfExistingProductDetails);
+            return "products/product_form";
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+            ra.addFlashAttribute("message", e.getMessage());
+            return "redirect:/products";
+        }
+
+    }
 }

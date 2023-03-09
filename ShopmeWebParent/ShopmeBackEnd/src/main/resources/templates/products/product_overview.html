@@ -41,9 +41,20 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Category: </label>
         <div class="col-sm-10">
-            <select class="form-control" th:field="*{category}" id="categorySelect" disabled>
-                <option value="">[No Category]</option>
-            </select>
+
+            <th:block th:if="${product.category == null}">
+                <select class="form-control" th:field="*{category}" id="categorySelect" required>
+                </select>
+            </th:block>
+
+            <th:block th:if="${product.category != null}" id="categorySelect">
+                <select class="form-control" th:field="*{category}" required>
+                    <th:block th:each="cat: ${product.brand.categories}">
+                        <option th:value="${cat.id}">[[${cat.name}]]</option>
+                    </th:block>
+                </select>
+            </th:block>
+
         </div>
     </div>
 
@@ -142,24 +153,47 @@
     <div class="row" id="divProductImages">
 
         <div class="col border m-3 p-2">
-            <div><label>Main Image: </label></div>
+            <div><label>Main Image: [[${product.mainImage}]]</label></div>
             <div class="m-2"><img id="imageView" alt="Main image preview" class="img-fluid"
                                   th:src="@{${product.mainImagePath}}"></div>
             <div><input type="file" name="image"
                         accept="image/png, image/jpeg"
                         id="imageInput"
-                        required>
+                        th:required="${product.mainImage == null}">
             </div>
+            <input type="hidden" th:field="*{mainImage}">
         </div>
 
-        <div class="col border m-3 p-2" id="divExtraImage0">
-            <div id="extraImageHeader0">
-                <label>Extra Image #1: </label></div>
-            <div class="m-2"><img id="extraThumbnail0" alt="Extra Image #1 preview" class="img-fluid"
-                                  th:src="@{/images/image-thumbnail.png}"></div>
+        <th:block th:each="productImage, status : ${product.images}">
+            <div class="col border m-3 p-2" th:id="${'divExtraImage'+status.index}">
+                <div>
+                    <label>Extra Image #[[${status.index +1}]]: [[${productImage.name}]]</label>
+                    <a class="btn fas fa-times-circle fa-4x icon-dark float-right linkRemoveExtraImage"></a>
+                </div>
+                <div class="m-2">
+                    <img th:alt="${'Extra Image '+status.index+' preview'}" class="img-fluid"
+                         th:id="${'extraThumbnail'+status.index}"
+                         th:src="@{${productImage.imagePath}}">
+                </div>
+                <div><input type="file" name="extraImage"
+                            accept="image/png, image/jpeg">
+                </div>
+                <input type="hidden" name="imageIDs" th:id="'imageId' + ${status.index}"/>
+                <input type="hidden" name="imageNames" th:id="'imageName' + ${status.index}"/>
+            </div>
+        </th:block>
+
+        <div class="col border m-3 p-2" th:id="${'divExtraImage' + numberOfExistingExtraImages}">
+            <div th:id="${'extraImageHeader' + numberOfExistingExtraImages}">
+                <label>Extra Image #[[${numberOfExistingExtraImages +1}]]: </label></div>
+            <div class="m-2">
+                <img th:id="${'extraThumbnail' + numberOfExistingExtraImages}"
+                     th:alt="${'Extra Image ' + numberOfExistingExtraImages + ' preview'}"
+                     class="img-fluid"
+                     th:src="@{/images/image-thumbnail.png}"></div>
             <div><input type="file" name="extraImage"
                         accept="image/png, image/jpeg"
-                        id="extraImage1">
+                        th:id="${'extraImage' + numberOfExistingExtraImages}">
             </div>
         </div>
 
@@ -168,12 +202,24 @@
 </div>
 
 <div th:fragment="details" id="divProductDetails">
-    <div class="form-inline" id="divDetail0">
-        <label class="m-3">Name</label>
-        <input type="text" name="detailNames" maxlength="255" class="form-control w-25">
-        <label class="m-3">Value</label>
-        <input type="text" name="detailValues" maxlength="255" class="form-control w-25">
-    </div>
+
+    <th:block th:each="detail, status: ${product.details}" th:if="${product.details !=null}">
+        <div class="form-inline" th:id="${'divDetail'+status.index}">
+            <label class="m-3">Name</label>
+            <input type="text" name="detailNames" maxlength="255" class="form-control w-25" th:value="${detail.name}">
+            <label class="m-3">Value</label>
+            <input type="text" name="detailValues" maxlength="255" class="form-control w-25" th:value="${detail.value}">
+            <a class="btn fas fa-times-circle fa-4x icon-dark float-right linkRemoveExtraDetails"></a>
+        </div>
+    </th:block>
+
+
+        <div class="form-inline" th:id="${'divDetail'+#lists.size(product.details)}">
+            <label class="m-3">Name</label>
+            <input type="text" name="detailNames" maxlength="255" class="form-control w-25">
+            <label class="m-3">Value</label>
+            <input type="text" name="detailValues" maxlength="255" class="form-control w-25">
+        </div>
 </div>
 
 </body>

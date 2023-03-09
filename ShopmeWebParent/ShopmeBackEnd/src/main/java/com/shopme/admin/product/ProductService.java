@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -61,5 +62,13 @@ public class ProductService {
             throw new ProductNotFoundException("Product not Present !!");
         }
         productRepository.deleteById(id);
+    }
+
+    public Product getProduct(Integer id ) throws ProductNotFoundException {
+       try{
+           return productRepository.findById(id).get();
+       }catch (NoSuchElementException e){
+           throw new ProductNotFoundException("Counldn't find any product with the ID " + id);
+       }
     }
 }

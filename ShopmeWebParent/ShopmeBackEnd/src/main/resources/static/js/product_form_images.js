@@ -11,6 +11,12 @@ $(document).ready(function () {
         });
     });
 
+    $(".linkRemoveExtraImage").each(function (index) {
+        $(this).click(() => {
+            removeExtraImage(index);
+        });
+    });
+
 });
 
 function checkFileSize(fileInput) {

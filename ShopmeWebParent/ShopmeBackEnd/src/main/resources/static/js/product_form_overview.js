@@ -6,9 +6,17 @@ $(document).ready(function () {
         categorySelect.prop('disabled', false);
         getCategories();
     });
-    getCategories();
+    getCategoriesForNewForm();
 
 });
+function getCategoriesForNewForm(){
+    let catIdField = $("#categoryId");
+    let editMode = false;
+    if(catIdField.length){
+        editMode = true;
+    }
+    if(!editMode) getCategories();
+}
 
 function getCategories() {
     brandId = dropDownBrand.val();

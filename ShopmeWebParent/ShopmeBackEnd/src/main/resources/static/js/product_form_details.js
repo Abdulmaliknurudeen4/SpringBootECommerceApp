@@ -23,3 +23,12 @@ function addNextDetailSection() {
 function removeDetailsSectionById(id) {
     $(id).remove();
 }
+
+$(document).ready(function () {
+    $('.linkRemoveExtraDetails').each(function (index) {
+        $(this).click(() => {
+            removeDetailsSectionById('#divDetail' + index);
+        });
+    });
+});
+
