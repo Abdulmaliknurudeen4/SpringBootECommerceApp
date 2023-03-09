@@ -22,3 +22,7 @@ select * from brands_categories;
 
 desc products;
 select * from products;
+select * from product_detail;
+
+desc product_images;
+select * from product_images;
