@@ -41,7 +41,9 @@
                     <img th:src="@{${product.mainImagePath}}" class="img-fluid"
                          style="max-width: 100px; max-height: 100px;"/>
                 </td>
-                <td>[[${product.name}]]</td>
+                <td>
+                    <a class="link-details" th:href="@{'/products/detail/' + ${product.id}}">[[${product.name}]]</a>
+                </td>
                 <td>[[${product.brand.name}]]</td>
                 <td>[[${product.category.name}]]</td>
                 <td>
@@ -53,6 +55,12 @@
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="modal fade" id="detailModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content"></div>
+        </div>
     </div>
 
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
@@ -68,22 +76,24 @@
                         'click',
                         function (event) {
                             event.preventDefault();
-                            link = $(this).attr('href');
+                            let link = $(this).attr('href');
                             console.log(link);
                             showModalDialog("Are you Sure you want to Delete the User with the id ?");
                             $('.confirm-dialog').attr(
                                 'href', link);
 
                         });
+
+                $('.link-details').on("click", function (e) {
+                    e.preventDefault();
+                    let linkDetailURL = $(this).attr("href");
+                    $('#detailModal').modal("show").find(".modal-content").load(linkDetailURL);
+                });
             });
 
     function showModalDialog(message) {
         $('#modalBody').text(message);
         $('#modalDialog').modal();
-    }
-
-    function clearFilter() {
-        window.location = "[[@{/categories}]]"
     }
 </script>
 </body>

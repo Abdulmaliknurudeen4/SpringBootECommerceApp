@@ -33,6 +33,8 @@ public class Product {
 
     @Column(columnDefinition = "")
     private float price;
+
+    private float cost;
     @Column(columnDefinition = "", name = "discount_percent")
     private float discountPercent;
 
@@ -249,5 +251,13 @@ public class Product {
 
     public void addDetails(Integer id, String name, String value) {
         this.details.add(new ProductDetail(id, name, value, this));
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
+    public float getCost() {
+        return cost;
     }
 }
