@@ -9,6 +9,8 @@ import com.shopme.entity.ProductImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -35,10 +37,42 @@ public class ProductController {
 
     @GetMapping("/products")
     public String listFirstPage(Model model) {
-        List<Product> productList = productService.listAll();
-        model.addAttribute("listProducts", productList);
-        return "products/products";
+        return listByPage(1, model, "name", "asc", null);
     }
+
+    @GetMapping("/products/page/{pageNum}")
+    public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
+                             @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
+        System.out.println("Sort Field " + sortField);
+        System.out.println("Sort Order " + sortDir);
+        System.out.println("Keyword " + keyword);
+
+        Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, keyword);
+        pageNum = (pageNum <= 0) ? 0 : pageNum;
+
+        long startCount = (long) (pageNum - 1) * ProductService.PRODUCTS_PER_PAGE + 1;
+        long endCount = startCount + ProductService.PRODUCTS_PER_PAGE - 1;
+
+        // Getting to the last page with uneven elements
+        if (endCount > page.getTotalElements()) {
+            endCount = page.getTotalElements();
+        }
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", reverseSortDir);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("listProducts", page.toList());
+        return "products/products";
+
+    }
+
 
     @GetMapping("/products/new")
     public String newProduct(Model model) {
@@ -65,11 +99,11 @@ public class ProductController {
                               @RequestParam(value = "imageIDs", required = false) String[] imageIDs,
                               @RequestParam(value = "imageNames", required = false) String[] imageNames) throws IOException {
         // trim the multipart for the extra files
-       List<MultipartFile> filtered =Arrays.stream(extraImageMultiparts).filter(multipartFile -> !multipartFile.isEmpty()).toList();
+        List<MultipartFile> filtered = Arrays.stream(extraImageMultiparts).filter(multipartFile -> !multipartFile.isEmpty()).toList();
         setMainImageName(photoMultipart, product);
         setExistingExtraImageNames(imageIDs, imageNames, product);
         setNewExtraImageNames(filtered, product);
-        setProductDetails(detailIDs,detialsNames, detailValues, product);
+        setProductDetails(detailIDs, detialsNames, detailValues, product);
         Product savedProduct = productService.save(product);
         saveUploadedImages(photoMultipart, filtered, savedProduct);
 
@@ -122,9 +156,9 @@ public class ProductController {
             String value = detailValues[i];
 
             Integer id = Integer.valueOf(detailIDs[i]);
-            if(id != 0){
+            if (id != 0) {
                 product.addDetails(id, name, value);
-            }else if (!name.isEmpty() && !value.isEmpty()) {
+            } else if (!name.isEmpty() && !value.isEmpty()) {
                 product.addDetails(name, value);
             }
         }

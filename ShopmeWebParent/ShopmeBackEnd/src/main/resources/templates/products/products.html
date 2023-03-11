@@ -23,13 +23,21 @@
                 class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
             <tr>
-                <th>ID</th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'none', 'products')}">ID</th>
                 <th>Main Image</th>
-                <th>Product Name</th>
-                <th>Brand</th>
-                <th>Category</th>
-                <th>Enabled</th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Product Name', 'none', 'products')}">
+                    Product Name
+                </th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('brand', 'Brand', 'none', 'products')}">Brand
+                </th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('category', 'Category', 'none', 'products')}">
+                    Category
+                </th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'products')}">
+                    Enabled
+                </th>
                 <th></th>
+
             </tr>
             </thead>
             <tbody>
@@ -42,7 +50,8 @@
                          style="max-width: 100px; max-height: 100px;"/>
                 </td>
                 <td>
-                    <a class="link-details" th:href="@{'/products/detail/' + ${product.id}}">[[${product.name}]]</a>
+                    <a class="link-details" th:href="@{'/products/detail/' + ${product.id}}"
+                       th:title="${product.shortName}">[[${product.shortName}]]</a>
                 </td>
                 <td>[[${product.brand.name}]]</td>
                 <td>[[${product.category.name}]]</td>
@@ -57,11 +66,13 @@
         </table>
     </div>
 
+
     <div class="modal fade" id="detailModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content"></div>
         </div>
     </div>
+    <div th:replace="~{fragments/fragments :: pagination('products', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
 
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
 
@@ -94,6 +105,9 @@
     function showModalDialog(message) {
         $('#modalBody').text(message);
         $('#modalDialog').modal();
+    }
+    function clearFilter() {
+        window.location = "[[@{/products}]]"
     }
 </script>
 </body>

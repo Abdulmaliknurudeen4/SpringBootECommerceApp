@@ -1,9 +1,12 @@
 package com.shopme.admin.product;
 
 import com.shopme.admin.product.controller.ProductNotFoundException;
-import com.shopme.admin.user.UserNotFoundExcpetion;
 import com.shopme.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +17,12 @@ import java.util.NoSuchElementException;
 @Service
 @Transactional
 public class ProductService {
+    public static final Integer PRODUCTS_PER_PAGE = 5;
     @Autowired
     private ProductRepository productRepository;
 
     public List<Product> listAll() {
-        return (List<Product>) productRepository.findAll();
+        return (List<Product>) productRepository.findAll(Sort.by("name").ascending());
     }
 
     public Product save(Product product) {
@@ -35,7 +39,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public boolean isProductUnique(String name, Integer id){
+    public boolean isProductUnique(String name, Integer id) {
         boolean isCreatingNew = (id == null || id == 0);
         Product productByName = productRepository.findByName(name);
 
@@ -56,7 +60,7 @@ public class ProductService {
         productRepository.EnableProductStatus(id, status);
     }
 
-    public void deleteProduct(Integer id) throws ProductNotFoundException{
+    public void deleteProduct(Integer id) throws ProductNotFoundException {
         Long userCount = productRepository.countById(id);
         if (userCount == null || userCount == 0) {
             throw new ProductNotFoundException("Product not Present !!");
@@ -64,11 +68,22 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Product getProduct(Integer id ) throws ProductNotFoundException {
-       try{
-           return productRepository.findById(id).get();
-       }catch (NoSuchElementException e){
-           throw new ProductNotFoundException("Counldn't find any product with the ID " + id);
-       }
+    public Product getProduct(Integer id) throws ProductNotFoundException {
+        try {
+            return productRepository.findById(id).get();
+        } catch (NoSuchElementException e) {
+            throw new ProductNotFoundException("Counldn't find any product with the ID " + id);
+        }
+    }
+
+
+    public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
+        if (keyword != null) {
+            return productRepository.findAll(keyword, pageable);
+        }
+        return productRepository.findAll(pageable);
     }
 }
