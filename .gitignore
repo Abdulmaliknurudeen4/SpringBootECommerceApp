@@ -137,6 +137,7 @@ $RECYCLE.BIN/
 
 ShopmeWebParent/ShopmeBackEnd/user-photos/**
 ShopmeWebParent/ShopmeBackEnd/categories-images/**
+ShopmeWebParent/ShopmeBackEnd/product-images/**
 
 # Windows shortcuts
 *.lnk

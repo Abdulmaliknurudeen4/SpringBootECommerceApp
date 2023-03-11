@@ -27,3 +27,6 @@ select * from product_detail;
 desc product_images;
 select * from product_images;
 DELETE from product_images WHERE name = "";
+truncate table products;
+truncate table product_detail;
+truncate table product_images;
