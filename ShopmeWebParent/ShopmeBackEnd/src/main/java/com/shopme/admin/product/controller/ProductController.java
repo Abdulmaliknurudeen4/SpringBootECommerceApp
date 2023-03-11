@@ -2,8 +2,10 @@ package com.shopme.admin.product.controller;
 
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.brand.BrandService;
+import com.shopme.admin.category.CategoryService;
 import com.shopme.admin.product.ProductService;
 import com.shopme.entity.Brand;
+import com.shopme.entity.Category;
 import com.shopme.entity.Product;
 import com.shopme.entity.ProductImage;
 import org.slf4j.Logger;
@@ -35,17 +37,20 @@ public class ProductController {
     @Autowired
     private BrandService brandService;
 
+    @Autowired private CategoryService categoryService;
+
     @GetMapping("/products")
     public String listFirstPage(Model model) {
-        return listByPage(1, model, "name", "asc", null);
+        return listByPage(1, model, "name", "asc", null, 0);
     }
 
     @GetMapping("/products/page/{pageNum}")
     public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
-                             @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
-        System.out.println("Sort Field " + sortField);
-        System.out.println("Sort Order " + sortDir);
-        System.out.println("Keyword " + keyword);
+                             @Param("sortField") String sortField,
+                             @Param("sortDir") String sortDir, @Param("keyword") String keyword,
+                             @Param("categoryId") Integer categoryId) {
+        List<Category> categoryList = categoryService.listCategoriesUsedInForm();
+        System.out.println("Selected category ID: " + categoryId);
 
         Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, keyword);
         pageNum = (pageNum <= 0) ? 0 : pageNum;
@@ -69,6 +74,8 @@ public class ProductController {
         model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("keyword", keyword);
         model.addAttribute("listProducts", page.toList());
+        model.addAttribute("listCategories", categoryList);
+        model.addAttribute("categoryId", categoryId);
         return "products/products";
 
     }

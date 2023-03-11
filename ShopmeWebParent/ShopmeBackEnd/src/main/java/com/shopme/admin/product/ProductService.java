@@ -84,6 +84,12 @@ public class ProductService {
         if (keyword != null) {
             return productRepository.findAll(keyword, pageable);
         }
+
+      /*  if(categoryId != null && categoryId > 0){
+            String categoryIdMatch = "-" + String.valueOf(categoryId) + "";
+            return  productRepository.findAllInCategory(catId, categoryIdMatch, pageable);
+        }*/
+
         return productRepository.findAll(pageable);
     }
 }
