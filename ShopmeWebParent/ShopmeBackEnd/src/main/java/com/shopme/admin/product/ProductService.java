@@ -39,6 +39,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public void saveProductPrice(Product productInForm) {
+        Product productInDB = productRepository.findById(productInForm.getId()).get();
+        productInDB.setCost(productInForm.getCost());
+        productInDB.setPrice(productInForm.getPrice());
+        productInDB.setDiscountPercent(productInForm.getDiscountPercent());
+        productRepository.save(productInDB);
+    }
+
     public boolean isProductUnique(String name, Integer id) {
         boolean isCreatingNew = (id == null || id == 0);
         Product productByName = productRepository.findByName(name);
@@ -82,15 +90,15 @@ public class ProductService {
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
         if (keyword != null && !keyword.isEmpty()) {
-            if(categoryId != null && categoryId > 0){
-                String categoryIdMatch = "-"+ categoryId +"-";
+            if (categoryId != null && categoryId > 0) {
+                String categoryIdMatch = "-" + categoryId + "-";
                 return productRepository.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
             }
             return productRepository.findAll(keyword, pageable);
         }
 
-        if(categoryId != null && categoryId > 0){
-            String categoryIdMatch = "-"+ categoryId +"-";
+        if (categoryId != null && categoryId > 0) {
+            String categoryIdMatch = "-" + categoryId + "-";
             return productRepository.findAllInCategory(categoryId, categoryIdMatch, pageable);
         }
 

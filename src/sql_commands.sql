@@ -19,7 +19,7 @@ select * from brands_categories;
 truncate brands;
 truncate brands_categories;
 select * from brands_categories;
-
+desc category;
 desc products;
 select * from products;
 select * from product_detail;
@@ -30,3 +30,8 @@ DELETE from product_images WHERE name = "";
 truncate table products;
 truncate table product_detail;
 truncate table product_images;
+select * from category;
+
+SELECT p.name, c.name from products p JOIN category c ON p.category_id = c.id 
+WHERE c.all_parent_ids LIKE '%-23-%';
+select * from roles;

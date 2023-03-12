@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/fragments :: head('Shopme - Products')}"></head>
 <body>
 <div class="container-fluid">
@@ -8,13 +9,15 @@
 
     <div>
         <h1>Manage Products</h1>
-        <a th:href="@{/products/new}">
-            <i class="fas fa-folder-plus fa-3x icon-dark cursor-hand"></i>
-        </a>
-        &nbsp;&nbsp;
-        <a th:href="@{/products/export/csv}">
-            <i class="fas fa-file-csv fa-3x icon-dark cursor-hand"></i>
-        </a>
+        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+            <a th:href="@{/products/new}">
+                <i class="fas fa-folder-plus fa-3x icon-dark cursor-hand"></i>
+            </a>
+            &nbsp;&nbsp;
+            <a th:href="@{/products/export/csv}">
+                <i class="fas fa-file-csv fa-3x icon-dark cursor-hand"></i>
+            </a>
+        </th:block>
     </div>
 
     <div class="m-1">
@@ -55,9 +58,11 @@
                 <th th:replace="~{fragments/fragments :: tablehead_link('category', 'Category', 'none', 'products')}">
                     Category
                 </th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'products')}">
-                    Enabled
-                </th>
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                    <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'products')}">
+                        Enabled
+                    </th>
+                </th:block>
                 <th></th>
 
             </tr>
@@ -77,11 +82,22 @@
                 </td>
                 <td>[[${product.brand.name}]]</td>
                 <td>[[${product.category.name}]]</td>
+
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                    <td>
+                        <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'products', 'setProductStatus', ${product.id})}"></div>
+                    </td>
+                </th:block>
                 <td>
-                    <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'products', 'setProductStatus', ${product.id})}"></div>
-                </td>
-                <td>
-                    <div th:replace="~{fragments/fragments :: detail_edit_delete_fn('products',${product.id})}"></div>
+                    <div style="display: flex">
+                        <div th:replace="~{fragments/fragments :: detail_fn('products',${product.id})}"></div>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                            <div th:replace="~{fragments/fragments :: edit_fn('products',${product.id})}"></div>
+                        </th:block>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                            <div th:replace="~{fragments/fragments :: delete_fn('products',${product.id})}"></div>
+                        </th:block>
+                    </div>
                 </td>
             </tr>
             </tbody>
@@ -123,8 +139,8 @@
                     $('#detailModal').modal("show").find(".modal-content").load(linkDetailURL);
                 });
 
-                $('#dropdownCategory').on("change", function (e){
-                   $('#searchForm').submit();
+                $('#dropdownCategory').on("change", function (e) {
+                    $('#searchForm').submit();
                 });
 
             });

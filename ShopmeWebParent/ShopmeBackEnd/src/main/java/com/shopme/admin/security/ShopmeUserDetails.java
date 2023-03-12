@@ -6,12 +6,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class ShopmeUserDetails implements UserDetails {
+public class ShopmeUserDetails implements UserDetails, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final User user;
 
@@ -24,7 +28,7 @@ public class ShopmeUserDetails implements UserDetails {
         Set<Role> roles = user.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getDescription()));
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
     }
@@ -59,13 +63,19 @@ public class ShopmeUserDetails implements UserDetails {
         return user.isEnabled();
     }
 
-    public String getFullname(){
+    public String getFullname() {
         return this.user.getFullName();
     }
-    public void setFirstName(String firstName){
+
+    public void setFirstName(String firstName) {
         this.user.setFirstName(firstName);
     }
-    public void setlastName(String lastname){
+
+    public void setlastName(String lastname) {
         this.user.setLastName(lastname);
+    }
+
+    public boolean hasRole(String roleName) {
+        return user.hasRole(roleName);
     }
 }

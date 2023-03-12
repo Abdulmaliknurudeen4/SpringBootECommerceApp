@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/fragments :: head('Shopme - Add Product')}"></head>
 <body>
 <div class="container-fluid">
@@ -50,24 +51,43 @@
                 </div>
 
                 <div class="tab-pane drop" id="description" role="tabpanel" aria-labelledby="description-tab">
-                    <div th:replace="~{products/product_description :: content}"></div>
+                    <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <div th:replace="~{products/readonly/product_description_readonly :: content}"></div>
+                    </th:block>
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                        <div th:replace="~{products/product_description :: content}"></div>
+                    </th:block>
                 </div>
 
                 <div class="tab-pane drop" id="images" role="tabpanel" aria-labelledby="images-tab">
-                    <div th:replace="~{products/product_images :: content}">
-                    </div>
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                        <div th:replace="~{products/product_images :: content}"></div>
+                    </th:block>
+                    <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <div th:replace="~{products/readonly/product_images_readonly :: content}"></div>
+                    </th:block>
                 </div>
 
                 <div class="tab-pane drop" id="details" role="tabpanel" aria-labelledby="details-tab">
-                    <div th:replace="~{products/product_details :: content}"></div>
-                    <div>
-                        <input type="button" value="Add More Details" class="btn btn-secondary"
-                               onclick="addNextDetailSection()">
-                    </div>
+                    <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <div th:replace="~{products/readonly/product_details_readonly :: content}"></div>
+                    </th:block>
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                        <div th:replace="~{products/product_details :: content}"></div>
+                        <div>
+                            <input type="button" value="Add More Details" class="btn btn-secondary"
+                                   onclick="addNextDetailSection()">
+                        </div>
+                    </th:block>
                 </div>
 
                 <div class="tab-pane drop" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
-                    <div th:replace="~{products/product_shipping :: content}"></div>
+                    <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <div th:replace="~{products/readonly/product_shipping_readonly :: content}"></div>
+                    </th:block>
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                        <div th:replace="~{products/product_shipping :: content}"></div>
+                    </th:block>
                 </div>
             </div>
 

@@ -4,6 +4,7 @@ import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.category.CategoryService;
 import com.shopme.admin.product.ProductService;
+import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.entity.Brand;
 import com.shopme.entity.Category;
 import com.shopme.entity.Product;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -37,7 +39,8 @@ public class ProductController {
     @Autowired
     private BrandService brandService;
 
-    @Autowired private CategoryService categoryService;
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("/products")
     public String listFirstPage(Model model) {
@@ -100,26 +103,39 @@ public class ProductController {
     @PostMapping("/products/save")
     public String saveProduct(Product product,
                               RedirectAttributes ra,
-                              @RequestParam(name = "image") MultipartFile photoMultipart,
+                              @RequestParam(name = "image", required = false) MultipartFile photoMultipart,
                               @RequestParam(name = "extraImage", required = false) MultipartFile[] extraImageMultiparts,
                               @RequestParam(value = "detailNames", required = false) String[] detialsNames,
                               @RequestParam(value = "detailValues", required = false) String[] detailValues,
                               @RequestParam(value = "detailIDs", required = false) String[] detailIDs,
                               @RequestParam(value = "imageIDs", required = false) String[] imageIDs,
-                              @RequestParam(value = "imageNames", required = false) String[] imageNames) throws IOException {
-        // trim the multipart for the extra files
-        List<MultipartFile> filtered = Arrays.stream(extraImageMultiparts).filter(multipartFile -> !multipartFile.isEmpty()).toList();
-        setMainImageName(photoMultipart, product);
-        setExistingExtraImageNames(imageIDs, imageNames, product);
-        setNewExtraImageNames(filtered, product);
-        setProductDetails(detailIDs, detialsNames, detailValues, product);
-        Product savedProduct = productService.save(product);
-        saveUploadedImages(photoMultipart, filtered, savedProduct);
+                              @RequestParam(value = "imageNames", required = false) String[] imageNames,
+                              @AuthenticationPrincipal ShopmeUserDetails loggedUser) throws IOException {
+        //For SalesPerson Permission to Update Costs only.
+        Boolean islogged = loggedUser.hasRole("Salesperson");
+        if (loggedUser.hasRole("Salesperson")) {
+            productService.saveProductPrice(product);
+            ra.addFlashAttribute("message", "The product has been Updated Succesfully.");
+            return "redirect:/products";
+        } else {
+            // For Admin, Editor
+            // trim the multipart for the extra files
+            List<MultipartFile> filtered = null;
+            if (extraImageMultiparts != null) {
+                filtered = Arrays.stream(extraImageMultiparts).filter(multipartFile -> !multipartFile.isEmpty()).toList();
+            }
+            setMainImageName(photoMultipart, product);
+            setExistingExtraImageNames(imageIDs, imageNames, product);
+            setNewExtraImageNames(filtered, product);
+            setProductDetails(detailIDs, detialsNames, detailValues, product);
+            Product savedProduct = productService.save(product);
+            saveUploadedImages(photoMultipart, filtered, savedProduct);
 
-        deleteExtraImagesWereRemovedOnForm(product);
+            deleteExtraImagesWereRemovedOnForm(product);
 
-        ra.addFlashAttribute("message", "The product has been saved Succesfully.");
-        return "redirect:/products";
+            ra.addFlashAttribute("message", "The product has been saved Succesfully.");
+            return "redirect:/products";
+        }
     }
 
     private void deleteExtraImagesWereRemovedOnForm(Product product) {

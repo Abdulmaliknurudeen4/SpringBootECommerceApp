@@ -62,6 +62,24 @@
         <i class="fas fa-trash fa-2x icon-dark"> </i></a>
 </div>
 
+<div th:fragment="delete_fn(context,Id)">
+    <a th:href="@{'/'+${context}+'/delete/'+${Id} }"
+       class="cursor-hand link-delete">
+        <i class="fas fa-trash fa-2x icon-dark"> </i></a>
+</div>
+
+<div th:fragment="edit_fn(context,Id)">
+    <a class="cursor-hand" th:href="@{'/'+${context}+'/edit/'+${Id} }">
+        <i class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
+</div>
+
+<div th:fragment="detail_fn(context,Id)">
+    <a class="cursor-hand link-details"
+       th:href="@{'/'+${context}+'/detail/'+${Id}}">
+        <i class="fas fa-file-alt fa-2x icon-green"></i>
+    </a>&nbsp;
+</div>
+
 <div th:fragment="detail_edit_delete_fn(context,Id)">
     <a class="cursor-hand link-details"
        th:href="@{'/'+${context}+'/detail/'+${Id}}">

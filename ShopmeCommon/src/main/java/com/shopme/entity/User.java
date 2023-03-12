@@ -1,158 +1,166 @@
 package com.shopme.entity;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    // many to many, joincolumn refers to the primary key of users, inverse join
+    // refers to Roles
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    public Set<Role> roles = new HashSet<Role>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(length = 128, nullable = false, unique = true)
+    private String email;
+    @Column(length = 64, nullable = false)
+    private String password;
+    @Column(name = "first_name", length = 45, nullable = false)
+    private String firstName;
+    @Column(name = "last_name", length = 45, nullable = false)
+    private String lastName;
+    @Column(length = 64)
+    private String photos;
+    private boolean enabled;
 
-	@Column(length = 128, nullable = false, unique = true)
-	private String email;
+    public User() {
 
-	@Column(length = 64, nullable = false)
-	private String password;
+    }
 
-	@Column(name = "first_name", length = 45, nullable = false)
-	private String firstName;
+    public User(String email, String password, String firstName, String lastName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
-	@Column(name = "last_name", length = 45, nullable = false)
-	private String lastName;
+    public Integer getId() {
+        return id;
+    }
 
-	@Column(length = 64)
-	private String photos;
-	private boolean enabled;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	// many to many, joincolumn refers to the primary key of users, inverse join
-	// refers to Roles
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	public Set<Role> roles = new HashSet<Role>();
+    public String getEmail() {
+        return email;
+    }
 
-	public User() {
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public User(String email, String password, String firstName, String lastName) {
-		this.email = email;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPhotos() {
+        return photos;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPhotos(String photos) {
+        this.photos = photos;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
-	public String getPhotos() {
-		return photos;
-	}
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 
-	public void setPhotos(String photos) {
-		this.photos = photos;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, enabled, firstName, id, lastName, password, photos, roles);
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        return Objects.equals(email, other.email) && enabled == other.enabled
+                && Objects.equals(firstName, other.firstName) && Objects.equals(id, other.id)
+                && Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
+                && Objects.equals(photos, other.photos) && Objects.equals(roles, other.roles);
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", photos=" + photos + ", enabled=" + enabled + ", roles=" + roles + "]";
+    }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    @Transient
+    public String getPhotosImagePath() {
+        if (id == null || photos == null)
+            return "/images/ShopmeAdminSmall.png";
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+        return "/user-photos/" + this.id + "/" + this.photos;
+    }
 
-	public void addRole(Role role) {
-		this.roles.add(role);
-	}
+    @Transient
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(email, enabled, firstName, id, lastName, password, photos, roles);
-	}
+    @Transient
+    public boolean hasRole(String roleName) {
+        // need to debug this. it's return false even when the user is a salesperson. wrong lambda
+//        return roles.stream().anyMatch(role -> role.getName().equals(roleName));
+        for (Role role : roles) {
+            if (role.getName().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		return Objects.equals(email, other.email) && enabled == other.enabled
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(id, other.id)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
-				&& Objects.equals(photos, other.photos) && Objects.equals(roles, other.roles);
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", photos=" + photos + ", enabled=" + enabled + ", roles=" + roles + "]";
-	}
-
-	@Transient
-	public String getPhotosImagePath() {
-		if (id == null || photos == null)
-			return "/images/ShopmeAdminSmall.png";
-
-		return "/user-photos/" + this.id + "/" + this.photos;
-	}
-
-	@Transient
-	public String getFullName(){
-		return firstName + " " +lastName;
-	}
+    }
 
 }
