@@ -52,7 +52,7 @@ public class ProductController {
         List<Category> categoryList = categoryService.listCategoriesUsedInForm();
         System.out.println("Selected category ID: " + categoryId);
 
-        Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, keyword);
+        Page<Product> page = productService.listByPage(pageNum, sortField, sortDir, keyword, categoryId);
         pageNum = (pageNum <= 0) ? 0 : pageNum;
 
         long startCount = (long) (pageNum - 1) * ProductService.PRODUCTS_PER_PAGE + 1;
@@ -75,7 +75,9 @@ public class ProductController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("listProducts", page.toList());
         model.addAttribute("listCategories", categoryList);
-        model.addAttribute("categoryId", categoryId);
+        if (categoryId != null) {
+            model.addAttribute("categoryId", categoryId);
+        }
         return "products/products";
 
     }

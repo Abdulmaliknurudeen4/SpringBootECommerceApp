@@ -28,7 +28,7 @@
 <body>
 
 <a th:fragment="pagination_link(page, text, context)" class="page-link"
-   th:href="@{'/'+${context}+'/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''}  }">
+   th:href="@{'/'+${context}+'/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''} +${categoryId !=null ? '&categoryId='+categoryId : ''}  }">
     [[${text}]]</a>
 
 <th th:fragment="tablehead_link(fieldName, columnLabel, removeTag, context)" th:remove="${removeTag}">
