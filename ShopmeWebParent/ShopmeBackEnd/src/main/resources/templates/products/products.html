@@ -48,20 +48,16 @@
                 class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
             <tr>
-                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'none', 'products')}">ID</th>
+                <th th:class="hideable-column"
+                    th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'none', 'products')}"></th>
                 <th>Main Image</th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Product Name', 'none', 'products')}">
-                    Product Name
-                </th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('brand', 'Brand', 'none', 'products')}">Brand
-                </th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('category', 'Category', 'none', 'products')}">
-                    Category
-                </th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Product Name', 'none', 'products')}"></th>
+                <th th:class="hideable-column"
+                    th:replace="~{fragments/fragments :: tablehead_link('brand', 'Brand', 'none', 'products')}"></th>
+                <th th:class="hideable-column"
+                    th:replace="~{fragments/fragments :: tablehead_link('category', 'Category', 'none', 'products')}"></th>
                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                    <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'products')}">
-                        Enabled
-                    </th>
+                    <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'products')}"></th>
                 </th:block>
                 <th></th>
 
@@ -104,6 +100,33 @@
         </table>
     </div>
 
+
+    <div class="less-details">
+        <div th:each="product : ${listProducts}" class="row m-1">
+            <div class="col-4">
+                <i th:if="${product.id == null}"
+                   class="fas fa-portrait fa-3x icon-dark"></i>
+                <img th:src="@{${product.mainImagePath}}" class="img-fluid"
+                     style="max-width: 100px; max-height: 100px;"/>
+            </div>
+            <div class="col-8">
+                <div><a th:href="@{'/products/detail/'+${product.id}}">[[${product.shortName}]]</a></div>
+                <div class="mt-2">
+                    <div th:replace="~{fragments/fragments :: detail_fn('products',${product.id})}"></div>
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                        <div th:replace="~{fragments/fragments :: edit_fn('products',${product.id})}"></div>
+                    </th:block>
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                        <div th:replace="~{fragments/fragments :: delete_fn('products',${product.id})}"></div>
+                    </th:block>
+                </div>
+            </div>
+
+
+            <div>&nbsp;
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="detailModal">
         <div class="modal-dialog modal-lg">

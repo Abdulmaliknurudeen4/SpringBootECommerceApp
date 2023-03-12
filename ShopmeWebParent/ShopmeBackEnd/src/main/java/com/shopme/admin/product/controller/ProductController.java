@@ -3,12 +3,12 @@ package com.shopme.admin.product.controller;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.product.ProductSaveHelper;
 import com.shopme.admin.product.ProductService;
 import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.entity.Brand;
 import com.shopme.entity.Category;
 import com.shopme.entity.Product;
-import com.shopme.entity.ProductImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class ProductController {
@@ -124,104 +121,17 @@ public class ProductController {
             if (extraImageMultiparts != null) {
                 filtered = Arrays.stream(extraImageMultiparts).filter(multipartFile -> !multipartFile.isEmpty()).toList();
             }
-            setMainImageName(photoMultipart, product);
-            setExistingExtraImageNames(imageIDs, imageNames, product);
-            setNewExtraImageNames(filtered, product);
-            setProductDetails(detailIDs, detialsNames, detailValues, product);
+            ProductSaveHelper.setMainImageName(photoMultipart, product);
+            ProductSaveHelper.setExistingExtraImageNames(imageIDs, imageNames, product);
+            ProductSaveHelper.setNewExtraImageNames(filtered, product);
+            ProductSaveHelper.setProductDetails(detailIDs, detialsNames, detailValues, product);
             Product savedProduct = productService.save(product);
-            saveUploadedImages(photoMultipart, filtered, savedProduct);
+            ProductSaveHelper.saveUploadedImages(photoMultipart, filtered, savedProduct);
 
-            deleteExtraImagesWereRemovedOnForm(product);
+            ProductSaveHelper.deleteExtraImagesWereRemovedOnForm(product);
 
             ra.addFlashAttribute("message", "The product has been saved Succesfully.");
             return "redirect:/products";
-        }
-    }
-
-    private void deleteExtraImagesWereRemovedOnForm(Product product) {
-        String extraImage = "/product-images/" + product.getId() + "/extras";
-        Path dirpaths = Paths.get(extraImage);
-
-        try {
-            Files.list(dirpaths).forEach(file -> {
-                String filename = file.toFile().getName();
-                if (!product.containsImageName(filename)) {
-                    try {
-                        Files.delete(file);
-                        LOGGER.info("Deleted extra images " + filename);
-                    } catch (IOException e) {
-                        LOGGER.error("could not delete extra image" + filename);
-                    }
-                }
-            });
-        } catch (IOException ignored) {
-            LOGGER.error("Could not list directory " + dirpaths);
-        }
-    }
-
-    private void setExistingExtraImageNames(String[] imageIDs, String[] imageNames, Product product) {
-        if (imageIDs == null || imageIDs.length == 0) return;
-        if (imageNames == null || imageNames.length == 0) return;
-
-        Set<ProductImage> images = new HashSet<>();
-        for (int count = 0; count < imageNames.length; count++) {
-            Integer id = Integer.parseInt(imageIDs[count]);
-            String name = imageNames[count];
-            images.add(new ProductImage(id, name, product));
-        }
-        product.setImages(images);
-    }
-
-    private void setProductDetails(String[] detailIDs, String[] detialsNames, String[] detailValues, Product product) {
-        if (detialsNames == null || detialsNames.length == 0) return;
-        if (detailValues == null || detailValues.length == 0) return;
-
-        for (int i = 0; i < detialsNames.length; i++) {
-            String name = detialsNames[i];
-            String value = detailValues[i];
-
-            Integer id = Integer.valueOf(detailIDs[i]);
-            if (id != 0) {
-                product.addDetails(id, name, value);
-            } else if (!name.isEmpty() && !value.isEmpty()) {
-                product.addDetails(name, value);
-            }
-        }
-
-    }
-
-    private void setMainImageName(MultipartFile mainImageMultipart, Product product) {
-
-        if (!mainImageMultipart.isEmpty()) {
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(mainImageMultipart.getOriginalFilename()));
-            product.setMainImage(fileName);
-        }
-    }
-
-    private void setNewExtraImageNames(List<MultipartFile> extraImageMultipart, Product product) {
-        extraImageMultipart.forEach(multipartFile -> {
-            String name = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-            if (!product.containsImageName(name)) {
-                product.addExtraImage(name);
-            }
-        });
-    }
-
-    private void saveUploadedImages(MultipartFile main, List<MultipartFile> extras, Product product) throws IOException {
-        if (!main.isEmpty()) {
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(main.getOriginalFilename()));
-            String uploadDir = "product-images/" + product.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, main);
-        }
-        if (!extras.isEmpty()) {
-            String uploadDir = "product-images/" + product.getId() + "/extras";
-            for (MultipartFile extra : extras) {
-                if (extra.isEmpty()) continue;
-                String fileName = StringUtils.cleanPath(Objects.requireNonNull(extra.getOriginalFilename()));
-                FileUploadUtil.saveFile(uploadDir, fileName, extra);
-
-            }
         }
     }
 
