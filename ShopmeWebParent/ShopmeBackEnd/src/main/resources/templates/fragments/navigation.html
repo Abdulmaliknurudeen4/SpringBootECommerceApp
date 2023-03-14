@@ -25,8 +25,8 @@
 
                 <th:block sec:authorize="hasAuthority('Admin')">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                           th:href="@{/users}" id="UserDropDown">Users</a>
+                        <a class="nav-link dropdown-toggle navdrop-element" data-toggle="dropdown"
+                           th:href="@{/users}">Users</a>
                         <div class="dropdown-menu">
                             <a th:href="@{/users/new}" class="dropdown-item">Create New</a>
                             <a th:href="@{/users}" class="dropdown-item">View All</a>
@@ -37,7 +37,7 @@
 
                 <th:block sec:authorize="hasAnyAuthority('Admin','Editor')">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle navdrop-element" data-toggle="dropdown"
                            th:href="@{/categories}">Categories</a>
                         <div class="dropdown-menu">
                             <a th:href="@{/categories/new}" class="dropdown-item">Create New</a>
@@ -49,7 +49,7 @@
 
                 <th:block sec:authorize="hasAnyAuthority('Admin','Editor')">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle navdrop-element" data-toggle="dropdown"
                            th:href="@{/brands}">Brands</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" th:href="@{'/brands/new'}">Create New</a>
@@ -61,7 +61,7 @@
 
                 <th:block sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson','Shipper')">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle navdrop-element" data-toggle="dropdown"
                            th:href="@{/products}">Products</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" th:href="@{'/products/new'}">Create New</a>
@@ -92,10 +92,9 @@
                     <span class="fas fa-user fa-2x icon-silver"></span>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"
+                    <a class="nav-link dropdown-toggle navdrop-element"
                        data-toggle="dropdown"
                        th:href="@{/account}"
-                       id="userDetail"
                        sec:authentication="principal.fullname"></a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" id="logoutLink">LogOut</a>

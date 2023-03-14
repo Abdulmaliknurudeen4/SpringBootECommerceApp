@@ -12,7 +12,11 @@ function customizeDropdownHover() {
         }, function () {
             $(this).find('.dropdown-menu').first().stop(true,true).delay(100).slideUp();
     });
-    $('#userDetail').click(function (){
+   /* $('#userDetail').click(function (){
+        location.href = this.href;
+    });*/
+    // JavaScript Code for All Nav Element click
+    $('.navdrop-element').click(function (){
         location.href = this.href;
     });
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -63,6 +62,9 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductDetail> details = new HashSet<>();
+
+    public Product() {
+    }
 
     public Set<ProductDetail> getDetails() {
         return details;
@@ -253,19 +255,19 @@ public class Product {
         this.details.add(new ProductDetail(id, name, value, this));
     }
 
-    public void setCost(float cost) {
-        this.cost = cost;
-    }
-
     public float getCost() {
         return cost;
     }
 
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
     @Transient
-    public String getShortName(){
-     if(name.length() > 70){
-         return name.substring(0, 70).concat("..");
-     }
-     return name;
+    public String getShortName() {
+        if (name.length() > 70) {
+            return name.substring(0, 70).concat("..");
+        }
+        return name;
     }
 }
