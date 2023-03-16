@@ -9,15 +9,12 @@
     </div>
 
     <div class="row">
-<<<<<<< HEAD
+
         <div class="col" th:each="cat: ${categories}">
             <div><img th:src="@{${cat.photosImagePath}}" alt=""></div>
-            <div><a>[[${cat.name}]]</a></div>
+            <div><a th:href="@{'/c/'+${cat.alias}}">[[${cat.name}]]</a></div>
         </div>
-=======
-        Hi,
-        [[${name}]]
->>>>>>> 8ff85b34710eac20d129a7eceb6b404d39290ae1
+
     </div>
 
     <div th:replace="~{navigation :: footer_menu}"></div>
