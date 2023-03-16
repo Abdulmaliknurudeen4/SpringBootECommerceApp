@@ -35,3 +35,4 @@ select * from category;
 SELECT p.name, c.name from products p JOIN category c ON p.category_id = c.id 
 WHERE c.all_parent_ids LIKE '%-23-%';
 select * from roles;
+show tables;
