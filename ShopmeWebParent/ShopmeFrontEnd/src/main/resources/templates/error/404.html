@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head th:replace="~{fragments :: head('Page Not Found Error')}"></head>
+<body>
+<div class="container-fluid">
+
+  <div th:replace="~{navigation :: header_menu}"></div>
+
+  <div class="text-center">
+    <h2 class="m-3">Sorry, The requested Resource is not present on the Server.</h2>
+  </div>
+
+  <div>
+    <h1>Developed by Nurudeen Abdulmalik</h1>
+    <h1>Developed by Nurudeen Abubakr</h1>
+  </div>
+
+  <footer th:replace="~{navigation :: footer_menu}"></footer>
+</div>
+</body>
+</html>
