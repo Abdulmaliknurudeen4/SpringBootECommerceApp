@@ -156,8 +156,8 @@ public class ProductController {
     public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             productService.deleteProduct(id);
-            String productImageDir = "product-images/" + id + "/extras";
-            String productImageDirParent = "product-images/" + id;
+            String productImageDir = "../product-images/" + id + "/extras";
+            String productImageDirParent = "../product-images/" + id;
             FileUploadUtil.removeDir(productImageDir);
             FileUploadUtil.removeDir(productImageDirParent);
             redirectAttributes.addFlashAttribute("message",

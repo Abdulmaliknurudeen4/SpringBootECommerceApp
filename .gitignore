@@ -136,10 +136,6 @@ $RECYCLE.BIN/
 *.msp
 
 ShopmeWebParent/ShopmeBackEnd/user-photos/**
-ShopmeWebParent/ShopmeBackEnd/categories-images/**
-ShopmeWebParent/ShopmeBackEnd/product-images/**
-ShopmeWebParent/ShopmeBackEnd/brand-logos/**
-
 ShopmeWebParent/categories-images/**
 ShopmeWebParent/product-images/**
 ShopmeWebParent/brand-logos/**

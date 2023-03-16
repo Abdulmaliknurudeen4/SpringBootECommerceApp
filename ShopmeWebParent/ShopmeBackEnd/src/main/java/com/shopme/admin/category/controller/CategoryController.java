@@ -121,7 +121,7 @@ public class CategoryController {
             category.setPhoto(fileName);
             System.out.println(category.getPhoto());
             Category savedCategory = categoryService.save(category);
-            String uploadDir = "categories-images/" + savedCategory.getId();
+            String uploadDir = "../categories-images/" + savedCategory.getId();
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, photoMultipart);
 
@@ -159,7 +159,7 @@ public class CategoryController {
     @GetMapping("/categories/delete/{id}")
     public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
-            String dir = "./categories-images/"+id;
+            String dir = "../categories-images/"+id;
             categoryService.deleteCategory(id);
             System.out.println(Paths.get(dir).toAbsolutePath());
             FileUploadUtil.removeDir(dir);
@@ -172,35 +172,3 @@ public class CategoryController {
         return "redirect:/categories";
     }
 }
-
-/*    @GetMapping("/categories/page/{pageNum}")
-    public String listByPage(@PathVariable(name="pageNum") int pageNum, Model model,
-                             @Param("sortField") String sortField, @Param("sortDir") String sortDir,
-                             @Param("keyword") String keyword){
-
-        Page<Category> page = categoryService.listByPage(pageNum, sortField, sortDir, keyword);
-        List<Category> listCategories = page.getContent();
-        pageNum = (pageNum <= 0) ? 0 : pageNum;
-
-        long startCount = (long) (pageNum - 1) * CategoryService.CATEGORIES_PER_PAGE + 1;
-        long endCount = startCount + CategoryService.CATEGORIES_PER_PAGE - 1;
-
-        // Getting to the last page with uneven elements
-        if (endCount > page.getTotalElements()) {
-            endCount = page.getTotalElements();
-        }
-
-        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listCategories", listCategories);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", reverseSortDir);
-        model.addAttribute("keyword", keyword);
-        return "category/categories";
-    }*/

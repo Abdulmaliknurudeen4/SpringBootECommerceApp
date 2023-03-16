@@ -3,8 +3,6 @@ package com.shopme.admin.brand.controller;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.category.CategoryService;
-import com.shopme.admin.user.UserNotFoundExcpetion;
-import com.shopme.admin.user.UserService;
 import com.shopme.entity.Brand;
 import com.shopme.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +30,17 @@ public class BrandController {
 
     @Autowired
     private CategoryService categoryService;
+
+    private static String getRedirectURLToAffectedBrand(Brand brand) {
+        String keyPart = brand.getName();
+        return "redirect:/brands/page/1?sortField=name&sortDir=asc&keyword=" + keyPart;
+    }
+
     @GetMapping("/brands")
     public String listFirstPage(Model model) {
         return listByPage(1, model, "name", "asc", null);
     }
+
     @GetMapping("/brands/page/{pageNum}")
     public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
                              @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
@@ -82,7 +87,6 @@ public class BrandController {
         return "brand/brand_form";
     }
 
-
     @PostMapping("brands/save")
     public String saveBrand(Brand brand, RedirectAttributes redirectAttributes, Model model,
                             @RequestParam(name = "image") MultipartFile photoMultipart) throws IOException {
@@ -91,7 +95,7 @@ public class BrandController {
             brand.setLogo(fileName);
             System.out.println(brand.getLogo());
             Brand savedBrand = brandService.save(brand);
-            String uploadDir = "brand-photos/" + savedBrand.getId();
+            String uploadDir = "../brand-logos/" + savedBrand.getId();
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, photoMultipart);
 
@@ -103,12 +107,6 @@ public class BrandController {
         // Review
         redirectAttributes.addFlashAttribute("message", "The brand has been saved successfully. !");
         return getRedirectURLToAffectedBrand(brand);
-    }
-
-    private static String getRedirectURLToAffectedBrand(Brand brand) {
-//        String keyPart = brand.getName();
-//        return "redirect:/brands/page/1?sortField=name&sortDir=asc&keyword=" + keyPart;
-        return "redirect:/brands";
     }
 
     @GetMapping("/brands/edit/{id}")
@@ -133,6 +131,8 @@ public class BrandController {
     public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             brandService.deleteBrand(id);
+            String uploadDir = "../brand-logos/" + id;
+            FileUploadUtil.removeDir(uploadDir);
             redirectAttributes.addFlashAttribute("message",
                     "The Brand with the ID : " + id + " has been deleted Successfully!");
         } catch (BrandNotFoundException e) {

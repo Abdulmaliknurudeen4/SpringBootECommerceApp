@@ -82,7 +82,7 @@ public class CategoryService {
             if(categoryByName != null){
                 return "DuplicateName";
             }else {
-                return (categoryRepository.findByAlias(alias) != null) ? "DuplicateAlias" : "";
+                return (categoryRepository.findByAlias(alias) != null) ? "DuplicateAlias" : "OK";
             }
         }else{
             if(categoryByName != null && categoryByName.getId() != id)
