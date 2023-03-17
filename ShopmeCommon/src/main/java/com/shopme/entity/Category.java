@@ -174,7 +174,7 @@ public class Category implements Serializable {
     }
 
     public boolean hasChildren(){
-        return !this.children.isEmpty();
+        return !(this.getChildren().size() == 0 || this.getChildren() == null);
     }
 
     public String getAllParentIDs() {

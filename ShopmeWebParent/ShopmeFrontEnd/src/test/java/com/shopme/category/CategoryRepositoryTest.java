@@ -28,4 +28,11 @@ public class CategoryRepositoryTest {
     public void testGetAllEnabeledCategory() {
         assertThat(categoryRepository.findAllEnabled()).isNotEmpty().allMatch(Category::isEnabled);
     }
+
+    @Test
+    public void testCategoryByAlias() {
+        String alias = "electronics";
+        Category byAliasEnabled = categoryRepository.findByAliasEnabled(alias);
+        assertThat(byAliasEnabled).isNotNull();
+    }
 }
