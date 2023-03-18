@@ -1,4 +1,4 @@
-package com.shopme.admin.category.controller;
+package com.shopme.exception;
 
 import java.io.Serializable;
 
