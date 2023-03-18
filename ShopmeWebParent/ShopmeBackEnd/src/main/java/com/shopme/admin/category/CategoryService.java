@@ -1,6 +1,6 @@
 package com.shopme.admin.category;
 
-import com.shopme.admin.category.controller.CategoryNotFoundException;
+import com.shopme.exception.CategoryNotFoundException;
 import com.shopme.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

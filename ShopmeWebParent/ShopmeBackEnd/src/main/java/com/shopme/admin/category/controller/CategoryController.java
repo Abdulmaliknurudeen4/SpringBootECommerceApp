@@ -4,6 +4,7 @@ import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.category.CategoryCSVExporter;
 import com.shopme.admin.category.CategoryService;
 import com.shopme.entity.Category;
+import com.shopme.exception.CategoryNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

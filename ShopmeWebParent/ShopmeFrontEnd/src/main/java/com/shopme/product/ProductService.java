@@ -1,6 +1,7 @@
 package com.shopme.product;
 
 import com.shopme.entity.Product;
+import com.shopme.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,5 +19,13 @@ public class ProductService {
         Pageable pageable = PageRequest.of(pageNum - 1, PRODUCT_PER_PAGE);
 
         return productRepository.listByCategory(categoryID, categoryIdMatch, pageable);
+    }
+
+    public Product getProduct(String alias) throws ProductNotFoundException {
+        Product product = productRepository.findByAlias(alias);
+        if(product == null){
+            throw  new ProductNotFoundException("Could not find any Product with alias " +alias);
+        }
+        return product;
     }
 }

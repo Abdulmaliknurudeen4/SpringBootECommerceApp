@@ -22,7 +22,7 @@ public class Category implements Serializable {
     private String photo;
     private boolean enabled;
 
-    @Column(name="all_parent_ids", length = 255, nullable = true)
+    @Column(name = "all_parent_ids", length = 255, nullable = true)
     private String allParentIDs;
 
     @OneToOne
@@ -30,6 +30,7 @@ public class Category implements Serializable {
     private Category parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    @OrderBy("name asc")
     private Set<Category> children = new HashSet<>();
 
     public Category() {
@@ -39,33 +40,6 @@ public class Category implements Serializable {
         this.id = id;
         this.name = name;
         this.alias = alias;
-    }
-
-    public static Category copyIdAndName(Category category){
-        Category copyCategory = new Category();
-        copyCategory.setId(category.getId());
-        copyCategory.setName(category.getName());
-        return copyCategory;
-    }
-
-    public static Category copyIdAndName(Integer id, String name){
-        Category copyCategory = new Category();
-        copyCategory.setId(id);
-        copyCategory.setName(name);
-        return copyCategory;
-    }
-    public static Category copyFull(Category category){
-        Category copyCategory = new Category();
-        copyCategory.setId(category.getId());
-        copyCategory.setName(category.getName());
-        copyCategory.setPhoto(category.getPhoto());
-        copyCategory.setEnabled(category.isEnabled());
-        return copyCategory;
-    }
-    public static Category copyFull(Category category, String name){
-        Category copyCategory = Category.copyFull(category);
-        copyCategory.setName(name);
-        return copyCategory;
     }
 
     public Category(String name) {
@@ -85,6 +59,35 @@ public class Category implements Serializable {
         this.name = name;
         this.alias = alias;
         this.photo = photo;
+    }
+
+    public static Category copyIdAndName(Category category) {
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+        return copyCategory;
+    }
+
+    public static Category copyIdAndName(Integer id, String name) {
+        Category copyCategory = new Category();
+        copyCategory.setId(id);
+        copyCategory.setName(name);
+        return copyCategory;
+    }
+
+    public static Category copyFull(Category category) {
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+        copyCategory.setPhoto(category.getPhoto());
+        copyCategory.setEnabled(category.isEnabled());
+        return copyCategory;
+    }
+
+    public static Category copyFull(Category category, String name) {
+        Category copyCategory = Category.copyFull(category);
+        copyCategory.setName(name);
+        return copyCategory;
     }
 
     public Integer getId() {
@@ -173,7 +176,7 @@ public class Category implements Serializable {
         return "/categories-images/" + this.id + "/" + this.photo;
     }
 
-    public boolean hasChildren(){
+    public boolean hasChildren() {
         return !(this.getChildren().size() == 0 || this.getChildren() == null);
     }
 
