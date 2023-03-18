@@ -9,7 +9,19 @@
 
     <div class="row">
         <div class="col-sm">
-            <div><img th:src="@{${product.mainImagePath}}" class="img-fluid"></div>
+            <div><img id="bigImage" th:src="@{${product.mainImagePath}}"/>
+            </div>
+            <div class="row justify-content-center">
+                <div class="m-2 border p-1">
+                    <img class="image-thumbnail" th:src="@{${product.mainImagePath}}" index="0" height="50">
+                </div>
+                <th:block th:each="extraImage, status : ${product.images}">
+                    <div class="m-2 border-secondary p-1">
+                        <img class="image-thumbnail" th:src="@{${extraImage.imagePath}}" height="50"
+                             th:index="${status.count}"/>
+                    </div>
+                </th:block>
+            </div>
         </div>
         <div class="col-sm">
             <div>
@@ -75,7 +87,37 @@
         </div>
     </div>
 
+    <div th:replace="~{product/images_carousel :: content}"></div>
     <div th:replace="~{navigation :: footer_menu}"></div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let bigImage = $("#bigImage");
+            $(".image-thumbnail").mouseover(function () {
+                let currentImage = $(this).attr("src");
+                let currentImageIndex = $(this).attr("index");
+
+
+                bigImage.attr("src", currentImage);
+                bigImage.attr("index", currentImageIndex);
+            });
+
+            bigImage.on("click", function () {
+                $("#carouselModal").modal();
+                let imageIndex = parseInt(bigImage.attr("index"));
+                $("#carouselExampleIndicators").carousel(imageIndex);
+            })
+        });
+    </script>
+
+    <style>
+        @media (min-width: 768px) {
+            .modal-xl {
+                width: 90%;
+                max-width: 1200px;
+            }
+        }
+    </style>
 
 </div>
 </body>
