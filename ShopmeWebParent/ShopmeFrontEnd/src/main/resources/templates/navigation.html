@@ -8,7 +8,7 @@
                 th:src="@{/images/ShopmeAdminSmall.png}"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#topNavbar"
+                data-target="#topNavbar, #searchNavBar"
                 aria-controls="topNavbar" aria-expanded="false"
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -80,6 +80,20 @@
             <p>Shopme - Copyright &copy; Shopme Ltd.</p>
         </div>
     </footer>
+
+    <div th:fragment="search_nav">
+        <div class="col-md">
+            <nav class="navbar navbar-expand-sm bg-light">
+                <div class="collapse navbar-collapse" id="searchNavBar">
+                    <form class="form-inline" th:action="@{/search}">
+                        <input type="search" name="keyword" class="form-control mr-sm-2" th:value="${keyword}"
+                               required/>
+                        <input type="submit" class="btn btn-outline-success" value="Search"/>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </div>
 </div>
 
 
