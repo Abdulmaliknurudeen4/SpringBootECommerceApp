@@ -139,6 +139,7 @@ ShopmeWebParent/ShopmeBackEnd/user-photos/**
 ShopmeWebParent/categories-images/**
 ShopmeWebParent/product-images/**
 ShopmeWebParent/brand-logos/**
+ShopmeWebParent/site-logo/**
 
 # Windows shortcuts
 *.lnk

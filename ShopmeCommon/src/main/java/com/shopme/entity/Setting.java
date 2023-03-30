@@ -18,6 +18,10 @@ public class Setting {
     public Setting() {
     }
 
+    public Setting(String settingKey) {
+        this.settingKey = settingKey;
+    }
+
     public Setting(String settingKey, String value, SettingCategory settingCategory) {
         this.settingKey = settingKey;
         this.value = value;
@@ -53,11 +57,17 @@ public class Setting {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Setting setting = (Setting) o;
-        return settingKey.equals(setting.settingKey) && value.equals(setting.value) && settingCategory.equals(setting.settingCategory);
+        return settingKey.equals(setting.settingKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(settingKey, value, settingCategory);
+        return Objects.hash(settingKey);
+
+    }
+
+    @Override
+    public String toString() {
+        return "Setting [ key =" + settingKey + ", value = " + value + " ]";
     }
 }

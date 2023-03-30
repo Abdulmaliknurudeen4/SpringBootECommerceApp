@@ -1,5 +1,6 @@
-package com.shopme.admin.currency;
+package com.shopme.admin.setting;
 
+import com.shopme.admin.setting.CurrencyRespository;
 import com.shopme.entity.Currency;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,14 @@ public class CurrencyRepositoryTest {
         );
         Iterable<Currency> currencies1 = currencyRespository.saveAll(currencies);
         assertThat(currencies1.iterator()).isNotNull();
+    }
+
+    @Test
+    public void testListAllOrderbyNameAsc() {
+        List<Currency> currencies = currencyRespository.findAllByOrderByNameAsc();
+        currencies.forEach(System.out::println);
+        assertThat(currencies).isNotEmpty();
+
     }
 
 }

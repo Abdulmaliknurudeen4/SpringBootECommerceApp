@@ -58,4 +58,12 @@ public class SettingRepositoryTest {
         Iterable<Setting> settings = settingRepository.saveAll(List.of(currencyId, symbol, position, pointype, digits, thousandpointType));
         assertThat(settings).isNotEmpty();
     }
+
+    @Test
+    public void testListSetting() {
+        SettingCategory currency = settingCategoryRepository.findbyCategory("CURRENCY");
+        List<Setting> settings = settingRepository.findBySettingCategory(currency);
+        settings.forEach(System.out::println);
+        assertThat(settings).isNotEmpty();
+    }
 }

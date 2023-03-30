@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{fragments/fragments :: head('Settings - Shopme Admin')}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
+
+    <div>
+        <h1>Site Settings.</h1>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success text-center"
+         th:text="${message}">[[${message}]]
+    </div>
+
+    <div>
+        <ul class="nav nav-tabs" id="settingTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="general-tab" data-toggle="tab" href="#overview" role="tab"
+                   aria-controls="general"
+                   aria-selected="true">General</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="countries-tab" data-toggle="tab" href="#countries" role="tab"
+                   aria-controls="countries" aria-selected="false">Countries</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="states-tab" data-toggle="tab" href="#states" role="tab"
+                   aria-controls="states" aria-selected="false">States</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="mailServer-tab" data-toggle="tab" href="#mailServer" role="tab"
+                   aria-controls="mailServer" aria-selected="false">Mail Server</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="mailTemplate-tab" data-toggle="tab" href="#mailTemplate" role="tab"
+                   aria-controls="mailTemplate" aria-selected="false">Mail Template</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+
+            <div class="tab-pane drop show active p-3" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <div th:replace="~{settings/general ::content}"></div>
+            </div>
+
+            <div class="tab-pane drop" id="countries" role="tabpanel" aria-labelledby="countries-tab">
+                Countries
+            </div>
+
+            <div class="tab-pane drop" id="states" role="tabpanel" aria-labelledby="states-tab">
+                States
+            </div>
+
+            <div class="tab-pane drop" id="mailServer" role="tabpanel" aria-labelledby="mailServer-tab">
+                Mail Server
+            </div>
+
+            <div class="tab-pane drop" id="mailTemplate" role="tabpanel" aria-labelledby="mailTemplate-tab">
+                Mail Template
+            </div>
+        </div>
+
+    </div>
+
+
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
+
+</div>
+
+<script type="text/javascript"
+        th:src="@{/js/common_form.js}"></script>
+<script type="text/javascript">
+    MAX_FILE_SIZE = 102400; //100KB
+</script>
+</body>
+</html>

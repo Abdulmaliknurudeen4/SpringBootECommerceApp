@@ -55,4 +55,9 @@ public class Currency {
     public int hashCode() {
         return Objects.hash(id, name, symbol, code);
     }
+
+    @Override
+    public String toString() {
+        return new StringBuffer().append(name).append("-").append(code).append("-").append(symbol).toString();
+    }
 }

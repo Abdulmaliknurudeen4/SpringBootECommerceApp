@@ -49,4 +49,9 @@ public class SettingCategory {
     public int hashCode() {
         return Objects.hash(id, category);
     }
+
+    @Override
+    public String toString() {
+        return "category = " + category;
+    }
 }
