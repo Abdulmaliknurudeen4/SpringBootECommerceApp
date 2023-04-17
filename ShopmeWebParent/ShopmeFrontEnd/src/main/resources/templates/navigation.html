@@ -5,7 +5,7 @@
 <div th:fragment="header_menu">
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
         <a class="navbar-brand" th:href="@{/}"> <img
-                th:src="@{/images/ShopmeAdminSmall.png}"/>
+                th:src="@{${SITE_LOGO}}"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#topNavbar, #searchNavBar"
@@ -77,25 +77,25 @@
     </div>
     <footer th:fragment="footer">
         <div>
-            <p>Shopme - Copyright &copy; Shopme Ltd.</p>
+            <p class="text-center">[[${COPYRIGHT}]]</p>
         </div>
     </footer>
 
-    <div th:fragment="search_nav">
-        <div class="col-md">
-            <nav class="navbar navbar-expand-sm bg-light">
-                <div class="collapse navbar-collapse" id="searchNavBar">
-                    <form class="form-inline" th:action="@{/search}">
-                        <input type="search" name="keyword" class="form-control mr-sm-2" th:value="${keyword}"
-                               required/>
-                        <input type="submit" class="btn btn-outline-success" value="Search"/>
-                    </form>
-                </div>
-            </nav>
-        </div>
-    </div>
 </div>
 
+<div th:fragment="search_nav">
+    <div class="col-md">
+        <nav class="navbar navbar-expand-sm bg-light">
+            <div class="collapse navbar-collapse" id="searchNavBar">
+                <form class="form-inline" th:action="@{/search}">
+                    <input type="search" name="keyword" class="form-control mr-sm-2" th:value="${keyword}"
+                           required/>
+                    <input type="submit" class="btn btn-outline-success" value="Search"/>
+                </form>
+            </div>
+        </nav>
+    </div>
+</div>
 
 </body>
 </html>

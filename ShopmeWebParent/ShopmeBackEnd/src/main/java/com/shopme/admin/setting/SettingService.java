@@ -39,4 +39,5 @@ public class SettingService {
     public void saveAll(Iterable<Setting> settingIterator) {
         settingRepository.saveAll(settingIterator);
     }
+
 }
