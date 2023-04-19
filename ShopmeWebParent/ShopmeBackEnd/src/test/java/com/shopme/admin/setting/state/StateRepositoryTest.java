@@ -1,8 +1,7 @@
-package com.shopme.setting;
+package com.shopme.admin.setting.state;
 
 import com.shopme.entity.Country;
 import com.shopme.entity.State;
-import com.shopme.settings.StateRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

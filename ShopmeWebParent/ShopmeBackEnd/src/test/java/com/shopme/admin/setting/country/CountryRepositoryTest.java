@@ -1,7 +1,6 @@
-package com.shopme.setting;
+package com.shopme.admin.setting.country;
 
 import com.shopme.entity.Country;
-import com.shopme.settings.CountryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

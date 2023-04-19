@@ -1,5 +1,6 @@
 package com.shopme.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -14,6 +15,7 @@ public class State {
     private String name;
 
     @ManyToOne
+    @JsonBackReference
     private Country country;
 
     @Override

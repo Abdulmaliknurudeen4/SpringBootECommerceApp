@@ -1,14 +1,16 @@
 package com.shopme.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "country")
-public class Country {
+public class Country implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +20,8 @@ public class Country {
 
     @Column(nullable = false, length = 5)
     private String code;
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+    @JsonManagedReference
     private Set<State> states = new HashSet<>();
 
     public Country() {
@@ -64,16 +67,16 @@ public class Country {
         this.name = name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     public Set<State> getStates() {
         return states;
     }
 
     public void setStates(Set<State> states) {
         this.states = states;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public void setCode(String code) {

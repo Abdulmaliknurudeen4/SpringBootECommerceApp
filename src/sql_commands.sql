@@ -9,7 +9,7 @@ select * from category;
 truncate category;
 truncate users_roles;
 truncate users;
-SET SQL_SAFE_UPDATES = 1;
+SET SQL_SAFE_UPDATES = 0;
 delete from users;
 delete from roles;
 delete from brands;
@@ -40,4 +40,7 @@ show tables;
 select * from settings;
 select * from products where price>1000;
 
-show tables;
+select * from country;
+select * from state;
+delete from country where name = "China";
+select * from state;
