@@ -45,7 +45,7 @@
             </div>
 
             <div class="tab-pane drop" id="countries" role="tabpanel" aria-labelledby="countries-tab">
-                Countries
+                <div th:replace="~{settings/countries ::content}"></div>
             </div>
 
             <div class="tab-pane drop" id="states" role="tabpanel" aria-labelledby="states-tab">
@@ -63,6 +63,14 @@
 
     </div>
 
+    <div class="toast justify-content-center d-flex" role="alert" aria-live="polite" aria-atomic="true" data-delay="3000">
+        <div role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body">
+                <span id="toastMessage"></span>
+            </div>
+        </div>
+    </div>
+
 
     <footer th:replace="~{fragments/fragments :: footer}"></footer>
 
@@ -72,6 +80,9 @@
         th:src="@{/js/common_form.js}"></script>
 <script type="text/javascript">
     MAX_FILE_SIZE = 102400; //100KB
+    contextPath = "[[@{/}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+    var csrfValue = "[[${_csrf.token}]]";
 </script>
 </body>
 </html>
