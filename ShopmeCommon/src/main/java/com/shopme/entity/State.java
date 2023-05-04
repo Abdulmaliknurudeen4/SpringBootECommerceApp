@@ -18,6 +18,14 @@ public class State {
     @JsonBackReference
     private Country country;
 
+    public State(String name, Country country) {
+        this.name = name;
+        this.country = country;
+    }
+
+    public State() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
