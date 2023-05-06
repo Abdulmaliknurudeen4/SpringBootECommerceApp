@@ -20,9 +20,9 @@ public class Country implements Serializable {
 
     @Column(nullable = false, length = 5)
     private String code;
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<State> states = new HashSet<>();
+    private final Set<State> states = new HashSet<>();
 
     public Country() {
     }
@@ -69,14 +69,6 @@ public class Country implements Serializable {
 
     public String getCode() {
         return code;
-    }
-
-    public Set<State> getStates() {
-        return states;
-    }
-
-    public void setStates(Set<State> states) {
-        this.states = states;
     }
 
     public void setCode(String code) {

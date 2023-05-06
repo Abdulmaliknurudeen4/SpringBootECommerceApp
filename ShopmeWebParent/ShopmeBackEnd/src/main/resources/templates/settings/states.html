@@ -1,0 +1,58 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div>
+        <p>Use this page to manage countries which wil be displayed in the customer registration form.
+            Click Load Country List first.</p>
+    </div>
+
+    <div>
+        <input type="button"
+               id="loadCountriesForStateBtn"
+               value="Load Country List"
+               class="btn btn-primary">
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-8">
+            <label for="dropDownCountriesList">
+                Selected Country:
+            </label>
+            <select class="form-control" id="dropDownCountriesList">
+            </select>
+        </div>
+    </div>
+
+    <div>
+        <p>Use this page to manage states which wil be displayed in the customer registration form.
+            Click Load States List first.</p>
+        <select
+                class="form-control m-2"
+                id="listStateViewPanels"
+                style="height: 300px"
+                size="3">
+        </select>
+    </div>
+
+
+    <div class="form-group row ml-2">
+
+        <label class="col-form-label" id="stateNameLabel">State/Province Name: </label>
+        <div class="col-md">
+            <input type="text" name="" id="fieldStateName" class="form-control mt-2"/>
+        </div>
+
+        <div class="col-lg-4 mt-2">
+            <input type="button" id="addStateButton" value="Add" class="btn btn-secondary mr-2">
+            <input type="button" id="updateStateButton" value="Update" class="btn btn-secondary mr-2" disabled>
+            <input type="button" id="deleteStateButton" value="Delete" class="btn btn-secondary mr-2" disabled>
+        </div>
+    </div>
+
+    <script type="text/javascript"
+            th:src="@{/js/states_settings.js}"></script>
+
+</div>
+</body>
+</html>
