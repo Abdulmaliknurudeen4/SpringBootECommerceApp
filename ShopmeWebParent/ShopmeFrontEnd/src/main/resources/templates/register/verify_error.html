@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{navigation :: header_menu}"></div>
+    <div class="text-center">
+        <h1>Customer Registration.</h1>
+    </div>
+
+    <div class="text-center">
+        <p>Your verification Code was invalid or you're enabled.</p>
+
+        <a th:href="@{/login}">Go Back Home</a>
+    </div>
+
+
+    <div th:replace="~{navigation :: footer_menu}"></div>
+    <script type="text/javascript">
+        contextPath = "[[@{/}]]";
+    </script>
+
+</div>
+</body>
+</html>

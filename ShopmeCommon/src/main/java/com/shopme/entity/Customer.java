@@ -45,7 +45,7 @@ public class Customer {
     @Column(name = "postal_code", nullable = false, length = 10)
     private String postalCode;
 
-    @Column(name = "verification_code", unique = true, nullable = false, length = 10)
+    @Column(name = "verification_code", unique = true, length = 64)
     private String verficationCode;
 
     @Column(nullable = false)
@@ -174,7 +174,7 @@ public class Customer {
         this.enabled = enabled;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 }

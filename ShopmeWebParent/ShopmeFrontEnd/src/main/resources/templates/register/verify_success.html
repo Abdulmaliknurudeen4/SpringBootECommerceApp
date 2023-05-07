@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${pageTitle})}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{navigation :: header_menu}"></div>
+    <div class="text-center">
+        <h1>Customer Registration.</h1>
+    </div>
+
+    <div class="text-center">
+        <h2>Customer Verfication Sucessful</h2>
+        <p>You have successfully verfied your account.</p>
+
+        <a th:href="@{/login}">Login Here</a>
+    </div>
+
+
+    <div th:replace="~{navigation :: footer_menu}"></div>
+    <script type="text/javascript">
+        contextPath = "[[@{/}]]";
+    </script>
+
+</div>
+</body>
+</html>

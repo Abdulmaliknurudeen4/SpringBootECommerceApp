@@ -9,6 +9,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -78,5 +79,11 @@ public class CustomerController {
 
         System.out.println("to Address" + toAddress);
         System.out.println("Verify URL" + verifyURL);
+    }
+
+    @GetMapping("/verify")
+    public String verifyAccount(@Param("code") String code, Model model) {
+        boolean verified = customerService.verify(code);
+        return "register/" + (verified ? "verify_success" : "verify_error");
     }
 }
