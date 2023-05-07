@@ -63,6 +63,7 @@ function deleteCountry() {
 }
 
 function updateCountry() {
+    if (!checkFormValidity("statesForm")) return;
     let url = contextPath + "countries/save";
     let countryName = fieldCountryName.val();
     let countryCode = fieldCountryCode.val();
@@ -88,6 +89,9 @@ function updateCountry() {
 }
 
 function addCountry() {
+
+    if (!checkFormValidity("countryForm")) return;
+
     let url = contextPath + "countries/save";
     let countryName = fieldCountryName.val();
     let countryCode = fieldCountryCode.val();

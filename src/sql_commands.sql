@@ -1,5 +1,5 @@
 show tables;
-desc category;
+desc customers;
 drop table category;
 select * from roles;
 select * from users_roles;
@@ -38,11 +38,17 @@ select * from roles;
 show tables;
 
 select * from settings;
+desc settings;
+select * from settings_category;
 select * from products where price>1000;
 
-select * from country;
+select * from country where name = "Nigeria";
 select * from state;
 delete from country where name = "China";
 select * from state;
 truncate state;
 delete from country;
+
+select * from country;
+select * from state where name = "";
+delete from state where name ="";

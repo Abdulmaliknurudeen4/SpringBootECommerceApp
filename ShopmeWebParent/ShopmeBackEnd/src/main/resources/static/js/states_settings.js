@@ -71,6 +71,7 @@ function deleteState() {
 }
 
 function updateState() {
+    if (!checkFormValidity("statesForm")) return;
     let selectedState = $('#listStateViewPanels option:selected');
     let url = contextPath + "states/save";
     let stateId = selectedState.val();
@@ -116,6 +117,7 @@ function changeFormStateToNewForState() {
 }
 
 function addState() {
+    if (!checkFormValidity("statesForm")) return;
     let url = contextPath + "states/save";
     let stateName = fieldStateName.val();
     let countryId = loadCountriesListDropDown.val().split("-")[0];

@@ -35,20 +35,22 @@
         </select>
     </div>
 
+    <form id="statesForm">
+        <div class="form-group row ml-2">
 
-    <div class="form-group row ml-2">
+            <label class="col-form-label" id="stateNameLabel">State/Province Name: </label>
+            <div class="col-md">
+                <input type="text" name="" id="fieldStateName" class="form-control mt-2" required minlength="5"
+                       maxlength="45"/>
+            </div>
 
-        <label class="col-form-label" id="stateNameLabel">State/Province Name: </label>
-        <div class="col-md">
-            <input type="text" name="" id="fieldStateName" class="form-control mt-2"/>
+            <div class="col-lg-4 mt-2">
+                <input type="button" id="addStateButton" value="Add" class="btn btn-secondary mr-2">
+                <input type="button" id="updateStateButton" value="Update" class="btn btn-secondary mr-2" disabled>
+                <input type="button" id="deleteStateButton" value="Delete" class="btn btn-secondary mr-2" disabled>
+            </div>
         </div>
-
-        <div class="col-lg-4 mt-2">
-            <input type="button" id="addStateButton" value="Add" class="btn btn-secondary mr-2">
-            <input type="button" id="updateStateButton" value="Update" class="btn btn-secondary mr-2" disabled>
-            <input type="button" id="deleteStateButton" value="Delete" class="btn btn-secondary mr-2" disabled>
-        </div>
-    </div>
+    </form>
 
     <script type="text/javascript"
             th:src="@{/js/states_settings.js}"></script>

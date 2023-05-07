@@ -4,7 +4,7 @@
 <div th:fragment="content" th:remove="tag">
     <div>
         <p>Use this page to manage countries which wil be displayed in the customer registration form.
-        Click Load Country List first.</p>
+            Click Load Country List first.</p>
     </div>
 
     <div>
@@ -22,24 +22,26 @@
                 size="3">
         </select>
     </div>
-    <div class="form-group row ml-2">
-        <label class="col-form-label" id="labelCountryName">Country Name: </label>
-        <div class="col-md">
-            <input type="text" name="" id="fieldCountryName" class="form-control mt-2"/>
-        </div>
+    <form id="countryForm">
+        <div class="form-group row ml-2">
+            <label class="col-form-label" id="labelCountryName">Country Name: </label>
+            <div class="col-md">
+                <input type="text" name="" id="fieldCountryName" class="form-control mt-2" required minlength="2"
+                       maxlength="15"/>
+            </div>
 
-        <label class="col-form-label mt-2">Code: </label>
-        <div class="col-md">
-            <input type="text" name="" id="fieldCountryCode" class="form-control mt-2"/>
-        </div>
+            <label class="col-form-label mt-2">Code: </label>
+            <div class="col-md">
+                <input type="text" name="" id="fieldCountryCode" class="form-control mt-2" minlength="2" maxlength="5"/>
+            </div>
 
-        <div class="col-lg-4 mt-2">
-            <input type="button" id="addButton" value="Add" class="btn btn-secondary mr-2">
-            <input type="button" id="updateButton" value="Update" class="btn btn-secondary mr-2" disabled>
-            <input type="button" id="deleteButton" value="Delete" class="btn btn-secondary mr-2" disabled>
+            <div class="col-lg-4 mt-2">
+                <input type="button" id="addButton" value="Add" class="btn btn-secondary mr-2">
+                <input type="button" id="updateButton" value="Update" class="btn btn-secondary mr-2" disabled>
+                <input type="button" id="deleteButton" value="Delete" class="btn btn-secondary mr-2" disabled>
+            </div>
         </div>
-    </div>
-
+    </form>
     <script type="text/javascript"
             th:src="@{/js/countries_settings.js}"></script>
 

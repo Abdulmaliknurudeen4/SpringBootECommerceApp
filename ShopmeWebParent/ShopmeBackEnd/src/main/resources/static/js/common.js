@@ -27,3 +27,12 @@ function checkPasswordMatch(confirmPassword){
         confirmPassword.setCustomValidity("");
     }
 }
+
+function checkFormValidity(formId){
+    formHolder = document.getElementById(formId);
+    if(!formHolder.checkValidity()){
+        formHolder.reportValidity();
+        return false;
+    }
+    return true;
+}
