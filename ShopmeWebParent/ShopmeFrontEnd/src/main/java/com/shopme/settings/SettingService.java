@@ -24,4 +24,13 @@ public class SettingService {
 
         return settings;
     }
+
+    public EmailSettingBag getEmailSettings() {
+        SettingCategory MAIL_SERVER = sgRepo.findbyCategory("MAIL_SERVER");
+        SettingCategory MAIL_TEMPLATE = sgRepo.findbyCategory("MAIL_TEMPLATE");
+
+        List<Setting> settings = settingRepository.findByCategories(List.of(MAIL_SERVER, MAIL_TEMPLATE));
+
+        return new EmailSettingBag(settings);
+    }
 }

@@ -173,4 +173,8 @@ public class Customer {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
 }

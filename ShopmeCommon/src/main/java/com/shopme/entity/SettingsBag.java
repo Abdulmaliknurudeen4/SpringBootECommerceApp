@@ -11,7 +11,7 @@ public class SettingsBag {
 
     public Setting get(String key) {
         int index = listSettings.indexOf(new Setting(key));
-        if (index > 0) {
+        if (index >= 0) {
             return listSettings.get(index);
         }
         return null;
