@@ -40,4 +40,25 @@ public class SettingService {
         settingRepository.saveAll(settingIterator);
     }
 
+    public GeneralSettingBag getMailServerSettings() {
+        SettingCategory mailServer = sgRepo.findbyCategory("MAIL_SERVER");
+
+        List<Setting> mailServerSettings = settingRepository.findBySettingCategory(mailServer);
+
+        List<Setting> settings = new ArrayList<>(mailServerSettings);
+
+
+        return new GeneralSettingBag(settings);
+    }
+
+    public GeneralSettingBag getMailTemplateSettings() {
+        SettingCategory mailTemplate = sgRepo.findbyCategory("MAIL_TEMPLATE");
+
+        List<Setting> mailTemplateSetings = settingRepository.findBySettingCategory(mailTemplate);
+
+        List<Setting> settings = new ArrayList<>(mailTemplateSetings);
+
+
+        return new GeneralSettingBag(settings);
+    }
 }

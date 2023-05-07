@@ -80,5 +80,21 @@ public class SettingController {
 
         service.saveAll(listSettings);
     }
+
+    @PostMapping("/settings/save_mail_server")
+    public String saveMailServerSettings(HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+        GeneralSettingBag settingBag = service.getMailServerSettings();
+        updateSettingValueFromForm(request, settingBag.list());
+        redirectAttributes.addFlashAttribute("message", "Mail Server Settings have been saved");
+        return "redirect:/settings";
+    }
+
+    @PostMapping("/settings/save_mail_template")
+    public String saveMailTemplateSettings(HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
+        GeneralSettingBag settingBag = service.getMailTemplateSettings();
+        updateSettingValueFromForm(request, settingBag.list());
+        redirectAttributes.addFlashAttribute("message", "Mail Template Settings have been saved");
+        return "redirect:/settings";
+    }
 }
 
