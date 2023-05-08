@@ -52,3 +52,6 @@ delete from country;
 select * from country;
 select * from state where name = "";
 delete from state where name ="";
+
+select * from customers;
+delete from customers where id =12;

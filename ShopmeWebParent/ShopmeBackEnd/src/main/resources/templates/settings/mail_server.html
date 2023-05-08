@@ -50,10 +50,10 @@
             <label class="col-sim-4 col-form-label">Server Authentication Required: </label>
             <div class="col-sm-8">
                 <select name="SMTP_AUTH" class="form-control">
-                    <option value="before"
+                    <option value="true"
                             th:selected="${SMTP_AUTH == 'true'}">True
                     </option>
-                    <option value="after"
+                    <option value="false"
                             th:selected="${SMTP_AUTH == 'false'}">False
                     </option>
                 </select>
@@ -64,10 +64,10 @@
             <label class="col-sim-4 col-form-label">Server Requires Secured Connection (TLS) : </label>
             <div class="col-sm-8">
                 <select name="SMTP_SECURED" class="form-control">
-                    <option value="before"
+                    <option value="true"
                             th:selected="${SMTP_SECURED == 'true'}">True
                     </option>
-                    <option value="after"
+                    <option value="false"
                             th:selected="${SMTP_SECURED == 'false'}">False
                     </option>
                 </select>
