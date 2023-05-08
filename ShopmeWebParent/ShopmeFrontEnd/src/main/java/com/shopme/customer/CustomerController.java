@@ -38,7 +38,7 @@ public class CustomerController {
     public String createCustomer(Customer customer,
                                  Model model, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         customerService.registerCustomer(customer);
-        customerService.sendVerificationEmail(request, customer);
+        customerService.sendVerificationEmail(getSiteURL(request), customer);
         model.addAttribute("pageTitle", "Registration Successful.!");
         return "register/register_sucess";
     }
@@ -48,5 +48,10 @@ public class CustomerController {
     public String verifyAccount(@Param("code") String code, Model model) {
         boolean verified = customerService.verify(code);
         return "register/" + (verified ? "verify_success" : "verify_error");
+    }
+
+    private static String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 }
