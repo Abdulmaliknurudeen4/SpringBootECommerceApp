@@ -53,6 +53,7 @@ public class ProductController {
         List<Category> categoryList = categoryService.listCategoriesUsedInForm();
         productService.listByPage(pageNum, helper, categoryId);
         model.addAttribute("listCategories", categoryList);
+        model.addAttribute("moduleURL", "products");
         if (categoryId != null) {
             model.addAttribute("categoryId", categoryId);
         }
