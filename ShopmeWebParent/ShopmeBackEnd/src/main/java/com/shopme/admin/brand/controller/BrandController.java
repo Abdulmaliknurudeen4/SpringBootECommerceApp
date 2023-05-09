@@ -71,6 +71,7 @@ public class BrandController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("moduleURL", "brands");
         return "brand/brands";
 
     }
@@ -84,6 +85,7 @@ public class BrandController {
         model.addAttribute("brand", brand);
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("pageTitle", "Create New Brand");
+        model.addAttribute("moduleURL", "brands");
         return "brand/brand_form";
     }
 
@@ -115,6 +117,7 @@ public class BrandController {
         model.addAttribute("pageTitle", "Edit Brand (ID: " + id + " )");
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("editMode", true);
+        model.addAttribute("moduleURL", "brands");
         try {
             Brand brand = brandService.getBrand(id);
             model.addAttribute("brand", brand);

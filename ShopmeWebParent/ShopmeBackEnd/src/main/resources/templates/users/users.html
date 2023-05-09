@@ -25,7 +25,7 @@
         </a>
     </div>
 
-    <div th:replace="~{fragments/fragments :: search_form_and_message('/users/page/1')}"></div>
+    <div th:replace="~{fragments/fragments :: search_form_and_message()}"></div>
 
     <div class="full-details">
         <table
@@ -33,16 +33,16 @@
             <thead class="thead-dark">
             <tr>
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag', 'users')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag')}"></th>
                 </th>
                 <th>Photos</th>
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: tablehead_link('email', 'E-mail', 'tag', 'users')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('email', 'E-mail', 'tag')}"></th>
                 </th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('firstName', 'First Name', 'none', 'users')}"></th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('lastName', 'Last Name', 'none', 'users')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('firstName', 'First Name', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('lastName', 'Last Name', 'none')}"></th>
                 <th>Roles</th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'users')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none')}"></th>
                 <th></th>
             </tr>
             </thead>
@@ -57,17 +57,13 @@
                 <td>[[${user.firstName}]]</td>
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.roles}]]</td>
-                <td><a th:if="${user.enabled == true}" class="cursor-hand"
-                       th:href="@{'/users/setUserStatus/'+${user.id}+'/false'}"> <i
-                        class="fas fa-check-circle fa-2x icon-green"></i></a> <a
-                        th:if="${user.enabled == false}"
-                        th:href="@{'/users/setUserStatus/'+${user.id}+'/true'}"
-                        class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
-                </a></td>
+                <td>
+                    <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'setUserStatus', ${product.id})}"></div>
+                </td>
 
 
                 <td style="width: 150px;">
-                    <div th:replace="~{fragments/fragments :: edit_delete_fn('users',${user.id})}"></div>
+                    <div th:replace="~{fragments/fragments :: edit_delete_fn(${user.id})}"></div>
                 </td>
 
 
@@ -88,13 +84,13 @@
                 <div>[[${user.roles}]]</div>
             </div>
             <div class="mt-2">
-                <div th:replace="~{fragments/fragments :: edit_delete_fn('users',${user.id})}"></div>
+                <div th:replace="~{fragments/fragments :: edit_delete_fn(${user.id})}"></div>
             </div>
             <div>&nbsp;</div>
         </div>
     </div>
 
-    <div th:replace="~{fragments/fragments :: pagination('users', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
+    <div th:replace="~{fragments/fragments :: pagination(${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
 
 
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>

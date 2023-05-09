@@ -27,14 +27,14 @@
 
 <body>
 
-<a th:fragment="pagination_link(page, text, context)" class="page-link"
-   th:href="@{'/'+${context}+'/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''} +${categoryId !=null ? '&categoryId='+categoryId : ''}  }">
+<a th:fragment="pagination_link(page, text)" class="page-link"
+   th:href="@{'/'+${moduleURL}+'/page/'+${page} +'?sortField='+${sortField}+'&sortDir=' +${sortDir} +${(keyword!=null) ? '&keyword='+keyword : ''} +${categoryId !=null ? '&categoryId='+categoryId : ''}  }">
     [[${text}]]</a>
 
-<th th:fragment="tablehead_link(fieldName, columnLabel, removeTag, context)" th:remove="${removeTag}">
+<th th:fragment="tablehead_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
 
     <a
-            th:href="@{'/'+${context}+'/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' +${(sortField != fieldName ? sortDir : reverseSortDir)} +${(keyword!=null) ? '&keyword='+keyword : ''} }"
+            th:href="@{'/'+${moduleURL}+'/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' +${(sortField != fieldName ? sortDir : reverseSortDir)} +${(keyword!=null) ? '&keyword='+keyword : ''} }"
             class="cursor-hand text-white">[[${columnLabel}]]</a>
     <span th:if="${sortField == fieldName}"
           th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down' }"
@@ -54,57 +54,57 @@
     </th:block>
 </div>
 
-<div th:fragment="edit_delete_fn(context,Id)">
-    <a class="cursor-hand" th:href="@{'/'+${context}+'/edit/'+${Id} }">
+<div th:fragment="edit_delete_fn(Id)">
+    <a class="cursor-hand" th:href="@{'/'+${moduleURL}+'/edit/'+${Id} }">
         <i class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
-    <a th:href="@{'/'+${context}+'/delete/'+${Id} }"
+    <a th:href="@{'/'+${moduleURL}+'/delete/'+${Id} }"
        class="cursor-hand link-delete">
         <i class="fas fa-trash fa-2x icon-dark"> </i></a>
 </div>
 
-<div th:fragment="delete_fn(context,Id)">
-    <a th:href="@{'/'+${context}+'/delete/'+${Id} }"
+<div th:fragment="delete_fn(Id)">
+    <a th:href="@{'/'+${moduleURL}+'/delete/'+${Id} }"
        class="cursor-hand link-delete">
         <i class="fas fa-trash fa-2x icon-dark"> </i></a>
 </div>
 
-<div th:fragment="edit_fn(context,Id)">
-    <a class="cursor-hand" th:href="@{'/'+${context}+'/edit/'+${Id} }">
+<div th:fragment="edit_fn(Id)">
+    <a class="cursor-hand" th:href="@{'/'+${moduleURL}+'/edit/'+${Id} }">
         <i class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
 </div>
 
-<div th:fragment="detail_fn(context,Id)">
+<div th:fragment="detail_fn(Id)">
     <a class="cursor-hand link-details"
-       th:href="@{'/'+${context}+'/detail/'+${Id}}">
+       th:href="@{'/'+${moduleURL}+'/detail/'+${Id}}">
         <i class="fas fa-file-alt fa-2x icon-green"></i>
     </a>&nbsp;
 </div>
 
-<div th:fragment="detail_edit_delete_fn(context,Id)">
+<div th:fragment="detail_edit_delete_fn(Id)">
     <a class="cursor-hand link-details"
-       th:href="@{'/'+${context}+'/detail/'+${Id}}">
+       th:href="@{'/'+${moduleURL}+'/detail/'+${Id}}">
         <i class="fas fa-file-alt fa-2x icon-green"></i>
     </a>&nbsp;
-    <a class="cursor-hand" th:href="@{'/'+${context}+'/edit/'+${Id} }">
+    <a class="cursor-hand" th:href="@{'/'+${moduleURL}+'/edit/'+${Id} }">
         <i class="fas fa-edit fa-2x icon-green"></i></a> &nbsp;
-    <a th:href="@{'/'+${context}+'/delete/'+${Id} }"
+    <a th:href="@{'/'+${moduleURL}+'/delete/'+${Id} }"
        class="cursor-hand link-delete">
         <i class="fas fa-trash fa-2x icon-dark"> </i></a>
 </div>
 
-<div th:fragment="status(status, context, routingPass, id)">
+<div th:fragment="status(status, routingPass, id)">
     <a th:if="${status == true}" class="cursor-hand"
-       th:href="@{'/'+${context}+'/'+${routingPass}+'/'+${id}+'/false'}"> <i
+       th:href="@{'/'+${moduleURL}+'/'+${routingPass}+'/'+${id}+'/false'}"> <i
             class="fas fa-check-circle fa-2x icon-green"></i></a>
     <a
             th:if="${status == false}"
-            th:href="@{'/'+${context}+'/'+${routingPass}+'/'+${id}+'/true'}"
+            th:href="@{'/'+${moduleURL}+'/'+${routingPass}+'/'+${id}+'/true'}"
             class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
     </a>
 </div>
 
-<div th:fragment="search_form_and_message(link)" class="m-1">
-    <form class="form-inline" th:action="@{${link}}">
+<div th:fragment="search_form_and_message()" class="m-1">
+    <form class="form-inline" th:action="@{${moduleURL}+'/page/1'}">
         <input type="hidden" name="sortField" th:value="${sortField}">
         <input type="hidden" name="sortDir" th:value="${sortDir}">
         <input class="form-control mr-sm-2" type="search" placeholder="Filter" aria-label="Search" name="keyword"
@@ -118,14 +118,14 @@
     </div>
 </div>
 
-<div th:fragment="pagination(context, totalPages, currentPage, totalItems, startCount, endCount)">
+<div th:fragment="pagination(totalPages, currentPage, totalItems, startCount, endCount)">
     <div class="text-center m-1" th:if="${totalItems > 0}">
-			<span>Showing [[${#strings.capitalize(context)}]] # [[${startCount}]] to [[${endCount}]] of
+			<span>Showing [[${#strings.capitalize(moduleURL)}]] # [[${startCount}]] to [[${endCount}]] of
 				[[${totalItems}]]</span>
     </div>
 
     <div class="text-center m-1" th:if="${totalItems == 0}">
-        <span>No [[${context}]] found</span>
+        <span>No [[${moduleURL}]] found</span>
     </div>
 
     <div th:if="${totalPages > 0}">
@@ -133,29 +133,29 @@
             <ul class="pagination justify-content-center">
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: pagination_link(1, 'First', ${context})}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(1, 'First')}"></a>
                 </li>
                 <li
                         th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous', ${context})}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage - 1 <= 0) ? 1 : (currentPage -1)}, 'Previous')}"></a>
                 </li>
 
                 <li
                         th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments/fragments :: pagination_link(${i}, ${i.toString()}, ${context})}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${i}, ${i.toString()})}"></a>
 
                 </li>
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage+1)}, 'Next', ${context})}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${(currentPage+1)}, 'Next')}"></a>
                 </li>
 
 
                 <li
                         th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments/fragments :: pagination_link(${totalPages}, 'Last', ${context})}"></a>
+                    <a th:replace="~{fragments/fragments :: pagination_link(${totalPages}, 'Last')}"></a>
                 </li>
             </ul>
         </nav>

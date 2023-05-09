@@ -14,7 +14,7 @@
 
     </div>
 
-    <div th:replace="~{fragments/fragments :: search_form_and_message('/customers/page/1')}"></div>
+    <div th:replace="~{fragments/fragments :: search_form_and_message()}"></div>
 
     <div class="full-details">
         <table
@@ -25,32 +25,32 @@
 
                 <th class="hideable-column">
                     <!--Customer ID-->
-                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag')}"></th>
                 </th>
 
                 <!-- First and Last Name-->
-                <th th:replace="~{fragments/fragments :: tablehead_link('firstName', 'First Name', 'none', 'customers')}"></th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('lastName', 'Last Name', 'none', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('firstName', 'First Name', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('lastName', 'Last Name', 'none')}"></th>
 
                 <!--Email-->
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: tablehead_link('email', 'E-mail', 'tag', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('email', 'E-mail', 'tag')}"></th>
                 </th>
 
                 <!-- City, State, Country-->
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: tablehead_link('city', 'City', 'tag', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('city', 'City', 'tag')}"></th>
                 </th>
 
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: tablehead_link('state', 'State', 'tag', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('state', 'State', 'tag')}"></th>
                 </th>
 
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: tablehead_link('country', 'Country', 'tag', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('country', 'Country', 'tag')}"></th>
                 </th>
 
-                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none')}"></th>
                 <th></th>
             </tr>
             </thead>
@@ -64,17 +64,13 @@
                 <td class="hideable-column">[[${customer.state}]]</td>
                 <td class="hideable-column">[[${customer.country.name}]]</td>
 
-                <td><a th:if="${customer.enabled == true}" class="cursor-hand"
-                       th:href="@{'/customers/setCustomerStatus/'+${customer.id}+'/false'}"> <i
-                        class="fas fa-check-circle fa-2x icon-green"></i></a> <a
-                        th:if="${customer.enabled == false}"
-                        th:href="@{'/customers/setCustomerStatus/'+${customer.id}+'/true'}"
-                        class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
-                </a></td>
+                <td>
+                    <div th:replace="~{fragments/fragments :: status(${customer.enabled}, 'setCustomerStatus', ${customer.id})}"></div>
+                </td>
 
 
                 <td style="width: 150px;">
-                    <div th:replace="~{fragments/fragments :: detail_edit_delete_fn('customers',${customer.id})}"></div>
+                    <div th:replace="~{fragments/fragments :: detail_edit_delete_fn(${customer.id})}"></div>
                 </td>
 
 
@@ -90,7 +86,7 @@
                 <div>[[${customer.email}]]</div>
             </div>
             <div class="mt-2">
-                <div th:replace="~{fragments/fragments :: detail_edit_delete_fn('customers',${customer.id})}"></div>
+                <div th:replace="~{fragments/fragments :: detail_edit_delete_fn(${customer.id})}"></div>
             </div>
             <div>&nbsp;</div>
         </div>
@@ -103,7 +99,7 @@
         </div>
     </div>
 
-    <div th:replace="~{fragments/fragments :: pagination('customers', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
+    <div th:replace="~{fragments/fragments :: pagination(${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
 
 
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>

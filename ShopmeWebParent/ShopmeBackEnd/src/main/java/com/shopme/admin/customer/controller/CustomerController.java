@@ -65,6 +65,7 @@ public class CustomerController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("moduleURL", "customers");
         return "customers/customers";
     }
 
@@ -87,6 +88,7 @@ public class CustomerController {
             Customer customer = customerService.getCustomer(id);
             model.addAttribute("customer", customer);
             model.addAttribute("listCountries", countryService.countryList());
+            model.addAttribute("moduleURL", "customers");
             return "customers/customer_form";
         } catch (CustomerNotFoundExcpetion e) {
             // Review

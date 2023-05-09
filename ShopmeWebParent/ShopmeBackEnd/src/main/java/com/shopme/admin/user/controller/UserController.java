@@ -71,6 +71,7 @@ public class UserController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("moduleURL", "users");
         return "users/users";
     }
 
@@ -82,6 +83,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("listRoles", service.listRoles());
         model.addAttribute("pageTitle", "Create New User");
+        model.addAttribute("moduleURL", "users");
         return "users/user_form";
     }
 
@@ -116,6 +118,7 @@ public class UserController {
         try {
             User user = service.getUser(id);
             model.addAttribute("user", user);
+            model.addAttribute("moduleURL", "/users");
             return "users/user_form";
         } catch (UserNotFoundExcpetion e) {
             // Review

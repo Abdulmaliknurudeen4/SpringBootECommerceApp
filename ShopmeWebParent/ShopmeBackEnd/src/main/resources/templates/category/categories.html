@@ -16,7 +16,7 @@
             <i class="fas fa-file-csv fa-3x icon-dark cursor-hand"></i>
         </a>
     </div>
-    <div th:replace="~{fragments/fragments :: search_form_and_message('/categories/page/1')}"></div>
+    <div th:replace="~{fragments/fragments :: search_form_and_message()}"></div>
 
     <div class="full-details">
         <table
@@ -24,13 +24,13 @@
             <thead class="thead-dark">
             <tr>
                 <th class="hideable-column">
-                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag', 'categories')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag')}"></th>
                 </th>
                 <th>Category Image</th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Category Name', 'none', 'categories')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Category Name', 'none')}"></th>
                 </th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('alias', 'Alias', 'none', 'categories')}"></th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'categories')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('alias', 'Alias', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none')}"></th>
                 <th></th>
             </tr>
             </thead>
@@ -44,13 +44,9 @@
                 </td>
                 <td class="hideable-column">[[${category.name}]]</td>
                 <td>[[${category.alias}]]</td>
-                <td><a th:if="${category.enabled == true}" class="cursor-hand"
-                       th:href="@{'/categories/setCategoryStatus/'+${category.id}+'/false'}"> <i
-                        class="fas fa-check-circle fa-2x icon-green"></i></a> <a
-                        th:if="${category.enabled == false}"
-                        th:href="@{'/categories/setCategoryStatus/'+${category.id}+'/true'}"
-                        class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
-                </a></td>
+                <td>
+                    <div th:replace="~{fragments/fragments :: status(${category.enabled}, 'setCategoryStatus', ${category.id})}"></div>
+                </td>
 
 
                 <td style="width: 150px;">
@@ -72,13 +68,13 @@
                 <div>[[${category.alias}]]</div>
             </div>
             <div class="mt-2">
-                <div th:replace="~{fragments/fragments :: category_actions}"></div></td>
+                <div th:replace="~{fragments/fragments :: category_actions}"></div>
             </div>
             <div>&nbsp;</div>
         </div>
     </div>
 
-    <div th:replace="~{fragments/fragments :: pagination('categories', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
+    <div th:replace="~{fragments/fragments :: pagination(${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
 
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
 

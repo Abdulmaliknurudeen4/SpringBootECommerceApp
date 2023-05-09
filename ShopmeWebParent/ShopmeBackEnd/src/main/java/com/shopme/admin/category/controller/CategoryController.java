@@ -74,6 +74,7 @@ public class CategoryController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("moduleURL", "categories");
         return "category/categories";
     }
 
@@ -111,6 +112,7 @@ public class CategoryController {
         model.addAttribute("category", category);
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("pageTitle", "Create New Category");
+        model.addAttribute("moduleURL", "categories");
         return "category/category_form";
     }
 
@@ -144,7 +146,7 @@ public class CategoryController {
         model.addAttribute("editMode", true);
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("pageTitle", "Edit Category (ID: " + id + " )");
-
+        model.addAttribute("moduleURL", "categories");
         try {
             Category editCategory = categoryService.getCategory(id);
             model.addAttribute("category", editCategory);
@@ -162,7 +164,6 @@ public class CategoryController {
         try {
             String dir = "../categories-images/"+id;
             categoryService.deleteCategory(id);
-            System.out.println(Paths.get(dir).toAbsolutePath());
             FileUploadUtil.removeDir(dir);
             redirectAttributes.addFlashAttribute("message",
                     "The Category with the ID : " + id + " has been deleted Successfully!");

@@ -76,6 +76,7 @@ public class ProductController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("listProducts", page.toList());
         model.addAttribute("listCategories", categoryList);
+        model.addAttribute("moduleURL", "products");
         if (categoryId != null) {
             model.addAttribute("categoryId", categoryId);
         }
@@ -94,7 +95,7 @@ public class ProductController {
         model.addAttribute("product", product);
         model.addAttribute("listBrands", listBrand);
         model.addAttribute("pageTitle", "Create New Product");
-
+        model.addAttribute("moduleURL", "products");
         return "products/product_form";
     }
 
@@ -182,6 +183,7 @@ public class ProductController {
             model.addAttribute("pageTitle", "Edit Product (ID: " + id + " )");
             model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("numberOfExistingProductDetails", numberOfExistingProductDetails);
+            model.addAttribute("moduleURL", "products");
             return "products/product_form";
         } catch (ProductNotFoundException e) {
             e.printStackTrace();
@@ -196,6 +198,7 @@ public class ProductController {
         try {
             Product product = productService.getProduct(id);
             model.addAttribute("product", product);
+            model.addAttribute("moduleURL", "products");
 
             return "products/product_detail_modal";
         } catch (ProductNotFoundException e) {

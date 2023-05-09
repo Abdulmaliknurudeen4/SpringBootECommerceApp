@@ -49,15 +49,15 @@
             <thead class="thead-dark">
             <tr>
                 <th th:class="hideable-column"
-                    th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'none', 'products')}"></th>
+                    th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'none')}"></th>
                 <th>Main Image</th>
-                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Product Name', 'none', 'products')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('name', 'Product Name', 'none')}"></th>
                 <th th:class="hideable-column"
-                    th:replace="~{fragments/fragments :: tablehead_link('brand', 'Brand', 'none', 'products')}"></th>
+                    th:replace="~{fragments/fragments :: tablehead_link('brand', 'Brand', 'none')}"></th>
                 <th th:class="hideable-column"
-                    th:replace="~{fragments/fragments :: tablehead_link('category', 'Category', 'none', 'products')}"></th>
+                    th:replace="~{fragments/fragments :: tablehead_link('category', 'Category', 'none')}"></th>
                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                    <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'products')}"></th>
+                    <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none')}"></th>
                 </th:block>
                 <th></th>
 
@@ -81,17 +81,17 @@
 
                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                     <td>
-                        <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'products', 'setProductStatus', ${product.id})}"></div>
+                        <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'setProductStatus', ${product.id})}"></div>
                     </td>
                 </th:block>
                 <td>
                     <div style="display: flex">
-                        <div th:replace="~{fragments/fragments :: detail_fn('products',${product.id})}"></div>
+                        <div th:replace="~{fragments/fragments :: detail_fn(${product.id})}"></div>
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
-                            <div th:replace="~{fragments/fragments :: edit_fn('products',${product.id})}"></div>
+                            <div th:replace="~{fragments/fragments :: edit_fn(${product.id})}"></div>
                         </th:block>
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                            <div th:replace="~{fragments/fragments :: delete_fn('products',${product.id})}"></div>
+                            <div th:replace="~{fragments/fragments :: delete_fn(${product.id})}"></div>
                         </th:block>
                     </div>
                 </td>
@@ -112,12 +112,12 @@
             <div class="col-8">
                 <div><a th:href="@{'/products/detail/'+${product.id}}">[[${product.shortName}]]</a></div>
                 <div class="mt-2">
-                    <div th:replace="~{fragments/fragments :: detail_fn('products',${product.id})}"></div>
+                    <div th:replace="~{fragments/fragments :: detail_fn(${product.id})}"></div>
                     <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
-                        <div th:replace="~{fragments/fragments :: edit_fn('products',${product.id})}"></div>
+                        <div th:replace="~{fragments/fragments :: edit_fn(${product.id})}"></div>
                     </th:block>
                     <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                        <div th:replace="~{fragments/fragments :: delete_fn('products',${product.id})}"></div>
+                        <div th:replace="~{fragments/fragments :: delete_fn(${product.id})}"></div>
                     </th:block>
                 </div>
             </div>
@@ -133,7 +133,7 @@
             <div class="modal-content"></div>
         </div>
     </div>
-    <div th:replace="~{fragments/fragments :: pagination('products', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
+    <div th:replace="~{fragments/fragments :: pagination(${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
 
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
 

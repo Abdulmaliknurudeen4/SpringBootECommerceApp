@@ -55,6 +55,7 @@ public class CustomerService {
         }
         customer.setCreatedTime(existingCustomer.getCreatedTime());
         customer.setEnabled(existingCustomer.getEnabled());
+        customer.setVerficationCode(existingCustomer.getVerficationCode());
         return customerRepository.save(customer);
 
     }
