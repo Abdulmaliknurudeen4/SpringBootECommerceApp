@@ -111,8 +111,9 @@ public class ProductController {
                               @RequestParam(value = "imageNames", required = false) String[] imageNames,
                               @AuthenticationPrincipal ShopmeUserDetails loggedUser) throws IOException {
         //For SalesPerson Permission to Update Costs only.
+        //Bugged Code
         Boolean islogged = loggedUser.hasRole("Salesperson");
-        if (loggedUser.hasRole("Salesperson")) {
+        if (loggedUser.hasRole("Salesperson") && !loggedUser.hasRole("Admin") && !loggedUser.hasRole("Editor")) {
             productService.saveProductPrice(product);
             ra.addFlashAttribute("message", "The product has been Updated Succesfully.");
             return "redirect:/products";

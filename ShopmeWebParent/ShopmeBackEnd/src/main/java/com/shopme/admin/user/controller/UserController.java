@@ -1,6 +1,8 @@
 package com.shopme.admin.user.controller;
 
 import com.shopme.admin.FileUploadUtil;
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.user.UserNotFoundExcpetion;
 import com.shopme.admin.user.UserService;
 import com.shopme.admin.user.export.UserCSVExporter;
@@ -35,43 +37,15 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String listFirstPage(Model model) {
-        return listByPage(1, model, "firstName", "asc", null);
+    public String listFirstPage() {
+        return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=";
     }
 
     @GetMapping("/users/page/{pageNum}")
-    public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
-                             @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
+    public String listByPage(@PagingAndSortingParam(listName = "listUsers", moduleURL = "users") PagingAndSortingHelper helper,
+                             @PathVariable(name = "pageNum") int pageNum, Model model) {
 
-        System.out.println("Sort Field " + sortField);
-        System.out.println("Sort Order " + sortDir);
-        System.out.println("Keyword " + keyword);
-
-        Page<User> page = service.listByPage(pageNum, sortField, sortDir, keyword);
-        List<User> listUsers = page.getContent();
-        pageNum = (pageNum <= 0) ? 0 : pageNum;
-
-        long startCount = (long) (pageNum - 1) * UserService.USER_PER_PAGE + 1;
-        long endCount = startCount + UserService.USER_PER_PAGE - 1;
-
-        // Getting to the last page with uneven elements
-        if (endCount > page.getTotalElements()) {
-            endCount = page.getTotalElements();
-        }
-
-        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listUsers", listUsers);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", reverseSortDir);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("moduleURL", "users");
+        service.listByPage(pageNum, helper);
         return "users/users";
     }
 
@@ -132,7 +106,7 @@ public class UserController {
     public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             service.deleteUser(id);
-            String uploadDir = "user-photos/" + String.valueOf((id != null && id != 0) ? id : 0);
+            String uploadDir = "user-photos/" + ((id != null && id != 0) ? id : 0);
             FileUploadUtil.removeDir(uploadDir);
             redirectAttributes.addFlashAttribute("message",
                     "The User with the ID : " + id + " has been deleted Successfully!");

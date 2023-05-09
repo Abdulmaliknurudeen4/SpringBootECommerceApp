@@ -58,7 +58,7 @@
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.roles}]]</td>
                 <td>
-                    <div th:replace="~{fragments/fragments :: status(${product.enabled}, 'setUserStatus', ${product.id})}"></div>
+                    <div th:replace="~{fragments/fragments :: status(${user.enabled}, 'setUserStatus', ${user.id})}"></div>
                 </td>
 
 
