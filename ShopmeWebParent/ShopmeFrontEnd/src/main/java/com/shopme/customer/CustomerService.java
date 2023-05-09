@@ -60,7 +60,7 @@ public class CustomerService {
     }
 
     @Async
-    public void sendVerificationEmail(HttpServletRequest request, Customer customer) throws MessagingException, UnsupportedEncodingException {
+    public void sendVerificationEmail(String siteURL, Customer customer) throws MessagingException, UnsupportedEncodingException {
         EmailSettingBag emailSettingBag = settingService.getEmailSettings();
         JavaMailSenderImpl mailSender = Utility.prepareMailSender(emailSettingBag);
 
@@ -79,7 +79,7 @@ public class CustomerService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", customer.getFullName());
-        String verifyURL = Utility.getSiteURL(request) + "/verify?code=" + customer.getVerficationCode();
+        String verifyURL = siteURL + "/verify?code=" + customer.getVerficationCode();
         content = content.replace("[[url]]", verifyURL);
 
         helper.setText(content, true);

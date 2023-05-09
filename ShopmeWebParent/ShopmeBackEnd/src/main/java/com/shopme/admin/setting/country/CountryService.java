@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CountryService {
@@ -27,5 +28,9 @@ public class CountryService {
 
     public void delete(Integer id) {
         countryRepository.deleteById(id);
+    }
+
+    public Optional<Country> getCountry(Integer id){
+        return countryRepository.findById(id);
     }
 }

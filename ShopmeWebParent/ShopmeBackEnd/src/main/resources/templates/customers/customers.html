@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head('Shopme - Customers')}"></head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
+    &nbsp;&nbsp;
+    <div>
+        &nbsp;&nbsp;
+        <a th:href="@{/customers/export/csv}">
+            <i class="fas fa-file-csv fa-3x icon-dark cursor-hand"></i>
+        </a>
+
+    </div>
+
+    <div th:replace="~{fragments/fragments :: search_form_and_message('/customers/page/1')}"></div>
+
+    <div class="full-details">
+        <table
+                class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr>
+                <!-- id, firstName, lastNam, Email, City, State, Country, Enabled, ACtionSection   -->
+
+                <th class="hideable-column">
+                    <!--Customer ID-->
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'tag', 'customers')}"></th>
+                </th>
+
+                <!-- First and Last Name-->
+                <th th:replace="~{fragments/fragments :: tablehead_link('firstName', 'First Name', 'none', 'customers')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('lastName', 'Last Name', 'none', 'customers')}"></th>
+
+                <!--Email-->
+                <th class="hideable-column">
+                <th th:replace="~{fragments/fragments :: tablehead_link('email', 'E-mail', 'tag', 'customers')}"></th>
+                </th>
+
+                <!-- City, State, Country-->
+                <th class="hideable-column">
+                <th th:replace="~{fragments/fragments :: tablehead_link('city', 'City', 'tag', 'customers')}"></th>
+                </th>
+
+                <th class="hideable-column">
+                <th th:replace="~{fragments/fragments :: tablehead_link('state', 'State', 'tag', 'customers')}"></th>
+                </th>
+
+                <th class="hideable-column">
+                <th th:replace="~{fragments/fragments :: tablehead_link('country', 'Country', 'tag', 'customers')}"></th>
+                </th>
+
+                <th th:replace="~{fragments/fragments :: tablehead_link('enabled', 'Enabled', 'none', 'customers')}"></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${listCustomers}">
+                <td class="hideable-column">[[${customer.id}]]</td>
+                <td>[[${customer.firstName}]]</td>
+                <td>[[${customer.lastName}]]</td>
+                <td class="hideable-column">[[${customer.email}]]</td>
+                <td class="hideable-column">[[${customer.city}]]</td>
+                <td class="hideable-column">[[${customer.state}]]</td>
+                <td class="hideable-column">[[${customer.country.name}]]</td>
+
+                <td><a th:if="${customer.enabled == true}" class="cursor-hand"
+                       th:href="@{'/customers/setCustomerStatus/'+${customer.id}+'/false'}"> <i
+                        class="fas fa-check-circle fa-2x icon-green"></i></a> <a
+                        th:if="${customer.enabled == false}"
+                        th:href="@{'/customers/setCustomerStatus/'+${customer.id}+'/true'}"
+                        class="cursor-hand"> <i class="fas fa-circle fa-2x icon-dark"></i>
+                </a></td>
+
+
+                <td style="width: 150px;">
+                    <div th:replace="~{fragments/fragments :: detail_edit_delete_fn('customers',${customer.id})}"></div>
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="less-details">
+        <div th:each="customer: ${listCustomers}" class="row m-1">
+
+            <div class="col">
+                <div>[[${customer.fullName}]]</div>
+                <div>[[${customer.email}]]</div>
+            </div>
+            <div class="mt-2">
+                <div th:replace="~{fragments/fragments :: detail_edit_delete_fn('customers',${customer.id})}"></div>
+            </div>
+            <div>&nbsp;</div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="detailModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/fragments :: pagination('customers', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
+
+
+    <div th:replace="~{fragments/modal :: modal_dialog}"></div>
+
+
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
+</div>
+<script type="text/javascript">
+    MAX_FILE_SIZE = 502400; // 500KB
+    $(document)
+        .ready(
+            function () {
+
+                $('.link-delete')
+                    .on(
+                        'click',
+                        function (event) {
+                            event.preventDefault();
+                            link = $(this).attr('href');
+                            console.log(link);
+                            showModalDialog("Are you Sure you want to Delete the Customer with the id ?");
+                            $('.confirm-dialog').attr(
+                                'href', link);
+
+                        });
+
+                $('.link-details').on("click", function (e) {
+                    e.preventDefault();
+                    let linkDetailURL = $(this).attr("href");
+                    $('#detailModal').modal("show").find(".modal-content").load(linkDetailURL);
+                });
+
+            });
+
+    function showModalDialog(message) {
+        $('#modalBody').text(message);
+        $('#modalDialog').modal();
+    }
+
+    function clearFilter() {
+        window.location = "[[@{/customers}]]";
+    }
+</script>
+</body>
+</html>
