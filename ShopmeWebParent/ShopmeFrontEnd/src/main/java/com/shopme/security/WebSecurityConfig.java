@@ -1,7 +1,9 @@
 package com.shopme.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -15,9 +17,25 @@ import java.io.Serializable;
 @EnableWebSecurity
 public class WebSecurityConfig implements Serializable {
 
+    @Autowired
+    private ShopmeCustomerDetialService shopmeCustomerDetialService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests().anyRequest().permitAll().and().build();
+        return http
+                .authorizeHttpRequests()
+                .requestMatchers("/customer").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("email")
+                .permitAll()
+                .and()
+                .rememberMe()
+                .key("1234567890_aAABDSFDASDFWFASkhjWEAf")
+                .tokenValiditySeconds(14 * 24 * 60 * 60)
+                .and().build();
     }
 
     @Bean
@@ -32,20 +50,14 @@ public class WebSecurityConfig implements Serializable {
                 .requestMatchers("/images/**", "/js/**", "/webjars/**", "/styles/**");
     }
 
-    /*@Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetialService);
-        authProvider.setPasswordEncoder(PasswordEncoder());
-        return authProvider;
-    }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder bCryptPasswordEncoder, ShopmeUserDetialService userDetailService)
-            throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .authenticationProvider(authenticationProvider())
-                .build();
-    }*/
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(shopmeCustomerDetialService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
 
 }
