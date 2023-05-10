@@ -17,7 +17,7 @@ public class Brand {
     @Column(nullable = false, length = 128)
     private String logo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "brands_categories",
             joinColumns = @JoinColumn(name = "brand_id"),
@@ -32,6 +32,7 @@ public class Brand {
         this.name = name;
         this.logo = logo;
     }
+
     public Brand(Integer id, String name) {
         this.name = name;
         this.id = id;

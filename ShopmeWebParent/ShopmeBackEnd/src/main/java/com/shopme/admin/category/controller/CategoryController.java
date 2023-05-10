@@ -3,6 +3,8 @@ package com.shopme.admin.category.controller;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.category.CategoryCSVExporter;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.entity.Category;
 import com.shopme.exception.CategoryNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,45 +38,15 @@ public class CategoryController {
     }
 
     @GetMapping("/categories")
-    public String listFirstPage(Model model) {
-        return listByPage(1, model, "name", "asc", null);
+    public String listFirstPage() {
+        return "redirect:/categories/page/1?sortField=name&sortDir=asc&keyword=";
     }
 
     @GetMapping("/categories/page/{pageNum}")
-    public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
-                             @Param("sortField") String sortField, @Param("sortDir") String sortDir,
-                             @Param("keyword") String keyword) {
+    public String listByPage(@PagingAndSortingParam(listName = "listCategories", moduleURL = "/categories", contextDisplay = "categories") PagingAndSortingHelper helper,
+                             @PathVariable(name = "pageNum") int pageNum) {
 
-        Page<Category> page = categoryService.listByPage(pageNum, sortField, sortDir, keyword);
-        List<Category> listCategories = page.getContent();
-
-//        listCategories = categoryService.listAll("name");
-        // I need to get the whole list of categories and Convert it to a Pageable and this needs to be Sorted with Children.
-
-
-        pageNum = (pageNum <= 0) ? 0 : pageNum;
-
-        long startCount = (long) (pageNum - 1) * CategoryService.CATEGORIES_PER_PAGE + 1;
-        long endCount = startCount + CategoryService.CATEGORIES_PER_PAGE - 1;
-
-        // Getting to the last page with uneven elements
-        if (endCount > page.getTotalElements()) {
-            endCount = page.getTotalElements();
-        }
-
-        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listCategories", listCategories);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", reverseSortDir);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("moduleURL", "categories");
+        categoryService.listByPage(pageNum, helper);
         return "category/categories";
     }
 
@@ -146,7 +118,8 @@ public class CategoryController {
         model.addAttribute("editMode", true);
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("pageTitle", "Edit Category (ID: " + id + " )");
-        model.addAttribute("moduleURL", "categories");
+        model.addAttribute("moduleURL", "/categories");
+        model.addAttribute("contextDisplay", "categor(ies)");
         try {
             Category editCategory = categoryService.getCategory(id);
             model.addAttribute("category", editCategory);

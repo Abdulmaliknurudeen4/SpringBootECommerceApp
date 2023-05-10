@@ -62,6 +62,8 @@ public class PagingAndSortingHelper {
 
 
     public void listEntities(int pageNum, int pageSize, SearchRepository<?, Integer> repo) {
+        System.out.println(sortField);
+
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);

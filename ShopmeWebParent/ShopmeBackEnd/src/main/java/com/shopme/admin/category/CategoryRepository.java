@@ -1,5 +1,6 @@
 package com.shopme.admin.category;
 
+import com.shopme.admin.paging.SearchRepository;
 import com.shopme.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CategoryRepository extends CrudRepository<Category, Integer>, PagingAndSortingRepository<Category, Integer> {
+public interface CategoryRepository extends CrudRepository<Category, Integer>, SearchRepository<Category, Integer> {
     @Query("SELECT c from Category c WHERE c.parent IS NULL")
     Iterable<Category> getParentCategories();
 

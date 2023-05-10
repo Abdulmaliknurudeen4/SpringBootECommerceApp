@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface PagingAndSortingParam {
     public String moduleURL();
     public String listName();
+
+    public String contextDisplay();
 }

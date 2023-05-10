@@ -1,5 +1,6 @@
 package com.shopme.admin.customer;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.entity.Customer;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,8 @@ public class CustomerService {
         return (List<Customer>) customerRepository.findAll(Sort.by("firstName").ascending());
     }
 
-    public Page<Customer> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
-        Sort sort = Sort.by(sortField);
-        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-        Pageable pageable = PageRequest.of(pageNum - 1, CUSTOMERS_PER_PAGE, sort);
-        if (keyword != null) {
-            return customerRepository.findAll(keyword, pageable);
-        }
-        return customerRepository.findAll(pageable);
+    public void listByPage(int pageNum, PagingAndSortingHelper helper) {
+       helper.listEntities(pageNum, CUSTOMERS_PER_PAGE, customerRepository);
     }
 
     public Customer updateCustomer(Customer customer) throws CustomerNotFoundExcpetion {

@@ -44,10 +44,9 @@ public class BrandController {
     @GetMapping("/brands/page/{pageNum}")
     public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
                              @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
-        System.out.println("Sort Field " + sortField);
-        System.out.println("Sort Order " + sortDir);
-        System.out.println("Keyword " + keyword);
 
+        // I'm keeping this Block of code because the refactoring the Code seeems to affect
+        // the sorting with the cateogry which i don't want
         Page<Brand> page = brandService.listByPage(pageNum, sortField, sortDir, keyword);
         List<Brand> brandList = page.getContent();
         pageNum = (pageNum <= 0) ? 0 : pageNum;
@@ -71,7 +70,8 @@ public class BrandController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("moduleURL", "brands");
+        model.addAttribute("moduleURL", "/brands");
+        model.addAttribute("contextDisplay", "brand(s)");
         return "brand/brands";
 
     }

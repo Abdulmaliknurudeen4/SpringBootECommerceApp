@@ -15,11 +15,12 @@ public interface BrandRepository extends CrudRepository<Brand, Integer>, PagingA
     Brand getBrandByName(@Param("name") String name);
 
     Long countById(Integer Id);
+
     @Query("SELECT b FROM Brand b WHERE b.name LIKE %?1%")
     Page<Brand> findAll(String keyword, Pageable pageable);
 
     @Query("SELECT NEW Brand(b.id, b.name) FROM Brand b ORDER BY b.name ASC")
-    public List<Brand> findAll();
+    List<Brand> findAll();
 
 
 }
