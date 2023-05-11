@@ -1,6 +1,7 @@
 package com.shopme.customer;
 
 import com.shopme.Utility;
+import com.shopme.entity.AuthenticationType;
 import com.shopme.entity.Country;
 import com.shopme.entity.Customer;
 import com.shopme.settings.CountryRepository;
@@ -8,7 +9,6 @@ import com.shopme.settings.EmailSettingBag;
 import com.shopme.settings.SettingService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +101,12 @@ public class CustomerService {
         } else {
             customerRepository.enable(customer.getId());
             return true;
+        }
+    }
+
+    public void updateAuthenticationType(Customer customer, AuthenticationType authenticationType) {
+        if (!customer.getAuthenticationType().equals(authenticationType)) {
+            customerRepository.updateAuthenticationType(customer.getId(), authenticationType);
         }
     }
 }

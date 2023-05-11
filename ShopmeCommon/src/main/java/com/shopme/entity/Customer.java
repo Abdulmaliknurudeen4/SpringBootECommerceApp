@@ -54,6 +54,10 @@ public class Customer {
     @Column(nullable = false)
     private Boolean enabled;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "authentication_type", length = 10)
+    private AuthenticationType authenticationType;
+
     public Integer getId() {
         return id;
     }
@@ -176,5 +180,13 @@ public class Customer {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public AuthenticationType getAuthenticationType() {
+        return authenticationType;
+    }
+
+    public void setAuthenticationType(AuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
     }
 }

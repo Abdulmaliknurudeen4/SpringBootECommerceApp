@@ -1,5 +1,6 @@
 package com.shopme.customer;
 
+import com.shopme.entity.AuthenticationType;
 import com.shopme.entity.Country;
 import com.shopme.entity.Customer;
 import com.shopme.settings.CountryRepository;
@@ -66,6 +67,18 @@ public class CustomerRepositoryTest {
     public void deleteUser() {
         customerRepository.deleteById(1);
         assertThat(true).isTrue();
+    }
+
+    @Test
+    public void setCustomerAuthType() {
+        customerRepository.findAll().forEach(c -> c.setAuthenticationType(AuthenticationType.DATABASE));
+        assertThat(true).isTrue();
+    }
+
+    @Test
+    public void testGetOneUpdate(){
+        customerRepository.updateAuthenticationType(12, AuthenticationType.FACEBOOK);
+        assertThat(customerRepository.findById(12).get().getAuthenticationType()).isEqualTo(AuthenticationType.FACEBOOK);
     }
 
 }
