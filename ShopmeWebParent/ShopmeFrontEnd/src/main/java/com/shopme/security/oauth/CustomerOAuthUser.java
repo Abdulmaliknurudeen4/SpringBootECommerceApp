@@ -9,7 +9,8 @@ import java.util.Map;
 public class CustomerOAuthUser implements OAuth2User {
 
     private final OAuth2User oAuth2User;
-    private String clientName;
+    private final String clientName;
+    private String fullName;
 
     public CustomerOAuthUser(OAuth2User oauth2User, String clientName) {
 
@@ -32,15 +33,19 @@ public class CustomerOAuthUser implements OAuth2User {
         return oAuth2User.getAttribute("name");
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return oAuth2User.getAttribute("email");
     }
 
-    public String getFullname(){
-        return oAuth2User.getAttribute("name");
+    public String getFullname() {
+        return (fullName != null) ? fullName : oAuth2User.getAttribute("name");
     }
 
     public String getClientName() {
         return clientName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

@@ -60,6 +60,31 @@ public class CustomerService {
 
     }
 
+    public Customer updateCustomer(Customer customer) {
+
+        Customer existingCustomer = null;
+            // Updating an existing Customer.
+            existingCustomer = customerRepository.findById(customer.getId()).get();
+
+            // A DATABASE KIND OF USER
+            if (existingCustomer.getAuthenticationType() == AuthenticationType.DATABASE) {
+                if (customer.getPassword() == null) {
+                    // if the password is null, set to previous password.
+                    customer.setPassword(existingCustomer.getPassword());
+                } else {
+                    encodePassword(customer);
+                }
+            } else {
+                customer.setPassword(existingCustomer.getPassword());
+            }
+        customer.setCreatedTime(existingCustomer.getCreatedTime());
+        customer.setEnabled(existingCustomer.getEnabled());
+        customer.setVerficationCode(existingCustomer.getVerficationCode());
+        customer.setAuthenticationType(existingCustomer.getAuthenticationType());
+        return customerRepository.save(customer);
+
+    }
+
     @Async
     public void sendVerificationEmail(String siteURL, Customer customer) throws MessagingException, UnsupportedEncodingException {
         EmailSettingBag emailSettingBag = settingService.getEmailSettings();
@@ -144,7 +169,7 @@ public class CustomerService {
             String firstName = nameArray[0];
             customer.setFirstName(firstName);
 
-            String lastName = name.replace(firstName+" ", "");
+            String lastName = name.replace(firstName + " ", "");
             customer.setLastName(lastName);
 
         }
