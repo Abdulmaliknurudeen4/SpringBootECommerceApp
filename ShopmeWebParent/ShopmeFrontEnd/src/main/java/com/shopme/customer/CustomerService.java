@@ -50,6 +50,7 @@ public class CustomerService {
         encodePassword(customer);
         customer.setEnabled(false);
         customer.setCreatedTime(LocalDateTime.now());
+        customer.setAuthenticationType(AuthenticationType.DATABASE);
 
         String ramdomCode = RandomString.make(64);
         customer.setVerficationCode(ramdomCode);
@@ -107,6 +108,45 @@ public class CustomerService {
     public void updateAuthenticationType(Customer customer, AuthenticationType authenticationType) {
         if (!customer.getAuthenticationType().equals(authenticationType)) {
             customerRepository.updateAuthenticationType(customer.getId(), authenticationType);
+        }
+    }
+
+    public Customer getCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
+
+    public void addNewCustomerUponOAuthLogin(String email, String name, AuthenticationType authenticationType, String countryCode) {
+        Customer customer = new Customer();
+        customer.setEmail(email);
+        customer.setFirstName(name);
+        customer.setEnabled(true);
+        customer.setCreatedTime(LocalDateTime.now());
+        customer.setAuthenticationType(authenticationType);
+        customer.setPassword("");
+        customer.setAddressLineOne("");
+        customer.setAddressLineTwo("");
+        customer.setCity("");
+        customer.setState("");
+        customer.setPhoneNumber("");
+        customer.setPostalCode("");
+        customer.setCountry(countryRepository.findByCode(countryCode));
+
+        setName(name, customer);
+        customerRepository.save(customer);
+    }
+
+    private void setName(String name, Customer customer) {
+        String[] nameArray = name.split(" ");
+        if (nameArray.length < 2) {
+            customer.setFirstName(name);
+            customer.setLastName("");
+        } else {
+            String firstName = nameArray[0];
+            customer.setFirstName(firstName);
+
+            String lastName = name.replace(firstName, "");
+            customer.setLastName(lastName);
+
         }
     }
 }

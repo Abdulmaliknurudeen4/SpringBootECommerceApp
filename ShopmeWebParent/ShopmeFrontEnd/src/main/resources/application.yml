@@ -1,0 +1,42 @@
+logging:
+    file:
+        name: ShopmeBacked.log
+    level:
+        com:
+            shopme: debug
+        root: warn
+    logback:
+        rollingpolicy:
+            clean-history-on-start: true
+            file-name-pattern: ShopmeBacked-%d{yyyy-MM-dd}.%i.log
+            max-file-size: 2MB
+            max-history: 14
+            total-size-cap: 100MB
+server:
+    port: 6001
+    servlet:
+        context-path: /Shopme
+spring:
+    datasource:
+        password: ''
+        url: jdbc:mysql://localhost:9000/shopmedb
+        username: root
+    jpa:
+        hibernate:
+            ddl-auto: update
+            show-sql: true
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+                format_sql: true
+
+    security:
+      oauth2:
+        client:
+            registration:
+              google:
+                client-id: 1047517403787-i8onic8jb8fmvu3gllqq72glfdt68o4m.apps.googleusercontent.com
+                client-secret: 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
+                scope:
+                  - email
+                  - profile

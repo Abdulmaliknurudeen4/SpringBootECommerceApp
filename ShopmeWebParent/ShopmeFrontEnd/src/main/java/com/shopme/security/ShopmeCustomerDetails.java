@@ -65,4 +65,7 @@ public class ShopmeCustomerDetails implements UserDetails, Serializable {
         this.customer.setLastName(lastname);
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
 }

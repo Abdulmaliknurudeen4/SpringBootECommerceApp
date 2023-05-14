@@ -3,12 +3,18 @@
 <head th:replace="~{fragments :: head('Shopme Application Web page')}"></head>
 <body>
 <div class="container-fluid text-center">
-    <div><h2>Customer Login</h2></div>
 
     <div>
-<!--        <img th:src="@{/images/ShopmeAdminSmall.png}" alt="">-->
+        <img th:src="@{/images/ShopmeAdminSmall.png}" alt="">
         <h2>Customer Login</h2>
     </div>
+    <div class="mt-3">
+        <a th:href="@{/oauth2/authorization/google}"
+           class="btn btn-lg btn-secondary">
+            <i class="fab fa-google mr-2"></i>
+            Continue with Google</a>
+    </div>
+    <div>&nbsp;</div>
 
     <form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto;">
 
@@ -36,6 +42,12 @@
                 <input type="submit" value="Login" class="btn btn-primary">
             </p>
         </div>
+
+        <div>&nbsp;</div>
+        <div>
+            Don't have an account yet? <a th:href="@{/register}">Sign Up.</a>
+        </div>
+
     </form>
 
     <footer th:replace="~{navigation :: footer}"></footer>
