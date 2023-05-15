@@ -63,24 +63,25 @@ public class CustomerService {
     public Customer updateCustomer(Customer customer) {
 
         Customer existingCustomer = null;
-            // Updating an existing Customer.
-            existingCustomer = customerRepository.findById(customer.getId()).get();
+        // Updating an existing Customer.
+        existingCustomer = customerRepository.findById(customer.getId()).get();
 
-            // A DATABASE KIND OF USER
-            if (existingCustomer.getAuthenticationType() == AuthenticationType.DATABASE) {
-                if (customer.getPassword() == null) {
-                    // if the password is null, set to previous password.
-                    customer.setPassword(existingCustomer.getPassword());
-                } else {
-                    encodePassword(customer);
-                }
-            } else {
+        // A DATABASE KIND OF USER
+        if (existingCustomer.getAuthenticationType() == AuthenticationType.DATABASE) {
+            if (customer.getPassword() == null) {
+                // if the password is null, set to previous password.
                 customer.setPassword(existingCustomer.getPassword());
+            } else {
+                encodePassword(customer);
             }
+        } else {
+            customer.setPassword(existingCustomer.getPassword());
+        }
         customer.setCreatedTime(existingCustomer.getCreatedTime());
         customer.setEnabled(existingCustomer.getEnabled());
         customer.setVerficationCode(existingCustomer.getVerficationCode());
         customer.setAuthenticationType(existingCustomer.getAuthenticationType());
+        customer.setResetPasswordToken(existingCustomer.getResetPasswordToken());
         return customerRepository.save(customer);
 
     }
@@ -114,6 +115,31 @@ public class CustomerService {
 
         System.out.println("to Address" + toAddress);
         System.out.println("Verify URL" + verifyURL);
+    }
+
+    @Async
+    public void sendResetPasswordTokenEmail(String link, String email) throws MessagingException, UnsupportedEncodingException {
+        EmailSettingBag emailSettingBag = settingService.getEmailSettings();
+        JavaMailSenderImpl mailSender = Utility.prepareMailSender(emailSettingBag);
+
+        String toAddress = email;
+        String subject = "Here's the link to reset your password";
+
+        String content = "<p>Hello,</p>" +
+                "<p> You have requested to reset your password</p>" +
+                "Click the link below to change your password" +
+                "<p><a href = \"" + link + "\"> Change my Password </a></p>" +
+                "<br><p>Ignore this email if you do remeber your password, or your have not made this request</p>";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(emailSettingBag.getFromAddress(), emailSettingBag.getSenderName());
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+        helper.setText(content, true);
+
+        mailSender.send(message);
     }
 
     private void encodePassword(Customer customer) {
@@ -173,5 +199,34 @@ public class CustomerService {
             customer.setLastName(lastName);
 
         }
+    }
+
+    public String udpateResetPasswordToken(String email) throws CustomerNotFoundExcpetion {
+        // Reset Password should only work for users with DB registration only.
+        Customer byEmail = customerRepository.findByEmail(email);
+        if (byEmail != null) {
+            String make = RandomString.make(30);
+            byEmail.setResetPasswordToken(make);
+            customerRepository.save(byEmail);
+            return make;
+        } else {
+            throw new CustomerNotFoundExcpetion("Could not find any customer with the email " + email);
+        }
+    }
+
+    public Customer getByResetPasswordToken(String token) {
+        Customer byResetPasswordToken = customerRepository.findByResetPasswordToken(token);
+        return byResetPasswordToken;
+    }
+
+    public void updatePassword(String token, String newPassword) throws CustomerNotFoundExcpetion {
+        Customer customer = customerRepository.findByResetPasswordToken(token);
+        if (customer == null) {
+            throw new CustomerNotFoundExcpetion("Customer not found: invalid token");
+        }
+        customer.setPassword(newPassword);
+        encodePassword(customer);
+        customerRepository.save(customer);
+
     }
 }

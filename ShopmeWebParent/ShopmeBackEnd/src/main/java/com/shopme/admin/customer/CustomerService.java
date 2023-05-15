@@ -51,6 +51,7 @@ public class CustomerService {
         customer.setCreatedTime(existingCustomer.getCreatedTime());
         customer.setEnabled(existingCustomer.getEnabled());
         customer.setVerficationCode(existingCustomer.getVerficationCode());
+        customer.setResetPasswordToken(existingCustomer.getResetPasswordToken());
         return customerRepository.save(customer);
 
     }

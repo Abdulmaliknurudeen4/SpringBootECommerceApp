@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Shopme Application Web page')}"></head>
+<body>
+<div class="container-fluid text-center">
+    <div th:replace="~{navigation :: header_menu}"></div>
+
+    <div th:if="${pageTitle}">
+        <h2>[[${pageTitle}]]</h2>
+    </div>
+
+    <div th:if="${message}">
+        <h3>[[${message}]]</h3>
+    </div>
+
+
+    <div th:replace="~{navigation :: footer_menu}"></div>
+
+</div>
+</body>
+</html>

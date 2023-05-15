@@ -58,6 +58,9 @@ public class Customer {
     @Column(name = "authentication_type", length = 10)
     private AuthenticationType authenticationType;
 
+    @Column(name = "reset_password_token", nullable = true, length = 30)
+    private String resetPasswordToken;
+
     public Integer getId() {
         return id;
     }
@@ -188,5 +191,13 @@ public class Customer {
 
     public void setAuthenticationType(AuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 }
