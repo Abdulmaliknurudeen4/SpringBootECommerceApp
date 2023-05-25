@@ -66,6 +66,10 @@ public class Product {
     public Product() {
     }
 
+    public Product(Integer id) {
+        this.id = id;
+    }
+
     public Set<ProductDetail> getDetails() {
         return details;
     }

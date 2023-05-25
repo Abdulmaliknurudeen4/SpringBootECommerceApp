@@ -61,6 +61,12 @@ public class Customer {
     @Column(name = "reset_password_token", nullable = true, length = 30)
     private String resetPasswordToken;
 
+    public Customer() {
+    }
+    public Customer(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

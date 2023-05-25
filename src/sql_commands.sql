@@ -55,3 +55,5 @@ delete from state where name ="";
 
 desc customers;
 select * from customers;
+select * from customers where email = "abdulmaliknurudeen4@gmail.com";
+desc cart_items;
