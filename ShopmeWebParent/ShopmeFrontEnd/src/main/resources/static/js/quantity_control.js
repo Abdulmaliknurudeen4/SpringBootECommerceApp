@@ -10,7 +10,7 @@ $(document).ready(function() {
         if(newQuantity > 0){
             quantityInput.val(newQuantity);
         }else{
-            showErrorModal("Mininum Quantity is 1");
+            showWarningModal("Mininum Quantity is 1");
         }
     });
 
@@ -24,7 +24,7 @@ $(document).ready(function() {
         if(newQuantity <= 5){
             quantityInput.val(newQuantity);
         }else{
-            showErrorModal("Maximum Quantity is 5");
+            showWarningModal("Maximum Quantity is 5");
         }
     });
 })

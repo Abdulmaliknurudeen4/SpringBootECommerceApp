@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -281,5 +282,18 @@ public class Product {
             return price * ((100 - discountPercent) / 100);
         }
         return this.price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(alias, product.alias);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, alias);
     }
 }

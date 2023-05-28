@@ -1,5 +1,6 @@
 package com.shopme.customer;
 
+import com.shopme.Utility;
 import com.shopme.entity.AuthenticationType;
 import com.shopme.entity.Country;
 import com.shopme.entity.Customer;
@@ -34,7 +35,7 @@ public class CustomerController {
     @GetMapping("/customer")
     public String showCustomerDetails(HttpServletRequest request,
                                       Model model) {
-        String email = getEmailOfAuthenticationUser(request);
+        String email = Utility.getEmailOfAuthenticationUser(request);
         Customer loggedInUser = customerService.getCustomerByEmail(email);
         List<Country> listCountries = customerService.listAllCountry();
         model.addAttribute("listCountries", listCountries);
@@ -114,20 +115,5 @@ public class CustomerController {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
     }
-
-    private static String getEmailOfAuthenticationUser(HttpServletRequest request) {
-        Object principal = request.getUserPrincipal();
-        String customerEmail = null;
-
-        if (principal instanceof UsernamePasswordAuthenticationToken
-                || principal instanceof RememberMeAuthenticationToken) {
-            customerEmail = request.getUserPrincipal().getName();
-        } else if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
-            CustomerOAuthUser oauthUser = (CustomerOAuthUser) oauth2Token.getPrincipal();
-            customerEmail = oauthUser.getEmail();
-        }
-
-        return customerEmail;
-
-    }
 }
+
