@@ -18,7 +18,7 @@ public class ShoppingCartService {
         CartItem cartItem = cartItemRepository.findByCustomerAndProduct(customer, new Product(productId));
         if(cartItem != null){
             updatedQuantity = cartItem.getQuantity() + quantity;
-            if(quantity > 5){
+            if(updatedQuantity > 5){
                 throw new ShoppingCartException("You can not add more than 5 items of this product");
             }
         }else{

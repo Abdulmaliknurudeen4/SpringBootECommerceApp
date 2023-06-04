@@ -12,6 +12,7 @@ import java.util.List;
 public interface CartItemRepository extends CrudRepository<CartItem, Integer> {
     List<CartItem> findByCustomer(Customer customer);
 
+    @Query("SELECT c FROM CartItem c WHERE c.customer=?1 AND c.product=?2")
     CartItem findByCustomerAndProduct(Customer customer, Product product);
 
     @Modifying
