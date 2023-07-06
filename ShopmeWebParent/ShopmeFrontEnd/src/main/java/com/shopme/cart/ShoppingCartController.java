@@ -1,7 +1,6 @@
 package com.shopme.cart;
 
 import com.shopme.Utility;
-import com.shopme.customer.CustomerNotFoundExcpetion;
 import com.shopme.customer.CustomerService;
 import com.shopme.entity.CartItem;
 import com.shopme.entity.Customer;
@@ -21,13 +20,15 @@ public class ShoppingCartController {
     private CustomerService customerService;
 
     @GetMapping("/cart")
-    public String viewCart(Model model, HttpServletRequest request){
+    public String viewCart(Model model, HttpServletRequest request) {
         Customer authenticatedCustomer = getAuthenticatedCustomer(request);
         List<CartItem> cartItems = shoppingCartService.listCartItems(authenticatedCustomer);
+
         float estimatedtotal = 0;
-        for(CartItem i : cartItems){
+        for (CartItem i : cartItems) {
             estimatedtotal += i.getSubtotal();
         }
+
 
 //                OptionalDouble allocationsToEmployee = allocationService.getAllocations()
 //                .stream()
@@ -40,9 +41,10 @@ public class ShoppingCartController {
 
         return "cart/shopping_cart";
     }
+
     private Customer getAuthenticatedCustomer(HttpServletRequest request) {
         String email = Utility.getEmailOfAuthenticationUser(request);
-       // The email is always not null.
+        // The email is always not null.
         return customerService.getCustomerByEmail(email);
     }
 }

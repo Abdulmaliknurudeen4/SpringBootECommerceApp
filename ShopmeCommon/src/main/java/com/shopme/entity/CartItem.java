@@ -68,11 +68,6 @@ public class CartItem {
 
     @Transient
     public float getSubtotal() {
-        if (quantity > 0 && product.getDiscountPercent() > 0) {
-            return product.getDiscountPercent() * quantity;
-        } else if (quantity > 0 && product.getPrice() > 0) {
-            return product.getPrice() * quantity;
-        }
-        return 0;
+        return product.getDiscountPrice() * quantity;
     }
 }

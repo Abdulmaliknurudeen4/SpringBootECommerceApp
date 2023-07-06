@@ -18,9 +18,9 @@
     <span th:if="${CURRENCY_SYMBOL_POSITION == 'after'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 </div>
 
-<div th:fragment="showPricing(numericalContent, class)" th:remove="tag">
+<div th:fragment="showPricing(numericalContent, class, contentSpanId)" th:remove="tag">
     <span th:if="${CURRENCY_SYMBOL_POSITION == 'before'}" th:class="${(class != null) ? class : '' }">[[${CURRENCY_SYMBOL}]]</span>
-    <span th:class="${(class != null) ? class : '' }">[[${#numbers.formatDecimal(numericalContent, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, CURRENCY_POINT_TYPE)}]]</span>
+    <span th:class="${(class != null) ? class : '' }" th:id="${contentSpanId}">[[${#numbers.formatDecimal(numericalContent, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, CURRENCY_POINT_TYPE)}]]</span>
     <span th:if="${CURRENCY_SYMBOL_POSITION == 'after'}" th:class="${(class != null) ? class : '' }">[[${CURRENCY_SYMBOL}]]</span>
 </div>
 

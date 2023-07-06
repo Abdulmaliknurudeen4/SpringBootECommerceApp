@@ -57,5 +57,5 @@ desc customers;
 select * from customers;
 select * from customers where email = "abdulmaliknurudeen4@gmail.com";
 -- Get Customers with CartItems
-select c.email from customers c join  cart_items cc WHERE c.id=cc.customer_id;
+select c.email, cc.quantity from customers c join  cart_items cc WHERE c.id=cc.customer_id;
 desc cart_items;
