@@ -8,20 +8,7 @@
             <b>[[${product.shortName}]]</b>
         </a>
     </div>
-
-    <div th:if="${product.discountPercent <= 0}">
-        <div th:replace="product/product_fragment :: price(${product.price})" th:remove="tag"></div>
-    </div>
-
-    <div th:if="${product.discountPercent > 0}">
-        <span style="font-size: larger; color: darkred">
-            <div th:replace="product/product_fragment :: price(${product.discountPrice})" th:remove="tag"
-                 style="display: inline"></div>
-        </span>
-        <del>
-            <div th:replace="product/product_fragment :: price(${product.price})" th:remove="tag"></div>
-        </del>
-    </div>
+    <div th:replace="~{product/product_fragment :: product_price}"></div>
 
 </div>
 
@@ -31,5 +18,28 @@
     <span th:if="${CURRENCY_SYMBOL_POSITION == 'after'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 </div>
 
+<div th:fragment="showPricing(numericalContent, class)" th:remove="tag">
+    <span th:if="${CURRENCY_SYMBOL_POSITION == 'before'}" th:class="${(class != null) ? class : '' }">[[${CURRENCY_SYMBOL}]]</span>
+    <span th:class="${(class != null) ? class : '' }">[[${#numbers.formatDecimal(numericalContent, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, CURRENCY_POINT_TYPE)}]]</span>
+    <span th:if="${CURRENCY_SYMBOL_POSITION == 'after'}" th:class="${(class != null) ? class : '' }">[[${CURRENCY_SYMBOL}]]</span>
+</div>
+
+
+<div th:fragment="product_price" th:remove="tag">
+    <th:block th:if="${product.discountPercent &lt;= 0}">
+        <div th:replace="product/product_fragment :: price(${product.price})" th:remove="tag"></div>
+    </th:block>
+
+    <th:block th:if="${product.discountPercent > 0}">
+        <span style="font-size: larger; color: darkred">
+            <div th:replace="product/product_fragment :: price(${product.discountPrice})" th:remove="tag"
+                 style="display: inline"></div>
+        </span>
+        <del>
+            <div th:replace="product/product_fragment :: price(${product.price})" th:remove="tag"></div>
+        </del>
+    </th:block>
+
+</div>
 </body>
 </html>

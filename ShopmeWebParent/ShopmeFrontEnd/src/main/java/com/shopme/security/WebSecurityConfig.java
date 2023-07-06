@@ -35,7 +35,7 @@ public class WebSecurityConfig implements Serializable {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .requestMatchers("/customer").authenticated()
+                .requestMatchers("/customer", "/cart/**", "/account_details", "/update_account_details").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

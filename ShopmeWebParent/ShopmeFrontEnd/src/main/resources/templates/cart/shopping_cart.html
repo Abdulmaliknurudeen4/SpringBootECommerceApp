@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Shopping Cart')}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{navigation :: header_menu}"></div>
+    <div th:replace="~{navigation :: search_nav}"></div>
+
+    <div class="text-center">
+        <h1>Your Shopping Cart</h1>
+    </div>
+
+    <div class="row m-1">
+
+        <div class="col-sm-8" th:unless="${#lists.isEmpty(cartItems)}">
+            <th:block th:each="item, status : ${cartItems}">
+                <div class="row border rounded p-1" th:with="product = ${item.product}">
+                    <div class="col-1">
+                        <div>[[${status.count}]]</div>
+                        <div>
+                            <a>
+                                <i class="fa fa-trash fa-1x"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <img th:src="@{${product.mainImagePath}}" class="img-fluid" alt=""/>
+                    </div>
+                    <div class="col-6">
+                        <div>
+                            <a th:href="@{'/p/'+${product.alias}}" target="_blank" th:title="${product.name}">
+                                <b>[[${product.shortName}]]</b>
+                            </a>
+                        </div>
+<!--                        Quanity control-->
+                        <div th:replace="~{cart/quantity_control :: quantity_control(${item.quantity}, ${product.id})}"></div>
+<!--                        product price-->
+                            <div>
+                                <span>X&nbsp;</span>
+                                <div th:replace="~{product/product_fragment :: product_price}"></div>
+                            </div>
+
+                        <div>
+                            <span>=&nbsp;</span>
+                            <div th:replace="~{product/product_fragment :: showPricing(${item.subtotal}, 'h4')}"></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row m-1">&nbsp;</div>
+            </th:block>
+        </div>
+
+        <div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}">
+            <div>
+                <span class="h3">Estimated Total:</span>
+            </div>
+            <div>
+                <span>=&nbsp;</span>
+                <div th:replace="~{product/product_fragment :: showPricing(${estimatedTotal}, 'h3')}"></div>
+            </div>
+            <div class="mt-2">
+                <button class="btn btn-danger">Check Out</button>
+            </div>
+        </div>
+
+        <div class="row m-1" th:if="${#lists.isEmpty(cartItems)}">
+            <h3 class="text-center">You have not chosen any products yet.</h3>
+        </div>
+    </div>
+
+    <div th:replace="~{navigation :: footer_menu}"></div>
+
+</div>
+</body>
+</html>

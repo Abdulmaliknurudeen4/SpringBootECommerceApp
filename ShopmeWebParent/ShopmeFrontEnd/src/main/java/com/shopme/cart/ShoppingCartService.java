@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class ShoppingCartService {
@@ -30,5 +32,10 @@ public class ShoppingCartService {
         cartItem.setQuantity(updatedQuantity);
         cartItemRepository.save(cartItem);
         return quantity;
+    }
+
+
+    public List<CartItem> listCartItems(Customer customer){
+        return cartItemRepository.findByCustomer(customer);
     }
 }
