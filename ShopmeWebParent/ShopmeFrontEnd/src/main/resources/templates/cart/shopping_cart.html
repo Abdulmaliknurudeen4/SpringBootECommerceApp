@@ -74,12 +74,18 @@
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
 
 </div>
-<script type="text/javascript" th:src="@{/js/shopping_cart.js}"></script>
-<script type="text/javascript" th:src="@{/js/common.js}"></script>
+
 <script type="text/javascript">
     contextPath="[[@{/}]]";
     csrfHeaderName = "[[${_csrf.headerName}]]";
     csrfValue = "[[${_csrf.token}]]";
+
+    decimalDigits = [[${DECIMAL_DIGITS}]];
+    decimalPointType = "[[${CURRENCY_POINT_TYPE}]]";
+    thousandPointType = "[[${THOUSANDS_POINT_TYPE}]]";
 </script>
+<script type="text/javascript" th:src="@{/js/shopping_cart.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
 </body>
 </html>

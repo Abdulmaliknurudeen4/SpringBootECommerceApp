@@ -1,3 +1,5 @@
+decimalSeperator = decimalPointType === 'COMMA' ? ',' : '.';
+thousandSeperator = thousandPointType === 'COMMA' ? ',' : '.';
 $(document).ready(function () {
 
     $(".linkMinus").on('click', function (event) {
@@ -66,7 +68,7 @@ function updateQuantity(productId, quantity) {
 
 function updateSubtotal(updatedSubtotal, productId) {
 
-    $('#subtotal' + productId).text(formatNumbertoX(updatedSubtotal, 2));
+    $('#subtotal' + productId).text(formatCurrency(updatedSubtotal));
 
     updateTotal();
 }
@@ -87,12 +89,12 @@ function updateTotal() {
     productCount = 0;
     $('span.h4[id^=\'subtotal\']').each((index, element) => {
         productCount++;
-        total += parseFloat(element.innerHTML.replaceAll(",", ""));
+        total += parseFloat(clearCurrencyFormat(element.innerHTML));
     });
     if(productCount < 1){
         showEmptyShoppingCart();
     }else{
-        $("#estimatedTotal").text(formatNumbertoX(total, 2));
+        $("#estimatedTotal").text(formatCurrency(total));
     }
 
 }
@@ -135,4 +137,12 @@ function updateCountNumbers(){
 function showEmptyShoppingCart(){
     $('#sectionTotal').hide();
     $('#sectionEmptyCartMessage').removeClass('d-none');
+}
+
+function formatCurrency(amount){
+    return $.number(amount, decimalDigits, decimalSeperator, thousandSeperator);
+}
+function clearCurrencyFormat(numberString){
+    result = numberString.replaceAll(thousandSeperator, "");
+    return result.replaceAll(decimalSeperator, ".");
 }

@@ -31,7 +31,9 @@ public class SettingFilter implements Filter{
         }
 
         List<Setting> generalSettings = service.getGeneralSettings();
-        generalSettings.forEach(s->request.setAttribute(s.getSettingKey(), s.getValue()));
+        generalSettings.forEach(setting->{
+            request.setAttribute(setting.getSettingKey(), setting.getValue());
+        });
 
         chain.doFilter(request, response);
     }
