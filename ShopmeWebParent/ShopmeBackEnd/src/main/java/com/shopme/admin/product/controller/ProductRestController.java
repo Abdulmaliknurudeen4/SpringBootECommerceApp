@@ -13,7 +13,7 @@ public class ProductRestController {
     private ProductService productService;
 
     @PostMapping("products/check_name")
-    public String checkDuplicateCategory(@Param("name") String name, @Param("id") Integer id) {
+    public String checkDuplicateCategory(String name,Integer id) {
         return productService.isProductUnique(name, id) ? "OK" : "Duplicated";
     }
 }

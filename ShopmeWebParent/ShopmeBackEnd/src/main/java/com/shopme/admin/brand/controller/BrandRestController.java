@@ -22,7 +22,7 @@ public class BrandRestController {
     @Autowired
     private BrandService brandService;
     @PostMapping("brands/check_brand")
-    public String checkDuplicateBrandName(@Param("name") String name, @Param("id") Integer id) {
+    public String checkDuplicateBrandName(String name, Integer id) {
         return brandService.isNameUnique(name, id) ? "OK" : "Duplicated";
     }
 
