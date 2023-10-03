@@ -28,14 +28,6 @@ public class ShoppingCartController {
         for (CartItem i : cartItems) {
             estimatedtotal += i.getSubtotal();
         }
-
-
-//                OptionalDouble allocationsToEmployee = allocationService.getAllocations()
-//                .stream()
-//                .filter(f -> f.getEmployeeID().equals(employee.getId()))
-//                .map(e -> Duration.between(e.getStartTime(), e.getEndTime()).toHours())
-//                .mapToLong(Long::longValue).average();
-
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("estimatedTotal", estimatedtotal);
 

@@ -50,4 +50,8 @@ public class ShoppingCartService {
         }
         return 0;
     }
+
+    public void removeProduct(Integer productId, Customer customer){
+        cartItemRepository.deleteByCustomerAndProduct(productId,customer.getId() );
+    }
 }

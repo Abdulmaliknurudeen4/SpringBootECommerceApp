@@ -9,6 +9,14 @@ $(document).ready(function () {
         event.preventDefault($(this));
         increaseQuantity($(this));
     });
+
+    $(".linkRemove").on('click', function (event) {
+        event.preventDefault($(this));
+        removeProduct($(this));
+    });
+
+
+
 });
 
 function decreaseQuantity(link) {
@@ -76,10 +84,16 @@ subtotalSpans.each(function () {
 
 function updateTotal() {
     total = 0.0;
+    productCount = 0;
     $('span.h4[id^=\'subtotal\']').each((index, element) => {
+        productCount++;
         total += parseFloat(element.innerHTML.replaceAll(",", ""));
     });
-    $("#estimatedTotal").text(formatNumbertoX(total, 2));
+    if(productCount < 1){
+        showEmptyShoppingCart();
+    }else{
+        $("#estimatedTotal").text(formatNumbertoX(total, 2));
+    }
 
 }
 
@@ -88,4 +102,37 @@ function formatNumbertoX(text, places) {
     let formattedNumber = updatedSub.toFixed(places);
     formattedNumber = formattedNumber.replace(/\.?0+$/, '');
     return formattedNumber;
+}
+
+function removeProduct(link){
+    url = link.attr("href");
+    rowNumber = link.attr("rowNumber");
+    $.ajax({
+        type: 'DELETE',
+        url: url,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(csrfHeaderName, csrfValue);
+        }
+    }).done((response) => {
+       removeProductHTML(rowNumber);
+       updateTotal();
+       updateCountNumbers();
+       showModalDialog("Shopping Cart", response);
+    }).fail((response) => {
+        showErrorModal("Error While removing product from shoppping cart.");
+    });
+}
+
+function removeProductHTML(rowNumber){
+    $('#row'+rowNumber).remove();
+}
+function updateCountNumbers(){
+    $(".divCount").each((index,element)=>{
+        element.innerHTML = ""+(index+1);
+    });
+}
+
+function showEmptyShoppingCart(){
+    $('#sectionTotal').hide();
+    $('#sectionEmptyCartMessage').removeClass('d-none');
 }

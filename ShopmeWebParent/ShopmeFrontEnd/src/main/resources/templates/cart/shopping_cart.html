@@ -14,12 +14,12 @@
 
         <div class="col-sm-8" th:unless="${#lists.isEmpty(cartItems)}">
             <th:block th:each="item, status : ${cartItems}">
-                <div class="row border rounded p-1" th:with="product = ${item.product}">
+                <div class="row border rounded p-1" th:with="product = ${item.product}" th:id="${'row'+status.count}">
                     <div class="col-1">
-                        <div>[[${status.count}]]</div>
+                        <div class="divCount">[[${status.count}]]</div>
                         <div>
-                            <a>
-                                <i class="fa fa-trash fa-1x"></i>
+                            <a th:href="@{'/cart/remove/' + ${product.id}}" class="linkRemove" th:rowNumber="${status.count}">
+                                <i class="fa fa-trash fa-1x icon-dark"></i>
                             </a>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
             </th:block>
         </div>
 
-        <div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}">
+        <div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}" id="sectionTotal">
             <div>
                 <span class="h3">Estimated Total:</span>
             </div>
@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div class="row m-1" th:if="${#lists.isEmpty(cartItems)}">
+        <div id="sectionEmptyCartMessage" th:class="'row m-1 text-center' + ${#lists.isEmpty(cartItems) ? '' : 'd-none'}">
             <h3 class="text-center">You have not chosen any products yet.</h3>
         </div>
     </div>
