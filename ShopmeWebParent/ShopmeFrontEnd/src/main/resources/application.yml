@@ -18,8 +18,8 @@ server:
         context-path: /Shopme
 spring:
     datasource:
-        password: ''
-        url: jdbc:mysql://localhost:9000/shopmedb?serverTimezone=Africa/Luanda
+        password: 'root'
+        url: jdbc:mysql://localhost:3306/shopmedb?serverTimezone=Africa/Luanda
         username: root
     jpa:
         hibernate:
