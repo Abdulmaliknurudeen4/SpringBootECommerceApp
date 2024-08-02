@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+<div th:fragment="cod_support(status, routingPass, id)">
+    <a th:if="${status}" class="cursor-hand"
+       title="Disable COD support for this destination"
+       th:href="@{${moduleURL}+'/'+${routingPass}+'/'+${id}+'/false'}">
+        <i class="fas fa-hand-holding-usd fa-2x icon-green"></i></a>
+
+    <a
+            title="Enable COD support for this destination"
+            th:unless="${status}"
+            th:href="@{${moduleURL}+'/'+${routingPass}+'/'+${id}+'/true'}"
+            class="cursor-hand"> <i class="fas fa-hand-holding-usd fa-2x icon-dark"></i>
+    </a>
+</div>
+
+</body>
+</html>
