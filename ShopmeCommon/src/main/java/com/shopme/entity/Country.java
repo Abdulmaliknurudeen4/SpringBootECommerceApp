@@ -27,6 +27,10 @@ public class Country implements Serializable {
     public Country() {
     }
 
+    public Country(Integer id) {
+        Id = id;
+    }
+
     public Country(String name, String code) {
         this.name = name;
         this.code = code;

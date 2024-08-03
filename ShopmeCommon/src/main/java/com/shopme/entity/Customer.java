@@ -64,6 +64,7 @@ public class Customer {
 
     public Customer() {
     }
+
     public Customer(Integer id) {
         this.id = id;
     }
@@ -219,5 +220,22 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(id, email);
+    }
+
+    @Transient
+    public String getAddress() {
+        String address = firstName;
+
+        if (lastName != null && !lastName.isEmpty()) address += " " + lastName;
+        if (!addressLineOne.isEmpty()) address += ", " + addressLineOne;
+        if (addressLineTwo != null && !addressLineTwo.isEmpty()) address += ", " + addressLineTwo;
+        if (!city.isEmpty()) address += ", " + city;
+        if (state != null && !state.isEmpty()) address += ", " + state+", ";
+
+        address += country.getName();
+
+        if (!postalCode.isEmpty()) address += ", " + postalCode;
+        if (!phoneNumber.isEmpty()) address += ", " + phoneNumber;
+        return address;
     }
 }

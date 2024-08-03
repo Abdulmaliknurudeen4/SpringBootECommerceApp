@@ -3,7 +3,7 @@ var dropdownStates;
 
 $(document).ready(function (){
 
-    dropdownCountries = $('#country');
+    dropdownCountries = $('#countries');
     dropdownStates = $('#listStates');
 
 
@@ -18,10 +18,10 @@ $(document).ready(function (){
 
 function loadStates4Country(){
 
-    let selectedCountry = $('#country option:selected');
-    let countryId = selectedCountry.val();
+    selectedCountry = $('#countries option:selected');
+    countryId = selectedCountry.val();
 
-    let url = contextPath + "states/list_by_country/" + countryId;
+    url = contextPath + "settings/list_state_by_country/" +countryId;
 
     $.get(url, function(responseJson){
         dropdownStates.empty();
@@ -30,7 +30,7 @@ function loadStates4Country(){
             $("<option>").val(state.name).text(state.name).appendTo(dropdownStates);
         });
     }).fail(function(){
-       showErrorModal("Error loading states/provinces for the selected country");
+        showErrorModal("Error loading states/provinces for the selected country");
     });
 
 }

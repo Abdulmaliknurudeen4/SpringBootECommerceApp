@@ -52,7 +52,15 @@ public class CustomerController {
         customerService.updateCustomer(customer);
         ra.addAttribute("message", "Your account details have been updated.");
         udpateNameOfAuthenticationUser(request, customer);
-        return "redirect:/customer";
+
+        String redirectOption = request.getParameter("redirect");
+        String redirectURL = "redirect:/account_details";
+
+        if("address_book".equals(redirectOption)){
+            redirectURL="redirect:/address_book";
+        }
+
+        return redirectURL;
     }
 
     private void udpateNameOfAuthenticationUser(HttpServletRequest request, Customer s) {

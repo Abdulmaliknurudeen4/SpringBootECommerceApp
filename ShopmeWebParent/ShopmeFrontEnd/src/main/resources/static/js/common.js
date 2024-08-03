@@ -1,6 +1,11 @@
 var passwordInput;
 $(document).ready(function () {
     passwordInput = $('#password');
+
+    $("#buttonCancel").on('click', function () {
+        window.location = moduleURL;
+    });
+
 });
 
 function checkPasswordMatch(confirmPassword) {
