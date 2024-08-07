@@ -75,8 +75,13 @@
                                         th:href="@{/customers}" sec:authorize="hasAnyAuthority('Admin','Salesperson')">Customers</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                                        th:href="@{/shipping_rates}" sec:authorize="hasAnyAuthority('Admin','Salesperson')">Shipping</a>
+                                        th:href="@{/shipping_rates}" sec:authorize="hasAnyAuthority('Admin','Salesperson')">Shipping Rates</a>
                 </li>
+
+                <li class="nav-item"><a class="nav-link"
+                                        th:href="@{/orders}" sec:authorize="hasAnyAuthority('Admin','Salesperson', 'Shipper')">Orders</a>
+                </li>
+
                 <li class="nav-item"><a class="nav-link" th:href="@{/report}"
                                         sec:authorize="hasAnyAuthority('Admin','Salesperson')">Sales
                     Report</a></li>

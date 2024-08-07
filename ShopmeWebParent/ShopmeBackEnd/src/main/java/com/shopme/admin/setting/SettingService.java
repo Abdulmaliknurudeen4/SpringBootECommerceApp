@@ -61,4 +61,33 @@ public class SettingService {
 
         return new GeneralSettingBag(settings);
     }
+
+    public List<Setting> getCurrencySettings(){
+        SettingCategory CURRENCY = sgRepo.findbyCategory("CURRENCY");
+        List<Setting> currencySettings = settingRepository.findBySettingCategory(CURRENCY);
+        List<Setting> settings = new ArrayList<>();
+
+        settings.addAll(currencySettings);
+        return settings;
+    }
+
+    public List<Setting> getMailServer(){
+        SettingCategory CURRENCY = sgRepo.findbyCategory("MAIL_SERVER");
+        List<Setting> currencySettings = settingRepository.findBySettingCategory(CURRENCY);
+        List<Setting> settings = new ArrayList<>();
+
+        settings.addAll(currencySettings);
+        return settings;
+    }
+
+    public List<Setting> getMailTemplate(){
+        SettingCategory CURRENCY = sgRepo.findbyCategory("MAIL_TEMPLATE");
+        List<Setting> currencySettings = settingRepository.findBySettingCategory(CURRENCY);
+        List<Setting> settings = new ArrayList<>();
+
+        settings.addAll(currencySettings);
+        return settings;
+    }
+
+
 }

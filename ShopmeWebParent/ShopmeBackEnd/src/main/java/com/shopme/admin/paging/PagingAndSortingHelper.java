@@ -1,5 +1,6 @@
 package com.shopme.admin.paging;
 
+import com.shopme.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -80,5 +81,4 @@ public class PagingAndSortingHelper {
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
         return PageRequest.of(pageNum - 1, pagesize, sort);
     }
-
 }
