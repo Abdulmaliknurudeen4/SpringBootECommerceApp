@@ -1,5 +1,7 @@
-package com.shopme.entity;
+package com.shopme.entity.product;
 
+import com.shopme.entity.Brand;
+import com.shopme.entity.Category;
 import jakarta.persistence.*;
 
 import java.util.Date;

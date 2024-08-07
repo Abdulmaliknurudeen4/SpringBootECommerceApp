@@ -2,7 +2,7 @@ package com.shopme.product;
 
 import com.shopme.category.CategoryService;
 import com.shopme.entity.Category;
-import com.shopme.entity.Product;
+import com.shopme.entity.product.Product;
 import com.shopme.exception.CategoryNotFoundException;
 import com.shopme.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

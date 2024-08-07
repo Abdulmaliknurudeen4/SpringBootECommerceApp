@@ -6,10 +6,8 @@ import java.util.Objects;
 
 @Entity(name = "currencies")
 @Table
-public class Currency {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Currency extends IdBasedEntity{
+
     @Column(nullable = false, length = 64)
     private String name;
     @Column(nullable = false, length = 3)

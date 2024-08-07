@@ -6,12 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "addresses")
-public class Address {
-
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
-
+public class Address extends IdBasedEntity{
     @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;
 
@@ -48,11 +43,11 @@ public class Address {
     private boolean defaultForShipping;
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        id = id;
     }
 
     public String getFirstName() {
@@ -148,12 +143,12 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return defaultForShipping == address.defaultForShipping && Objects.equals(Id, address.Id) && Objects.equals(firstName, address.firstName) && Objects.equals(lastName, address.lastName) && Objects.equals(phoneNumber, address.phoneNumber) && Objects.equals(addressLine1, address.addressLine1) && Objects.equals(addressLine2, address.addressLine2) && Objects.equals(city, address.city) && Objects.equals(country, address.country) && Objects.equals(state, address.state) && Objects.equals(postalCode, address.postalCode) && Objects.equals(customer, address.customer);
+        return defaultForShipping == address.defaultForShipping && Objects.equals(id, address.id) && Objects.equals(firstName, address.firstName) && Objects.equals(lastName, address.lastName) && Objects.equals(phoneNumber, address.phoneNumber) && Objects.equals(addressLine1, address.addressLine1) && Objects.equals(addressLine2, address.addressLine2) && Objects.equals(city, address.city) && Objects.equals(country, address.country) && Objects.equals(state, address.state) && Objects.equals(postalCode, address.postalCode) && Objects.equals(customer, address.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, firstName, lastName, phoneNumber, addressLine1, addressLine2, city, country, state, postalCode, customer, defaultForShipping);
+        return Objects.hash(id, firstName, lastName, phoneNumber, addressLine1, addressLine2, city, country, state, postalCode, customer, defaultForShipping);
     }
 
     @Override

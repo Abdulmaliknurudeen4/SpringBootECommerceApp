@@ -2,7 +2,7 @@ package com.shopme.cart;
 
 import com.shopme.entity.CartItem;
 import com.shopme.entity.Customer;
-import com.shopme.entity.Product;
+import com.shopme.entity.product.Product;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

@@ -1,7 +1,7 @@
 package com.shopme.setting;
 
-import com.shopme.entity.Setting;
-import com.shopme.entity.SettingCategory;
+import com.shopme.entity.setting.Setting;
+import com.shopme.entity.setting.SettingCategory;
 import com.shopme.settings.SettingCategoryRepository;
 import com.shopme.settings.SettingRepository;
 import org.junit.jupiter.api.Test;

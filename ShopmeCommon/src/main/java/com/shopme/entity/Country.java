@@ -10,11 +10,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "country")
-public class Country implements Serializable {
+public class Country extends IdBasedEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
     @Column(nullable = false, length = 45)
     private String name;
 
@@ -28,7 +25,7 @@ public class Country implements Serializable {
     }
 
     public Country(Integer id) {
-        Id = id;
+        id = id;
     }
 
     public Country(String name, String code) {
@@ -42,25 +39,25 @@ public class Country implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Id.equals(country.Id) && name.equals(country.name);
+        return id.equals(country.id) && name.equals(country.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, name);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
-        return "Country : " + this.name + ", Id: " + Id;
+        return "Country : " + this.name + ", Id: " + id;
     }
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        id = id;
     }
 
     public String getName() {

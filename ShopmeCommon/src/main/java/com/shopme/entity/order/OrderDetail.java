@@ -1,5 +1,6 @@
-package com.shopme.entity;
+package com.shopme.entity.order;
 
+import com.shopme.entity.product.Product;
 import jakarta.persistence.*;
 
 @Entity

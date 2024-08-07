@@ -1,5 +1,6 @@
-package com.shopme.entity;
+package com.shopme.entity.order;
 
+import com.shopme.entity.Customer;
 import jakarta.persistence.*;
 
 import java.util.Date;

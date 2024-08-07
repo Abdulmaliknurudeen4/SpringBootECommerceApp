@@ -1,6 +1,6 @@
 package com.shopme.settings;
 
-import com.shopme.entity.SettingCategory;
+import com.shopme.entity.setting.SettingCategory;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

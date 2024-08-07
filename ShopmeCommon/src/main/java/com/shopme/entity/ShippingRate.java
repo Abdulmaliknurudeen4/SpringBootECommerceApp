@@ -6,10 +6,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "shipping_rates")
-public class ShippingRate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+public class ShippingRate extends IdBasedEntity{
+
     private float rate;
     private int days;
 
@@ -24,11 +22,11 @@ public class ShippingRate {
     private String state;
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        id = id;
     }
 
     public float getRate() {
@@ -74,7 +72,7 @@ public class ShippingRate {
     @Override
     public String toString() {
         return "ShippingRate{" +
-               "Id=" + Id +
+               "Id=" + id +
                ", rate=" + rate +
                ", days=" + days +
                ", codSupported=" + codSupported +
@@ -88,11 +86,11 @@ public class ShippingRate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShippingRate that = (ShippingRate) o;
-        return Float.compare(rate, that.rate) == 0 && days == that.days && codSupported == that.codSupported && Objects.equals(Id, that.Id) && Objects.equals(country, that.country) && Objects.equals(state, that.state);
+        return Float.compare(rate, that.rate) == 0 && days == that.days && codSupported == that.codSupported && Objects.equals(id, that.id) && Objects.equals(country, that.country) && Objects.equals(state, that.state);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, rate, days, codSupported, country, state);
+        return Objects.hash(id, rate, days, codSupported, country, state);
     }
 }

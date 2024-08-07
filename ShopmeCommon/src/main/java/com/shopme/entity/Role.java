@@ -7,11 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
-public class Role implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+public class Role extends IdBasedEntity implements Serializable {
 
     @Column(length = 40, nullable = false, unique = true)
     private String name;
@@ -23,7 +19,7 @@ public class Role implements Serializable {
     }
 
     public Role(Integer id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public Role(String name) {
@@ -38,11 +34,11 @@ public class Role implements Serializable {
     }
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        id = id;
     }
 
     public String getName() {
@@ -63,7 +59,7 @@ public class Role implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id);
+        return Objects.hash(id);
     }
 
     @Override
@@ -75,7 +71,7 @@ public class Role implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         Role other = (Role) obj;
-        return Objects.equals(Id, other.Id);
+        return Objects.equals(id, other.id);
     }
 
     @Override

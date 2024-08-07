@@ -2,7 +2,7 @@ package com.shopme.admin.product;
 
 import com.shopme.entity.Brand;
 import com.shopme.entity.Category;
-import com.shopme.entity.Product;
+import com.shopme.entity.product.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

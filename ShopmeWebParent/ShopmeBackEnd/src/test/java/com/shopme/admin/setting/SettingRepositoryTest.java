@@ -1,7 +1,7 @@
 package com.shopme.admin.setting;
 
-import com.shopme.entity.Setting;
-import com.shopme.entity.SettingCategory;
+import com.shopme.entity.setting.Setting;
+import com.shopme.entity.setting.SettingCategory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

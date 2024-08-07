@@ -7,10 +7,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "state")
-public class State {
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+public class State extends IdBasedEntity{
+
     @Column(nullable = false, length = 45)
     private String name;
 
@@ -31,20 +29,20 @@ public class State {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return Objects.equals(Id, state.Id) && Objects.equals(name, state.name);
+        return Objects.equals(id, state.id) && Objects.equals(name, state.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, name);
+        return Objects.hash(id, name);
     }
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        id = id;
     }
 
     public String getName() {
@@ -66,6 +64,6 @@ public class State {
 
     @Override
     public String toString() {
-        return "State: " + "Id=" + Id + ", name='" + name;
+        return "State: " + "Id=" + id + ", name='" + name;
     }
 }

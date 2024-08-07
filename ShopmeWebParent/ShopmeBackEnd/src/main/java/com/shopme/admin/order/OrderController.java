@@ -3,7 +3,7 @@ package com.shopme.admin.order;
 import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.setting.SettingService;
-import com.shopme.entity.Order;
+import com.shopme.entity.order.Order;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

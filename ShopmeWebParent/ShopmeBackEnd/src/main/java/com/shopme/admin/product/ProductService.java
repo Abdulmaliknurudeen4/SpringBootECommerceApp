@@ -1,7 +1,7 @@
 package com.shopme.admin.product;
 
 import com.shopme.admin.paging.PagingAndSortingHelper;
-import com.shopme.entity.Product;
+import com.shopme.entity.product.Product;
 import com.shopme.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

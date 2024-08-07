@@ -1,6 +1,11 @@
 package com.shopme.admin.order;
 
 import com.shopme.entity.*;
+import com.shopme.entity.order.Order;
+import com.shopme.entity.order.OrderDetail;
+import com.shopme.entity.order.OrderStatus;
+import com.shopme.entity.order.PaymentMethod;
+import com.shopme.entity.product.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

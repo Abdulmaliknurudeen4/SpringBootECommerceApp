@@ -7,10 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Customer extends IdBasedEntity{
 
     @Column(unique = true, nullable = false, length = 45)
     private String email;

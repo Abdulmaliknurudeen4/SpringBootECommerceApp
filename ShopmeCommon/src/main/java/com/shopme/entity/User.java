@@ -10,16 +10,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User extends IdBasedEntity implements Serializable{
 
     // many to many, joincolumn refers to the primary key of users, inverse join
     // refers to Roles
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Set<Role> roles = new HashSet<Role>();
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     @Column(length = 128, nullable = false, unique = true)
     private String email;
     @Column(length = 64, nullable = false)

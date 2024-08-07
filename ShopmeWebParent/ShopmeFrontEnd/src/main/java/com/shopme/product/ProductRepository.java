@@ -1,6 +1,6 @@
 package com.shopme.product;
 
-import com.shopme.entity.Product;
+import com.shopme.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

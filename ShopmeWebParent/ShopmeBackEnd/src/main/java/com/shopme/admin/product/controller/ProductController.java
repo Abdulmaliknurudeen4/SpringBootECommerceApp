@@ -10,7 +10,7 @@ import com.shopme.admin.product.ProductService;
 import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.entity.Brand;
 import com.shopme.entity.Category;
-import com.shopme.entity.Product;
+import com.shopme.entity.product.Product;
 import com.shopme.exception.ProductNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
