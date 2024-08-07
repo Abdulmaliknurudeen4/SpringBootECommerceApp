@@ -174,8 +174,8 @@ public class CustomerService {
         customer.setCreatedTime(LocalDateTime.now());
         customer.setAuthenticationType(authenticationType);
         customer.setPassword("");
-        customer.setAddressLineOne("");
-        customer.setAddressLineTwo("");
+        customer.setAddressLine1("");
+        customer.setAddressLine2("");
         customer.setCity("");
         customer.setState("");
         customer.setPhoneNumber("");

@@ -37,7 +37,7 @@ public class CustomerRepositoryTest {
         customer.setEnabled(false);
         customer.setVerficationCode("token2023");
         customer.setCreatedTime(LocalDate.now().atStartOfDay());
-        customer.setAddressLineOne("5, Salami Streeet");
+        customer.setAddressLine1("5, Salami Streeet");
         customer.setPassword("klajdklfjklsjflskj");
         customer.setEmail("abdulmaliknurudeen4@gmail.com");
         customer.setPhoneNumber("08035719672");
