@@ -7,41 +7,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
-public class Customer extends IdBasedEntity{
-
+public class Customer extends AbstractAddressWithCountry{
     @Column(unique = true, nullable = false, length = 45)
     private String email;
 
     @Column(nullable = false, length = 64)
     private String password;
-
-    @Column(nullable = false, length = 45)
-    private String firstName;
-
-    @Column(nullable = false, length = 45)
-    private String lastName;
-
-    @Column(nullable = false, length = 15)
-    private String phoneNumber;
-
-    @Column(nullable = false, length = 64)
-    private String addressLineOne;
-
-    @Column(nullable = true, length = 64)
-    private String addressLineTwo;
-
-    @Column(nullable = false, length = 45)
-    private String city;
-
-    @Column(nullable = false, length = 45)
-    private String state;
-
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
-
-    @Column(name = "postal_code", nullable = false, length = 10)
-    private String postalCode;
 
     @Column(name = "verification_code", unique = true, length = 64)
     private String verficationCode;
@@ -66,14 +37,6 @@ public class Customer extends IdBasedEntity{
         this.id = id;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -88,78 +51,6 @@ public class Customer extends IdBasedEntity{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddressLineOne() {
-        return addressLineOne;
-    }
-
-    public void setAddressLineOne(String addressLineOne) {
-        this.addressLineOne = addressLineOne;
-    }
-
-    public String getAddressLineTwo() {
-        return addressLineTwo;
-    }
-
-    public void setAddressLineTwo(String addressLineTwo) {
-        this.addressLineTwo = addressLineTwo;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
     }
 
     public String getVerficationCode() {
@@ -219,20 +110,5 @@ public class Customer extends IdBasedEntity{
         return Objects.hash(id, email);
     }
 
-    @Transient
-    public String getAddress() {
-        String address = firstName;
 
-        if (lastName != null && !lastName.isEmpty()) address += " " + lastName;
-        if (!addressLineOne.isEmpty()) address += ", " + addressLineOne;
-        if (addressLineTwo != null && !addressLineTwo.isEmpty()) address += ", " + addressLineTwo;
-        if (!city.isEmpty()) address += ", " + city;
-        if (state != null && !state.isEmpty()) address += ", " + state+", ";
-
-        address += country.getName();
-
-        if (!postalCode.isEmpty()) address += ", " + postalCode;
-        if (!phoneNumber.isEmpty()) address += ", " + phoneNumber;
-        return address;
-    }
 }

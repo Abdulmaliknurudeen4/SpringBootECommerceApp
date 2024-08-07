@@ -1,5 +1,6 @@
 package com.shopme.entity.order;
 
+import com.shopme.entity.AbstractAddress;
 import com.shopme.entity.Customer;
 import jakarta.persistence.*;
 
@@ -9,39 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
-public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
-
-    @Column(name = "first_name", nullable = false, length = 45)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false, length = 45)
-    private String lastName;
-
-    @Column(name = "phone_number", nullable = false, length = 45)
-    private String phoneNumber;
-
-    @Column(name = "address_line_1", nullable = false, length = 64)
-    private String addressLine1;
-
-    @Column(name = "address_line_2", length = 64)
-    private String addressLine2;
-
-    @Column(nullable = false, length = 45)
-    private String city;
-
-    @Column(nullable = false, length = 45)
-    private String state;
-
-    @Column(name = "postal_code", nullable = false, length = 10)
-    private String postalCode;
-
+public class Order extends AbstractAddress {
     @Column(nullable = false, length = 45)
     private String country;
-
     @Column(name = "order_time")
     private Date orderTime;
     @Column(name = "shipping_cost")
@@ -68,78 +39,6 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderDetail> orderDetail = new HashSet<>();
-
-    public Integer getId() {
-        return Id;
-    }
-
-    public void setId(Integer id) {
-        Id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
 
     public String getCountry() {
         return country;
@@ -246,12 +145,12 @@ public class Order {
     }
 
     @Transient
-    public void copyAddressFromCustomer(){
+    public void copyAddressFromCustomer() {
         setFirstName(customer.getFirstName());
         setLastName(customer.getLastName());
         setPhoneNumber(customer.getPhoneNumber());
-        setAddressLine1(customer.getAddressLineOne());
-        setAddressLine2(customer.getAddressLineTwo());
+        setAddressLine1(customer.getAddressLine1());
+        setAddressLine2(customer.getAddressLine2());
         setCity(customer.getCity());
         setCountry(customer.getCountry().getName());
         setPostalCode(customer.getPostalCode());
@@ -271,7 +170,7 @@ public class Order {
     }
 
     @Transient
-    public String getDestination(){
+    public String getDestination() {
         return getCountry() + ", " + getCity();
     }
 }
