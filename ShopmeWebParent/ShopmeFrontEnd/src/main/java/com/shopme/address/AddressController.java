@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
 
@@ -108,6 +109,13 @@ public class AddressController {
         Customer customer = getAuthenticatedCustomer(request);
         addressService.setDefaultAddress(addressId, customer.getId());
 
-        return "redirect:/address_book";
+        String redirectOption = request.getParameter("redirect");
+        String redirectURL = "redirect:/address_book";
+
+        if("cart".equals(redirectOption)){
+            redirectURL="redirect:/cart";
+        }
+
+        return redirectURL;
     }
 }

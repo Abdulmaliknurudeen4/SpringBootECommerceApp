@@ -12,6 +12,7 @@
           style="max-width: 600px; margin: 0 auto"
           method="post" th:object="${customer}">
         <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:value="${param.redirect}" name="redirect">
 
         <!--        First Name-->
         <div class="border border-secondary rounded p-3">

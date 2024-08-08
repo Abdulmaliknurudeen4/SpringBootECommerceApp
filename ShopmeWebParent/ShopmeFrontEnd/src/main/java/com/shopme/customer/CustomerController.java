@@ -54,10 +54,12 @@ public class CustomerController {
         udpateNameOfAuthenticationUser(request, customer);
 
         String redirectOption = request.getParameter("redirect");
-        String redirectURL = "redirect:/account_details";
+        String redirectURL = "redirect:/customer";
 
         if("address_book".equals(redirectOption)){
             redirectURL="redirect:/address_book";
+        }else if("cart".equals(redirectOption)){
+            redirectURL="redirect:/cart";
         }
 
         return redirectURL;
