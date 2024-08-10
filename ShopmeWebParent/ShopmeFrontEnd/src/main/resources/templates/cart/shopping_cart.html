@@ -18,7 +18,8 @@
                     <div class="col-1">
                         <div class="divCount">[[${status.count}]]</div>
                         <div>
-                            <a th:href="@{'/cart/remove/' + ${product.id}}" class="linkRemove" th:rowNumber="${status.count}">
+                            <a th:href="@{'/cart/remove/' + ${product.id}}" class="linkRemove"
+                               th:rowNumber="${status.count}">
                                 <i class="fa fa-trash fa-1x icon-dark"></i>
                             </a>
                         </div>
@@ -33,13 +34,13 @@
                                 <b>[[${product.shortName}]]</b>
                             </a>
                         </div>
-<!--                        Quanity control-->
+                        <!--                        Quanity control-->
                         <div th:replace="~{cart/quantity_control :: quantity_control(${item.quantity}, ${product.id})}"></div>
-<!--                        product price-->
-                            <div>
-                                <span>X&nbsp;</span>
-                                <div th:replace="~{product/product_fragment :: product_price}"></div>
-                            </div>
+                        <!--                        product price-->
+                        <div>
+                            <span>X&nbsp;</span>
+                            <div th:replace="~{product/product_fragment :: product_price}"></div>
+                        </div>
 
                         <div>
                             <span>=&nbsp;</span>
@@ -62,7 +63,9 @@
             </div>
             <div class="mt-2">
                 <div th:if="${shippingSupported}">
-                    <button class="btn btn-danger">Check Out</button>
+                    <form th:action="@{/checkout}">
+                        <button type="submit" class="btn btn-danger">Check Out</button>
+                    </form>
                 </div>
                 <div th:unless="${shippingSupported}">
                     <div><span class="h5 text-warning">No Shipping Available for your location</span></div>
@@ -76,7 +79,8 @@
             </div>
         </div>
 
-        <div id="sectionEmptyCartMessage" th:class="'row m-1 text-center' + ${#lists.isEmpty(cartItems) ? '' : 'd-none'}">
+        <div id="sectionEmptyCartMessage"
+             th:class="'row m-1 text-center' + ${#lists.isEmpty(cartItems) ? '' : 'd-none'}">
             <h3 class="text-center">You have not chosen any products yet.</h3>
         </div>
     </div>
@@ -87,7 +91,7 @@
 </div>
 
 <script type="text/javascript">
-    contextPath="[[@{/}]]";
+    contextPath = "[[@{/}]]";
     csrfHeaderName = "[[${_csrf.headerName}]]";
     csrfValue = "[[${_csrf.token}]]";
 

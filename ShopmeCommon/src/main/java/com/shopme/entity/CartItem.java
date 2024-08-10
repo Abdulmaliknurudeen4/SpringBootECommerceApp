@@ -12,10 +12,15 @@ public class CartItem extends IdBasedEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
+
     private Integer quantity;
+
+    @Transient
+    private float shippingCost;
 
     public CartItem() {
     }
@@ -68,5 +73,14 @@ public class CartItem extends IdBasedEntity{
     @Transient
     public float getSubtotal() {
         return product.getDiscountPrice() * quantity;
+    }
+
+    @Transient
+    public float getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(float shippingCost) {
+        this.shippingCost = shippingCost;
     }
 }
