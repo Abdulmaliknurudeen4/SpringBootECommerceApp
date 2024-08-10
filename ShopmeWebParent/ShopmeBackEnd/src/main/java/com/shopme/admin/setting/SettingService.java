@@ -40,53 +40,25 @@ public class SettingService {
         settingRepository.saveAll(settingIterator);
     }
 
-    public GeneralSettingBag getMailServerSettings() {
+    public List<Setting> getMailServerSettings() {
         SettingCategory mailServer = sgRepo.findbyCategory("MAIL_SERVER");
 
-        List<Setting> mailServerSettings = settingRepository.findBySettingCategory(mailServer);
-
-        List<Setting> settings = new ArrayList<>(mailServerSettings);
-
-
-        return new GeneralSettingBag(settings);
+        return settingRepository.findBySettingCategory(mailServer);
     }
 
-    public GeneralSettingBag getMailTemplateSettings() {
+    public List<Setting> getMailTemplateSettings() {
         SettingCategory mailTemplate = sgRepo.findbyCategory("MAIL_TEMPLATE");
-
-        List<Setting> mailTemplateSetings = settingRepository.findBySettingCategory(mailTemplate);
-
-        List<Setting> settings = new ArrayList<>(mailTemplateSetings);
-
-
-        return new GeneralSettingBag(settings);
+        return settingRepository.findBySettingCategory(mailTemplate);
     }
 
-    public List<Setting> getCurrencySettings(){
+    public List<Setting> getCurrencySettings() {
         SettingCategory CURRENCY = sgRepo.findbyCategory("CURRENCY");
-        List<Setting> currencySettings = settingRepository.findBySettingCategory(CURRENCY);
-        List<Setting> settings = new ArrayList<>();
-
-        settings.addAll(currencySettings);
-        return settings;
+        return settingRepository.findBySettingCategory(CURRENCY);
     }
 
-    public List<Setting> getMailServer(){
-        SettingCategory CURRENCY = sgRepo.findbyCategory("MAIL_SERVER");
-        List<Setting> currencySettings = settingRepository.findBySettingCategory(CURRENCY);
-        List<Setting> settings = new ArrayList<>();
-
-        settings.addAll(currencySettings);
-        return settings;
-    }
-
-    public List<Setting> getMailTemplate(){
-        SettingCategory CURRENCY = sgRepo.findbyCategory("MAIL_TEMPLATE");
-        List<Setting> currencySettings = settingRepository.findBySettingCategory(CURRENCY);
-        List<Setting> settings = new ArrayList<>();
-
-        settings.addAll(currencySettings);
-        return settings;
+    public List<Setting> getPaymentSettings() {
+        SettingCategory PAYMENT = sgRepo.findbyCategory("PAYMENT");
+        return settingRepository.findBySettingCategory(PAYMENT);
     }
 
 

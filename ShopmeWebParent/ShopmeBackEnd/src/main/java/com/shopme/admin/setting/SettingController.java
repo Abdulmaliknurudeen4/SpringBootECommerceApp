@@ -4,6 +4,8 @@ import com.shopme.admin.FileUploadUtil;
 import com.shopme.entity.Currency;
 import com.shopme.entity.setting.Setting;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @Controller
 public class SettingController {
 
+    private static final Logger log = LoggerFactory.getLogger(SettingController.class);
     @Autowired
     private SettingService service;
     @Autowired
@@ -73,6 +76,7 @@ public class SettingController {
     private void updateSettingValueFromForm(HttpServletRequest request, List<Setting> listSettings) {
         for (Setting setting : listSettings) {
             String value = request.getParameter(setting.getSettingKey());
+            System.out.println(setting.getSettingKey() + ", "+value);
             if (value != null) {
                 setting.setValue(value);
             }
@@ -82,19 +86,27 @@ public class SettingController {
     }
 
     @PostMapping("/settings/save_mail_server")
-    public String saveMailServerSettings(HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
-        GeneralSettingBag settingBag = service.getMailServerSettings();
-        updateSettingValueFromForm(request, settingBag.list());
+    public String saveMailServerSettings(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        List<Setting> settingBag = service.getMailServerSettings();
+        updateSettingValueFromForm(request, settingBag);
         redirectAttributes.addFlashAttribute("message", "Mail Server Settings have been saved");
-        return "redirect:/settings";
+        return "redirect:/settings#mailServer";
     }
 
     @PostMapping("/settings/save_mail_template")
-    public String saveMailTemplateSettings(HttpServletRequest request, RedirectAttributes redirectAttributes) throws IOException {
-        GeneralSettingBag settingBag = service.getMailTemplateSettings();
-        updateSettingValueFromForm(request, settingBag.list());
+    public String saveMailTemplateSettings(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        List<Setting> mailTemplateSettings = service.getMailTemplateSettings();
+        updateSettingValueFromForm(request, mailTemplateSettings);
         redirectAttributes.addFlashAttribute("message", "Mail Template Settings have been saved");
-        return "redirect:/settings";
+        return "redirect:/settings#mailTemplates";
+    }
+
+    @PostMapping("/settings/save_payment")
+    public String savePaymentSettings(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        List<Setting> paymentSettings = service.getPaymentSettings();
+        updateSettingValueFromForm(request, paymentSettings);
+        redirectAttributes.addFlashAttribute("message", "Payment Settings have been saved");
+        return "redirect:/settings#payment";
     }
 }
 

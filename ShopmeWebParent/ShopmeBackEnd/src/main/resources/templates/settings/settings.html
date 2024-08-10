@@ -65,7 +65,7 @@
             </div>
 
             <div class="tab-pane drop p-3" id="paymentTemplate" role="tabpanel" aria-labelledby="payment-tab">
-                Payment Template
+                <div th:replace="~{settings/payment ::content}"></div>
             </div>
         </div>
 
@@ -90,12 +90,21 @@
 <script type="text/javascript">
     MAX_FILE_SIZE = 102400; //100KB
     contextPath = "[[@{/}]]";
-    var csrfHeaderName = "[[${_csrf.headerName}]]";
-    var csrfValue = "[[${_csrf.token}]]";
+    let csrfHeaderName = "[[${_csrf.headerName}]]";
+    let csrfValue = "[[${_csrf.token}]]";
     $(document).ready(() => {
 
     });
-    var customerVerficationContent = new RichTextEditor('#customerVerficationContent');
+    let customerVerficationContent = new RichTextEditor('#customerVerficationContent', {
+        readOnly: false,
+        skin: "rounded-corner",
+        toolbar: "basic"
+    });
+    let ORDER_CONFIRMATION_CONTENT = new RichTextEditor('#ORDER_CONFIRMATION_CONTENT', {
+        readOnly: false,
+        skin: "rounded-corner",
+        toolbar: "basic"
+    });
 </script>
 </body>
 </html>

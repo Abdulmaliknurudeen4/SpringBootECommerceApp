@@ -66,4 +66,23 @@ public class SettingRepositoryTest {
         settings.forEach(System.out::println);
         assertThat(settings).isNotEmpty();
     }
+
+    @Test
+    public void testCreatePaymentSettings() {
+        SettingCategory payment = settingCategoryRepository.findbyCategory("PAYMENT");
+        Setting baseUrl = new Setting("PAYPAL_API_BASE_URL", "Shopme.png", payment);
+        Setting clientId = new Setting("PAYPAL_API_CLIENT_ID", "Shopme.png", payment);
+        Setting secret = new Setting("PAYPAL_API_CLIENT_SECRET", "Copyright (c) 2023 Shopme Ltd.", payment);
+        Iterable<Setting> settings = settingRepository.saveAll(List.of(baseUrl, clientId, secret));
+        assertThat(settings).isNotEmpty();
+    }
+
+    @Test
+    public void testCreatePaymentOrder() {
+        SettingCategory general = settingCategoryRepository.findbyCategory("MAIL_TEMPLATE");
+        Setting sitelogo = new Setting("ORDER_CONFIRMATION_SUBJECT", "Please Confirm Your Order", general);
+        Setting copyright = new Setting("ORDER_CONFIRMATION_CONTENT", "Copyright (c) 2023 Shopme Ltd.", general);
+        Iterable<Setting> settings = settingRepository.saveAll(List.of(sitelogo, copyright));
+        assertThat(settings).isNotEmpty();
+    }
 }
