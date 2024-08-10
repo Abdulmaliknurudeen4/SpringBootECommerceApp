@@ -16,6 +16,8 @@
           style="max-width: 600px; margin: 0 auto;" th:object="${address}">
         <input th:field="*{id}" type="hidden"/>
         <input th:field="*{defaultForShipping}" type="hidden"/>
+        <input type="hidden" th:value="${param.redirect}" name="redirect">
+
 
         <div class="border border-secondary rounded p-3">
 

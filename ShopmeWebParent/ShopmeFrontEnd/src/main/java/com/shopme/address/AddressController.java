@@ -60,13 +60,23 @@ public class AddressController {
     public String saveAddress(Address address, HttpServletRequest request,
                               RedirectAttributes ra) {
         Customer customer = getAuthenticatedCustomer(request);
-
         address.setCustomer(customer);
         addressService.save(address);
 
+        String redirectOption = request.getParameter("redirect");
+        String redirectURL = "redirect:/address_book";
+
+        if("cart".equals(redirectOption)){
+            redirectURL+="?redirect=cart";
+        }
+        if("checkout".equals(redirectOption)){
+            redirectURL+="?redirect=checkout";
+        }
+
+
         ra.addFlashAttribute("message", "The address has been saved successfully.");
 
-        return "redirect:/address_book";
+        return redirectURL;
     }
 
     @GetMapping("/address_book/edit/{id}")
@@ -114,6 +124,9 @@ public class AddressController {
 
         if("cart".equals(redirectOption)){
             redirectURL="redirect:/cart";
+        }
+        if("checkout".equals(redirectOption)){
+            redirectURL="redirect:/checkout";
         }
 
         return redirectURL;

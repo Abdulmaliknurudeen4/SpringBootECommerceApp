@@ -31,6 +31,10 @@ public class CustomerController {
     @Autowired
     private SettingService settingService;
 
+    private static String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
+    }
 
     @GetMapping("/customer")
     public String showCustomerDetails(HttpServletRequest request,
@@ -56,10 +60,12 @@ public class CustomerController {
         String redirectOption = request.getParameter("redirect");
         String redirectURL = "redirect:/customer";
 
-        if("address_book".equals(redirectOption)){
-            redirectURL="redirect:/address_book";
-        }else if("cart".equals(redirectOption)){
-            redirectURL="redirect:/cart";
+        if ("address_book".equals(redirectOption)) {
+            redirectURL = "redirect:/address_book";
+        } else if ("cart".equals(redirectOption)) {
+            redirectURL = "redirect:/cart";
+        } else if ("checkout".equals(redirectOption)) {
+            redirectURL = "redirect:/address_book?redirect=checkout";
         }
 
         return redirectURL;
@@ -70,7 +76,7 @@ public class CustomerController {
         String fullName = s.getFullName() + " " + s.getLastName();
 
         if (principal instanceof UsernamePasswordAuthenticationToken
-                || principal instanceof RememberMeAuthenticationToken) {
+            || principal instanceof RememberMeAuthenticationToken) {
             ShopmeCustomerDetails userDetails = getCustomerDetailsObject(principal);
             Customer authenticatedCustomer = userDetails.getCustomer();
             authenticatedCustomer.setFirstName(s.getFirstName());
@@ -84,11 +90,9 @@ public class CustomerController {
 
     private ShopmeCustomerDetails getCustomerDetailsObject(Object principal) {
         ShopmeCustomerDetails customerDetails = null;
-        if (principal instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+        if (principal instanceof UsernamePasswordAuthenticationToken token) {
             customerDetails = (ShopmeCustomerDetails) token.getPrincipal();
-        } else if (principal instanceof RememberMeAuthenticationToken) {
-            RememberMeAuthenticationToken token = (RememberMeAuthenticationToken) principal;
+        } else if (principal instanceof RememberMeAuthenticationToken token) {
             customerDetails = (ShopmeCustomerDetails) token.getPrincipal();
         }
 
@@ -114,16 +118,10 @@ public class CustomerController {
         return "register/register_sucess";
     }
 
-
     @GetMapping("/verify")
     public String verifyAccount(@Param("code") String code, Model model) {
         boolean verified = customerService.verify(code);
         return "register/" + (verified ? "verify_success" : "verify_error");
-    }
-
-    private static String getSiteURL(HttpServletRequest request) {
-        String siteURL = request.getRequestURL().toString();
-        return siteURL.replace(request.getServletPath(), "");
     }
 }
 
