@@ -13,4 +13,7 @@ public interface SettingRepository extends CrudRepository<Setting, String> {
 
     @Query("SELECT s FROM Setting s WHERE s.settingCategory IN(?1)")
     public List<Setting> findByCategories(List<SettingCategory> categories);
+
+    //find by key not tested
+    public Setting findBySettingKey(String key);
 }
