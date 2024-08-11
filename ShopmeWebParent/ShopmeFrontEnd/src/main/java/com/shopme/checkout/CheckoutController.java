@@ -4,6 +4,8 @@ import com.shopme.Utility;
 import com.shopme.address.AddressService;
 import com.shopme.cart.ShoppingCartController;
 import com.shopme.cart.ShoppingCartService;
+import com.shopme.checkout.paypal.PayPalApiException;
+import com.shopme.checkout.paypal.PayPalService;
 import com.shopme.customer.CustomerService;
 import com.shopme.entity.Address;
 import com.shopme.entity.CartItem;
@@ -43,6 +45,7 @@ public class CheckoutController {
     @Autowired private ShoppingCartService cartService;
     @Autowired private OrderService orderService;
     @Autowired private SettingService settingService;
+    @Autowired private PayPalService payPalService;
 
     @GetMapping("/checkout")
     public String showCheckoutPage(Model model, HttpServletRequest request){
@@ -152,5 +155,27 @@ public class CheckoutController {
 
        helper.setText(content, true);
        mailSender.send(message);
+    }
+
+    @PostMapping("/process_paypal_order")
+    public String processPayPalOrder(HttpServletRequest request, Model model){
+        String orderId = request.getParameter("orderId");
+        String pageTitle = "Checkout Failure";
+        String message = null;
+
+        try{
+            if(payPalService.validateOrder(orderId)){
+                return placeOrder(request);
+            }else {
+                pageTitle = "Checkout Failure";
+                message="ERROR: Transaction could not be completed because order information is invalid";
+            }
+        }catch (PayPalApiException | MessagingException | UnsupportedEncodingException e){
+            message = "ERROR : Transaction failed due to error: " + e.getMessage();
+        }
+        model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("message", message);
+
+        return "message";
     }
 }
