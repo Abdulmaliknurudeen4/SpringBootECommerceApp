@@ -9,9 +9,6 @@
         <h2 th:text="${param.redirect != null && param.redirect[0] == 'checkout'} ? 'Choose a Shipping Address' : 'Your Address Book' "></h2>
         <div>
             <a th:unless="${param.redirect}" th:href="@{/address_book/new}" class="h4">Add New Address</a>
-           <!-- <th:block th:if="${param.redirect[0]=='checkout'}">
-                <a th:href="@{/address_book/new(redirect=checkout)}" class="h4">Add New Address</a>
-            </th:block>-->
         </div>
     </div>
 
