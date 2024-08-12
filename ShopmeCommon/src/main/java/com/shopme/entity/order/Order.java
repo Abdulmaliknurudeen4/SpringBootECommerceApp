@@ -5,6 +5,8 @@ import com.shopme.entity.Address;
 import com.shopme.entity.Customer;
 import jakarta.persistence.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
@@ -24,7 +26,7 @@ public class Order extends AbstractAddress {
     private float total;
 
     private int deliveryDays;
-    private Date deliverDate;
+    private Date deliverDate; //deliverDateOnForm
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
@@ -201,5 +203,11 @@ public class Order extends AbstractAddress {
 
     public void setOrderTracks(List<OrderTrack> orderTracks) {
         this.orderTracks = orderTracks;
+    }
+
+    @Transient
+    public String getDeliverDateOnForm(){
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormatter.format(this.deliverDate);
     }
 }
