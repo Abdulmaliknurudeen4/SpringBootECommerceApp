@@ -53,7 +53,8 @@ public class OrderService {
 
     public Order get(Integer id) throws OrderNotFoundException {
         try {
-            return repo.findById(id).get();
+            Order order = repo.findById(id).get();
+            return order;
         } catch (NoSuchElementException e) {
             throw new OrderNotFoundException("could not find any orders with ID " + id);
         }

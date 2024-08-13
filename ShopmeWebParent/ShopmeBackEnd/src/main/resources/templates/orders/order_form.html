@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="tab-pane drop show active p-3" id="products" role="tabpanel" aria-labelledby="products-tab">
-                    <h2>Edit Products</h2>
+                    <div th:replace="~{orders/order_form_products :: content}"></div>
                 </div>
 
                 <div class="tab-pane drop show active p-3" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
@@ -77,6 +77,8 @@
 
 </script>
 <script th:src="@{/js/common_form.js}"></script>
+<script th:src="@{/js/jquery.number.min.js}"></script>
+<script th:src="@{/js/order_form_overview_products.js}"></script>
 <script th:src="@{/js/common_form_country_state.js}"></script>
 </body>
 </html>
