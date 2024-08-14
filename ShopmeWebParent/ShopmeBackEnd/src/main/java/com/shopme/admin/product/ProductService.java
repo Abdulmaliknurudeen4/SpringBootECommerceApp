@@ -110,4 +110,13 @@ public class ProductService {
 
         helper.udpateModelAttributes(pageNum, page);
     }
+
+    public void searchProduct(int pageNum, PagingAndSortingHelper helper){
+        Pageable pageable = helper.createPageable(PRODUCTS_PER_PAGE, pageNum);
+        String keyword = helper.getKeyword();
+        Page<Product> page = productRepository.searchProductByName(keyword, pageable);
+        page.get().forEach(System.out::println);
+
+        helper.udpateModelAttributes(pageNum, page);
+    }
 }

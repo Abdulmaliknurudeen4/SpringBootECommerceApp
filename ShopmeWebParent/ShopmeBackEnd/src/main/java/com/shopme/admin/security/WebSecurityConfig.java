@@ -54,7 +54,12 @@ public class WebSecurityConfig implements Serializable {
                 .rememberMe()
                 .key("ADASDFKJLJLDFJoijklajdflkajd_1233k##kl")
                 .tokenValiditySeconds(7 * 60 * 60 * 24)
-                .and().build();
+                .and()
+                //enable iframe form the same origin
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .build();
+
     }
 
     @Bean
