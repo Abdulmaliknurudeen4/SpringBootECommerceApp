@@ -37,7 +37,7 @@ public class WebSecurityConfig implements Serializable {
                 .requestMatchers("/products/new", "/products/delete/**").hasAnyAuthority("Admin", "Editor")
                 .requestMatchers("/products/edit/**", "/products/save", "/products/check_unique").hasAnyAuthority("Admin", "Editor", "Salesperson")
                 .requestMatchers("/products", "/products/", "/products/detials/**", "/products/page/**").hasAnyAuthority("Admin", "Editor","Salesperson", "Shipper")
-                .requestMatchers("/orders/**", "/customers/**", "/Shipping/**", "/report/**").hasAnyAuthority("Admin", "Salesperson")
+                .requestMatchers("/orders/**", "/customers/**", "/Shipping/**", "/get_shipping_cost", "/report/**").hasAnyAuthority("Admin", "Salesperson")
                 .requestMatchers("/orders/**").hasAuthority("Shipper")
                 .anyRequest()
                 .authenticated()
