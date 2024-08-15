@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="tab-pane drop show active p-3" id="track" role="tabpanel" aria-labelledby="track-tab">
-                    <h2>Edit Order Tracking</h2>
+                    <div th:replace="~{orders/order_form_tracks :: content}"></div>
                 </div>
             </div>
 
@@ -80,7 +80,7 @@
         $('#buttonCancel').click(function () {
             window.location = "[[@{/orders}]]";
         });
-    })
+    });
 
 </script>
 <script th:src="@{/js/common_form.js}"></script>
@@ -89,5 +89,6 @@
 <script th:src="@{/js/order_form_add_product.js}"></script>
 <script th:src="@{/js/common_form_country_state.js}"></script>
 <script th:src="@{/js/order_form_remove_product.js}"></script>
+<script th:src="@{/js/order_form_tracks.js}"></script>
 </body>
 </html>
