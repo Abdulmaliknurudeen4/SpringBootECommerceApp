@@ -17,12 +17,13 @@ function getProductInfo(productId, shippingCost) {
     $.get(requestURL, function (productJSON) {
         let productName = productJSON.name;
         let mainImagePathURL = productJSON.imagePath;
-        let mainImagePath =(contextPath.substring(0, contextPath.length-1)+mainImagePathURL)
+        let mainImagePath = (contextPath.substring(0, contextPath.length - 1) + mainImagePathURL)
         let productCost = $.number(productJSON.cost, 2);
         let productPrice = $.number(productJSON.price, 2);
 
         let htmlCode = generateProductCode(productId, productName, mainImagePath, productCost, productPrice, shippingCost);
         $('#productList').append(htmlCode);
+        updateOrderAmounts();
     }).fail(function (err) {
         showWarningModal(err.responseJSON.message);
     })
@@ -34,12 +35,22 @@ function generateProductCode(productId, productName, mainImagePath,
     let quantityId = "quantity" + nextCount;
     let priceId = "price" + nextCount;
     let subtotalId = "subtotal" + nextCount;
+    let rowId = "row" + nextCount;
+    let blankLineId = "blankLine" + nextCount;
     let hmtlCode = `
-   <div class="border rounded p-1" >
+   <div class="border rounded p-1" id="${rowId}" >
                 <input type="hidden" name="productId" value="${productId}" class="hiddenProductId" />
                 <div class="row">
-                    <div class="col-1">
-                        <div>${nextCount}</div>
+                    <div class="col-1">  
+                        <div class="divCount">${nextCount}</div>
+                        <div>
+                        <a class="linkRemove"
+                                href=""
+                                rowNumber="${nextCount}">
+                            <i class="fa fa-trash icon-dark"></i>
+                        </a>
+                        </div>
+                        
                     </div>
                     <div class="col-3">
                         <img src="${mainImagePath}" class="img-fluid">
@@ -111,7 +122,7 @@ function generateProductCode(productId, productName, mainImagePath,
                 </div>
 
             </div>
-            <div class="row">&nbsp;</div>
+            <div id="${blankLineId}" class="row">&nbsp;</div>
 `;
     return hmtlCode;
 }
