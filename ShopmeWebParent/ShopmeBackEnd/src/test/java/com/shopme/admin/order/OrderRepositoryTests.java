@@ -159,13 +159,13 @@ public class OrderRepositoryTests {
 
         OrderTrack newTrack = new OrderTrack();
         newTrack.setOrder(order);
-        newTrack.setUpdatedTime(new Date());
+        newTrack.setUpdatedTime(new Date().toString());
         newTrack.setStatus(OrderStatus.NEW);
         newTrack.setNotes(OrderStatus.NEW.defaultDescription());
 
         OrderTrack processingTrack = new OrderTrack();
         processingTrack.setOrder(order);
-        processingTrack.setUpdatedTime(new Date());
+        processingTrack.setUpdatedTime(new Date().toString());
         processingTrack.setStatus(OrderStatus.PROCESSING);
         processingTrack.setNotes(OrderStatus.PROCESSING.defaultDescription());
 
