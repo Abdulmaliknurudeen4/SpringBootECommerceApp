@@ -64,7 +64,7 @@
 
     </form>
 
-    <div th:replace="fragments/modal :: modal_dialog"></div>
+    <div th:replace="fragments/modal :: modal_dialog_close"></div>
     <div th:replace="orders/add_product_modal :: content"></div>
 
     <footer th:replace="~{fragments/fragments :: footer}"></footer>
@@ -72,7 +72,9 @@
 
 </div>
 <script type="text/javascript">
-    contextPath = "[[@{/}]]";
+    let contextPath = "[[@{/}]]";
+    let csrfHeaderName = "[[${_csrf.headerName}]]";
+    let csrfValue = "[[${_csrf.token}]]";
 
     $(document).ready(function () {
         $('#buttonCancel').click(function () {
