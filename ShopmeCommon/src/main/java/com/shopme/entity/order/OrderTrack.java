@@ -46,6 +46,10 @@ public class OrderTrack extends IdBasedEntity {
         }
     }
 
+    public void setUpdatedTime(Date dateString) {
+        this.updatedTime = dateString;
+    }
+
     public OrderStatus getStatus() {
         return status;
     }

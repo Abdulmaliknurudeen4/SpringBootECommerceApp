@@ -34,7 +34,7 @@
                             <input type="datetime-local"
                                    th:value="${track.updatedTimeOnForm}"
                                    class="form-control"
-                                   th:readonly="${!isTrackWithStatusNew}"
+                                   th:readonly="${isTrackWithStatusNew}"
                                    th:required="${!isTrackWithStatusNew}"
                                    style="max-width: 300px"
                                    name="trackDate"
@@ -85,10 +85,13 @@
             <div th:id="'emptyLine'+${status.count}" class="row">&nbsp;</div>
 
         </th:block>
-    </div>
 
-    <button id="linkAddTrack"
-            class="btn btn-success mt-3">Add Track Record</button>
+
+    </div>
+    <button id="linkAddTrack" type="button" class="btn btn-success mt-3">
+        Add Track Record</button>
+
+
 
 
 </div>

@@ -40,6 +40,8 @@ function generateProductCode(productId, productName, mainImagePath,
     let hmtlCode = `
    <div class="border rounded p-1" id="${rowId}" >
                 <input type="hidden" name="productId" value="${productId}" class="hiddenProductId" />
+                <input type="hidden" name="detailId" value="0" />
+
                 <div class="row">
                     <div class="col-1">  
                         <div class="divCount">${nextCount}</div>
@@ -69,6 +71,7 @@ function generateProductCode(productId, productName, mainImagePath,
                                 <input type="text"
                                        required
                                        class="form-control m-1 cost-input"
+                                       name="productDetailCost"
                                        rowNumber="${nextCount}"
                                        value="${productCost}"
                                        style="max-width: 140px" />
@@ -82,6 +85,8 @@ function generateProductCode(productId, productName, mainImagePath,
                                        class="form-control m-1 quantity-input"
                                        id="${quantityId}"
                                        rowNumber="${nextCount}"
+                                       value="quality"
+                                       name="productQuantity"
                                        value="1"
                                        style="max-width: 140px" />
                             </td>
@@ -92,6 +97,7 @@ function generateProductCode(productId, productName, mainImagePath,
                             <td>
                                 <input type="text" class="form-control m-1 price-input"
                                        id="${priceId}"
+                                       name="productPrice"
                                        rowNumber="${nextCount}"
                                        value="${productPrice}" style="max-width: 140px" />
                             </td>
@@ -102,6 +108,7 @@ function generateProductCode(productId, productName, mainImagePath,
                             <td>
                                 <input type="text"
                                        readonly="readonly"
+                                       name="productSubtotal"
                                        class="form-control m-1 subtotal-output"
                                        id="${subtotalId}"
                                        value="${productPrice}" style="max-wid 140px" />
@@ -111,7 +118,9 @@ function generateProductCode(productId, productName, mainImagePath,
                         <tr>
                             <td>Shipping Cost:</td>
                             <td>
-                                <input type="text" class="form-control m-1 ship-input"
+                                <input type="text" 
+                                class="form-control m-1 ship-input"
+                                name="productShipCost"
                                        value="${shippingCost}" style="max-wid 140px" />
                             </td>
                         </tr>

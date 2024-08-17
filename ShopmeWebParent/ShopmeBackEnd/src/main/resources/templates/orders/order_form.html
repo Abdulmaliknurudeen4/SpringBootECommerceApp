@@ -11,7 +11,9 @@
         <h2>Manage Orders | [[${pageTitle}]]</h2>
     </div>
 
-    <form th:action="@{/order/save}" method="post" th:object="${order}">
+    <form th:action="@{/orders/save}" method="post"
+          onsubmit="return processFormBeforeSubmit()"
+          th:object="${order}">
         <input type="hidden" th:field="*{id}">
         <div>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -22,15 +24,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="products-tab" data-toggle="tab" href="#products" role="tab"
-                       aria-controls="description" aria-selected="false">Products</a>
+                       aria-controls="products" aria-selected="false">Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="shipping-tab" data-toggle="tab" href="#shipping" role="tab"
                        aria-controls="shipping" aria-selected="false">Shipping</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="details-tab" data-toggle="tab" href="#track" role="tab"
-                       aria-controls="details" aria-selected="false">Track</a>
+                    <a class="nav-link" id="tracks-tab" data-toggle="tab" href="#tracks" role="tab"
+                       aria-controls="tracks" aria-selected="false">Track</a>
                 </li>
             </ul>
 
@@ -48,7 +50,7 @@
                     <div th:replace="~{orders/order_form_shipping :: content}"></div>
                 </div>
 
-                <div class="tab-pane drop show active p-3" id="track" role="tabpanel" aria-labelledby="track-tab">
+                <div class="tab-pane drop show active p-3" id="tracks" role="tabpanel" aria-labelledby="tracks-tab">
                     <div th:replace="~{orders/order_form_tracks :: content}"></div>
                 </div>
             </div>

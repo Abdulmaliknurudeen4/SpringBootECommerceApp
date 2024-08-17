@@ -1,13 +1,20 @@
+let trackRecordCount;
+
 $(document).ready(function () {
+    trackRecordCount = $(".hiddenTrackId").length+1;
+
     $('#trackList').on('click', '.linkRemoveTrack', function (e) {
         e.preventDefault();
         deleteTrack($(this));
         updateTrackCountNumbers();
     });
-    $('#track').on('click', '#linkAddTrack', function (e) {
+
+    $('#tracks').on('click', '#linkAddTrack', function (e) {
+        console.log("Link Add Track Clicked");
         e.preventDefault();
         addNewTrackRecord();
     });
+
     $('#trackList').on("change", '.dropDownStatus', function (e) {
         let dropDownList = $(this);
         let rowNumber = dropDownList.attr("rowNumber");
@@ -15,6 +22,7 @@ $(document).ready(function () {
         let defaultNote = selectedOption.attr("defaultDescription");
         $('#trackNote' + rowNumber).text(defaultNote);
     });
+
 });
 
 function deleteTrack(link) {
@@ -36,7 +44,8 @@ function addNewTrackRecord() {
 }
 
 function generateTrackCode() {
-    let nextCount = $(".hiddenTrackId").length + 1;
+    let nextCount = trackRecordCount + 1;
+    trackRecordCount++;
     let rowId = "rowTrack" + nextCount;
     let emptyLineId = "emptyLine" + nextCount;
     let trackNoteId = "trackNote" + nextCount;
