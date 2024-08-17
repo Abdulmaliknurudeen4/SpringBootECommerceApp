@@ -31,12 +31,14 @@ public class WebSecurityConfig implements Serializable {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests()
+                .requestMatchers("/states/list_by_country/**").hasAnyAuthority("Admin", "Salesperson")
                 .requestMatchers("/users/**", "/settings/**").hasAuthority("Admin")
                 .requestMatchers("/questions/**", "/reviews/**").hasAnyAuthority("Admin", "Assistant")
                 .requestMatchers("/categories/**", "/brands/**", "/articles/**", "/menus/**").hasAnyAuthority("Admin", "Editor")
                 .requestMatchers("/products/new", "/products/delete/**").hasAnyAuthority("Admin", "Editor")
                 .requestMatchers("/products/edit/**", "/products/save", "/products/check_unique").hasAnyAuthority("Admin", "Editor", "Salesperson")
                 .requestMatchers("/products", "/products/", "/products/detials/**", "/products/page/**").hasAnyAuthority("Admin", "Editor","Salesperson", "Shipper")
+                .requestMatchers("/orders", "/orders/", "/orders/page/**", "/orders/detail/**").hasAnyAuthority("Admin", "Salesperson", "Shipper")
                 .requestMatchers("/orders/**", "/customers/**", "/Shipping/**", "/get_shipping_cost", "/report/**").hasAnyAuthority("Admin", "Salesperson")
                 .requestMatchers("/orders/**").hasAuthority("Shipper")
                 .anyRequest()
@@ -61,6 +63,17 @@ public class WebSecurityConfig implements Serializable {
                 .build();
 
     }
+
+  /*  @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((authz) ->
+                        authz.a
+                        .antMatchers("/api/admin/**").hasRole("ADMIN")
+                        .antMatchers("/api/user/**").hasRole("USER")
+                        .anyRequest().authenticated()
+                );
+        return http.build();
+    }*/
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

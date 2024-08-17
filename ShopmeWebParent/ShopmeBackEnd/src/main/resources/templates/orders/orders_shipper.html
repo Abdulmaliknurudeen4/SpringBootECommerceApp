@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragments :: head('Shopme - Orders')}"></head>
+<body>
+<div class="container-fluid">
+
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
+
+    <div>
+        <h1>Manage Orders(Shipper)</h1>
+    </div>
+
+    <div th:replace="~{fragments/fragments :: search_form_and_message()}"></div>
+
+
+    <div>
+        <th:block th:each="order : ${listOrders}">
+            <div class="row m-1">
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div class="row">
+
+                            <div class="col">
+                                <span>Order ID #[[${order.id}]]</span>
+                            </div>
+
+                            <div class="col">
+                                <div class="float-right">
+                                    <a class="cursor-hand linkOrderDetails"
+                                       th:href="@{${moduleURL}+'/detail/'+${order.id}}">
+                                        <i class="fas fa-file-alt fa-2x icon-green"></i>
+                                    </a>&nbsp;
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+                        <div>
+                            <i class="fa fa-user"></i>
+                            <b>[[${order.recipientName}]]</b>
+                        </div>
+                        <div>
+                            <i class="fa fa-home"></i>
+                            <b>[[${order.recipientAddress}]]</b>
+                        </div>
+                        <div>
+                            <i class="fa fa-phone-alt"></i>
+                            <b>[[${order.phoneNumber}]]</b>
+                        </div>
+                        <div th:if="${order.COD}">
+                            <i class="fa fa-hand-holding-usd"></i>
+                            <span>COD: <b><div th:replace="fragments/fragments :: format_currency(${order.total})">
+                            </div></b></span>
+                        </div>
+                        <div>&nbsp;</div>
+
+                        <div class="row">
+
+                            <div class="col">
+                                <th:block th:if="${order.picked}">
+                                    <i class="fa fa-people-carry fa-2x icon-green"></i>
+                                </th:block>
+                                <th:block th:unless="${order.picked}">
+                                    <i class="fa fa-people-carry fa-2x icon-dark"></i>
+                                </th:block>
+                            </div>
+
+                            <div class="col">
+                                <th:block th:if="${order.shipping}">
+                                    <i class="fa fa-shipping-fast fa-2x icon-green"></i>
+                                </th:block>
+                                <th:block th:unless="${order.shipping}">
+                                    <i class="fa fa-shipping-fast fa-2x icon-dark"></i>
+                                </th:block>
+                            </div>
+
+                            <div class="col">
+                                <th:block th:if="${order.delivered}">
+                                    <i class="fa fa-box-open fa-2x icon-green"></i>
+                                </th:block>
+                                <th:block th:unless="${order.delivered}">
+                                    <i class="fa fa-box-open fa-2x icon-dark"></i>
+                                </th:block>
+                            </div>
+
+                            <div class="col">
+                                <th:block th:if="${order.returned}">
+                                    <i class="fa fa-undo fa-2x icon-green"></i>
+                                </th:block>
+                                <th:block th:unless="${order.returned}">
+                                    <i class="fa fa-undo fa-2x icon-dark"></i>
+                                </th:block>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div>&nbsp;</div>
+        </th:block>
+    </div>
+
+    <div class="modal fade" id="orderDetailModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+
+    <div th:replace="~{fragments/fragments :: pagination(${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
+
+
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+    moduleURL = "[[@{/orders}]]";
+    $(document).ready(function () {
+        $("[name='keyword']").attr("placeholder", "Type #number to search by Order ID");
+        handleLinkViewOrderDetails();
+    });
+
+    function handleLinkViewOrderDetails() {
+        $('.linkOrderDetails').on("click", function (e) {
+            e.preventDefault();
+            let linkDetailURL = $(this).attr("href");
+            $('#orderDetailModal').modal("show").find(".modal-content").load(linkDetailURL);
+        });
+    }
+
+</script>
+</body>
+</html>
