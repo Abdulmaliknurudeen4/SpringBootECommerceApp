@@ -62,39 +62,19 @@
                         <div class="row">
 
                             <div class="col">
-                                <th:block th:if="${order.picked}">
-                                    <i class="fa fa-people-carry fa-2x icon-green"></i>
-                                </th:block>
-                                <th:block th:unless="${order.picked}">
-                                    <i class="fa fa-people-carry fa-2x icon-dark"></i>
-                                </th:block>
+                                <div th:replace="orders/order_status_fragment :: content(${order.picked}, 'PICKED', 'fa-people-carry')"></div>
                             </div>
 
                             <div class="col">
-                                <th:block th:if="${order.shipping}">
-                                    <i class="fa fa-shipping-fast fa-2x icon-green"></i>
-                                </th:block>
-                                <th:block th:unless="${order.shipping}">
-                                    <i class="fa fa-shipping-fast fa-2x icon-dark"></i>
-                                </th:block>
+                                <div th:replace="orders/order_status_fragment :: content(${order.shipping}, 'SHIPPING', 'fa-shipping-fast')"></div>
                             </div>
 
                             <div class="col">
-                                <th:block th:if="${order.delivered}">
-                                    <i class="fa fa-box-open fa-2x icon-green"></i>
-                                </th:block>
-                                <th:block th:unless="${order.delivered}">
-                                    <i class="fa fa-box-open fa-2x icon-dark"></i>
-                                </th:block>
+                                <div th:replace="orders/order_status_fragment :: content(${order.delivered}, 'DELIVERED', 'fa-box-open')"></div>
                             </div>
 
                             <div class="col">
-                                <th:block th:if="${order.returned}">
-                                    <i class="fa fa-undo fa-2x icon-green"></i>
-                                </th:block>
-                                <th:block th:unless="${order.returned}">
-                                    <i class="fa fa-undo fa-2x icon-dark"></i>
-                                </th:block>
+                                <div th:replace="orders/order_status_fragment :: content(${order.returned}, 'RETURNED', 'fa-undo')"></div>
                             </div>
 
                         </div>
@@ -106,6 +86,9 @@
             </div>
             <div>&nbsp;</div>
         </th:block>
+    </div>
+
+    <div th:replace="fragments/modal :: modal_dialog_confirm">
     </div>
 
     <div class="modal fade" id="orderDetailModal">
@@ -123,6 +106,8 @@
 <script th:src="@{/js/common_list.js}"></script>
 <script type="text/javascript">
     moduleURL = "[[@{/orders}]]";
+    let csrfHeaderName = "[[${_csrf.headerName}]]";
+    let csrfValue = "[[${_csrf.token}]]";
     $(document).ready(function () {
         $("[name='keyword']").attr("placeholder", "Type #number to search by Order ID");
         handleLinkViewOrderDetails();
@@ -137,5 +122,6 @@
     }
 
 </script>
+<script th:src="@{/js/orders_shipper.js}"></script>
 </body>
 </html>
