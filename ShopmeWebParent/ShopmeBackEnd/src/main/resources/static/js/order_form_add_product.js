@@ -1,4 +1,7 @@
+let productDetailCount;
+
 $(document).ready(function () {
+    productDetailCount = $('.hiddenProductId').length + 1;
     $('#products').on('click', '#linkAddProduct', function (e) {
         e.preventDefault();
         let link = $(this);
@@ -31,7 +34,8 @@ function getProductInfo(productId, shippingCost) {
 
 function generateProductCode(productId, productName, mainImagePath,
                              productCost, productPrice, shippingCost) {
-    let nextCount = $('.hiddenProductId').length + 1;
+    let nextCount = productDetailCount + 1;
+    productDetailCount++;
     let quantityId = "quantity" + nextCount;
     let priceId = "price" + nextCount;
     let subtotalId = "subtotal" + nextCount;
