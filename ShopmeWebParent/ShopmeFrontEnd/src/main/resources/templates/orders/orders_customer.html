@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My Orders')}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{navigation :: header_menu}"></div>
+    <div th:replace="~{navigation :: search_nav}"></div>
+    <div>
+        <h1>My Orders</h1>
+    </div>
+
+    <div>
+        <form class="form-inline m-3" th:action="@{'/orders/page/1'}">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+
+            Filter: &nbsp;
+            <input class="form-control mr-sm-2" type="search" placeholder="Filter" aria-label="Search" name="orderKeyword"
+                   id="orderKeyword" required th:value="${orderKeyword}">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                <i class="fa fa-search fa-1x"></i>
+            </button>&nbsp;&nbsp;
+            <button class="btn btn-outline-secondary" type="button"
+                    onclick="clearFilter()">
+                <i class="fa fa-eraser fa-1x"></i>
+            </button>
+        </form>
+    </div>
+
+
+    <div class="full-details">
+        <table class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr>
+                <th th:replace="~{fragments/fragments :: tablehead_link('id', 'ID', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('orderTime', 'Order Time', 'none')}"></th>
+                <th>Products</th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('total', 'Total', 'none')}"></th>
+                <th th:replace="~{fragments/fragments :: tablehead_link('status', 'Status', 'none')}"></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${listOrders}">
+                <td th:text="${order.id}">ID</td>
+                <td>
+                    <div th:replace="fragments.html :: format_time(${order.orderTime})">Order Time</div>
+                </td>
+                <td><span th:utext="${order.productNames}"></span></td>
+                <td>
+                    <div th:replace="fragments.html :: format_currency(${order.total})"></div>
+                </td>
+                <td><span>[[${order.status}]]</span></td>
+                <td>
+                    <a title="View Details of this order"
+                       class="linkDetail"
+                     th:href="@{'/orders/detail/'+${order.id}}">
+                        <i class="fa fa-file-alt fa-2x icon-green"></i></a>
+                    <th:block th:unless="${order.returnRequested}">
+                        &nbsp;&nbsp;&nbsp;
+                        <a title="Return this order">
+                            <i class="fa fa-undo fa-2x icon-green"></i></a>
+                    </th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="less-details p-2">
+        <th:block th:each="order : ${listOrders}">
+            <div class="row m-1">
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="row">
+
+                            <div class="col">
+                                <span>Order ID #[[${order.id}]]</span>
+                            </div>
+                            <div class="col">
+                                <div class="float-right">
+                                    <a href=""><i class="fa fa-file-alt fa-2x icon-green"></i></a>
+                                    <th:block th:unless="${order.returnRequested}">
+                                        &nbsp;
+                                        <a href="" title="Return this order"><i class="fa fa-undo fa-2x icon-dark"></i></a>
+                                    </th:block>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div><span th:utext="${order.productNames}"></span></div>
+                        <div class="row">
+                            <div class="col">
+                                <div th:replace="fragments.html :: format_currency(${order.total})">Total</div>
+                            </div>
+                            <div class="col">
+                                <span>[[${order.status}]]</span>
+                            </div>
+                        </div>
+                        <div><small>
+                            <div th:replace="fragments.html :: format_time(${order.orderTime})"></div>
+                        </small></div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+
+    <div th:replace="fragments.html :: pagination('orders', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount}, 'Order(s)')"></div>
+
+    <div class="modal fade" id="orderDetailModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <div th:replace="~{navigation :: footer_menu}"></div>
+
+</div>
+</body>
+<script type="text/javascript">
+    moduleURL = "[[@{/orders}]]";
+    function clearFilter() {
+        window.location = moduleURL;
+    }
+    $(document).ready(function(){
+        handleDetailLink();
+    });
+    function handleDetailLink(){
+        $('.linkDetail').on('click', function(e){
+            e.preventDefault();
+            $('#orderDetailModal').modal('show').find('.modal-content').load($(this).attr('href'));
+        });
+    }
+</script>
+</html>

@@ -42,7 +42,7 @@ public class Order extends AbstractAddress {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderDetail> orderDetail = new HashSet<>();
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("updatedTime ASC")
     private List<OrderTrack> orderTracks = new ArrayList<>();
 
@@ -224,9 +224,9 @@ public class Order extends AbstractAddress {
     }
 
     @Transient
-    public String getRecipientName(){
+    public String getRecipientName() {
         String name = firstName;
-        if(lastName != null && !lastName.isEmpty()) name += " " + lastName;
+        if (lastName != null && !lastName.isEmpty()) name += " " + lastName;
         return name;
     }
 
@@ -245,13 +245,13 @@ public class Order extends AbstractAddress {
     }
 
     @Transient
-    public boolean isCOD(){
+    public boolean isCOD() {
         return paymentMethod.equals(PaymentMethod.COD);
     }
 
-    public boolean hasStatus(OrderStatus status){
-        for(OrderTrack aTrack: orderTracks){
-            if(aTrack.getStatus().equals(status)){
+    public boolean hasStatus(OrderStatus status) {
+        for (OrderTrack aTrack : orderTracks) {
+            if (aTrack.getStatus().equals(status)) {
                 return true;
             }
         }
@@ -259,23 +259,47 @@ public class Order extends AbstractAddress {
     }
 
     @Transient
-    public boolean isShipping(){
+    public boolean isShipping() {
         return hasStatus(OrderStatus.SHIPPING);
     }
 
     @Transient
-    public boolean isPicked(){
+    public boolean isPicked() {
         return hasStatus(OrderStatus.PICKED);
     }
 
     @Transient
-    public boolean isDelivered(){
+    public boolean isDelivered() {
         return hasStatus(OrderStatus.DELIVERED);
     }
 
     @Transient
-    public boolean isReturned(){
+    public boolean isReturned() {
         return hasStatus(OrderStatus.RETURNED);
+    }
+
+    @Transient
+    public boolean isReturnRequested() {
+        return hasStatus(OrderStatus.RETURN_REQUESTED);
+    }
+
+    @Transient
+    public boolean isProcessing() {
+        return hasStatus(OrderStatus.PROCESSING);
+    }
+
+    @Transient
+    public String getProductNames() {
+        String productNames = "";
+
+        productNames = "<ul>";
+        for (OrderDetail detail : orderDetail) {
+            productNames += "<li>" + detail.getProduct().getShortName() + "</li>";
+        }
+
+        productNames += "</ul>";
+
+        return productNames;
     }
 
 }

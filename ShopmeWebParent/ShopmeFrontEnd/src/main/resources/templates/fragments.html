@@ -117,6 +117,22 @@
     <span th:text="${#dates.format(dateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
 </div>
 
+<div th:fragment="search_form_and_message()" class="m-1">
+    <form class="form-inline" th:action="@{${moduleURL}+'/page/1'}">
+        <input type="hidden" name="sortField" th:value="${sortField}">
+        <input type="hidden" name="sortDir" th:value="${sortDir}">
+        <input class="form-control mr-sm-2" type="search" placeholder="Filter" aria-label="Search" name="keyword"
+               id="keyword" required th:value="${keyword}">
+        <button class="btn btn-outline-primary my-2 my-sm-0 fas fa-search fa-3x" type="submit"></button>&nbsp;&nbsp;
+        <button class="btn btn-outline-secondary my-2 my-sm-0 fas fa-eraser fa-3x" type="button"
+                onclick="clearFilter()"></button>
+    </form>
+    <div th:if="${message}" class="alert alert-success text-center"
+         th:text="${message}">[[${message}]]
+    </div>
+</div>
+
+
 
 <footer th:fragment="footer">
     <div>
