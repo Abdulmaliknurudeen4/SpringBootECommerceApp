@@ -239,7 +239,8 @@
                 <div class="full-details">
 
                     <div class="row text-center">
-                        <div class="m-1"></div>
+                        <div >&nbsp;</div>
+                        <div >&nbsp;</div>
                         <div th:replace="orders/order_status_fragment :: content(${order.processing}, 'fa-spinner', 'processing')"></div>
                         <div th:replace="orders/order_status_fragment :: content(${order.picked}, 'fa-people-carry', 'picked')"></div>
                         <div th:replace="orders/order_status_fragment :: content(${order.shippingCost}, 'fa-shipping-fast', 'shipping')"></div>

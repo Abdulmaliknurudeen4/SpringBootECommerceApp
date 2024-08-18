@@ -5,10 +5,7 @@ import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.admin.setting.SettingService;
 import com.shopme.entity.Country;
-import com.shopme.entity.order.Order;
-import com.shopme.entity.order.OrderDetail;
-import com.shopme.entity.order.OrderStatus;
-import com.shopme.entity.order.OrderTrack;
+import com.shopme.entity.order.*;
 import com.shopme.entity.product.Product;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +48,8 @@ public class OrderController {
         orderService.listByPage(pageNum, helper);
         loadCurrencySetting(request);
 
-        if(!loggedUser.hasRole("Admin") && !loggedUser.hasRole("Salesperson") && loggedUser.hasRole("Shipper")){
-            return  "orders/orders_shipper";
+        if (!loggedUser.hasRole("Admin") && !loggedUser.hasRole("Salesperson") && loggedUser.hasRole("Shipper")) {
+            return "orders/orders_shipper";
         }
 
         return "orders/orders";

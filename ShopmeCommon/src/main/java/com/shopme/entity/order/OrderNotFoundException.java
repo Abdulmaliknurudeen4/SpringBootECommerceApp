@@ -1,4 +1,4 @@
-package com.shopme.admin.order;
+package com.shopme.entity.order;
 
 public class OrderNotFoundException extends Exception {
 

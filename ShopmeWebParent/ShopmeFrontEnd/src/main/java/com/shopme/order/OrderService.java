@@ -4,10 +4,7 @@ import com.shopme.checkout.CheckoutInfo;
 import com.shopme.entity.Address;
 import com.shopme.entity.CartItem;
 import com.shopme.entity.Customer;
-import com.shopme.entity.order.Order;
-import com.shopme.entity.order.OrderDetail;
-import com.shopme.entity.order.OrderStatus;
-import com.shopme.entity.order.PaymentMethod;
+import com.shopme.entity.order.*;
 import com.shopme.entity.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -100,4 +97,28 @@ public class OrderService {
         }
         return repo.findAll(customer.getId(), pageable);
     }
+
+    public void setOrderReturnRequested(OrderReturnRequest request, Customer customer) throws OrderNotFoundException {
+        Order order = repo.findByIdAndCustomer(request.getOrderId(), customer);
+        if (order == null) {
+            throw new OrderNotFoundException("Order ID " + request.getOrderId() + " not Found");
+        }
+        if (order.isReturned()) return;
+
+        OrderTrack track = new OrderTrack();
+        track.setOrder(order);
+        track.setUpdatedTime(new Date());
+        track.setStatus(OrderStatus.RETURN_REQUESTED);
+
+        String notes = "Reason: " + request.getReason().trim();
+        if (!"".equals(request.getNote())) {
+            notes += ". " + request.getNote();
+        }
+        track.setNotes(notes);
+
+        order.getOrderTracks().add(track);
+        order.setStatus(OrderStatus.RETURN_REQUESTED);
+        repo.save(order);
+    }
+
 }
