@@ -81,6 +81,17 @@ public class OrderService {
 
             orderDetails.add(orderDetail);
         }
+
+        // if it's a new Track
+        // When new Object is being added to the database
+        // new Order
+        OrderTrack track = new OrderTrack();
+        track.setOrder(newOrder);
+        track.setStatus(OrderStatus.NEW);
+        track.setNotes(OrderStatus.NEW.defaultDescription());
+        track.setUpdatedTime(new Date());
+
+        newOrder.getOrderTracks().add(track);
         return repo.save(newOrder);
 
     }
