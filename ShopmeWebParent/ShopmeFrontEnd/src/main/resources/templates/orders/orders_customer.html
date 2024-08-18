@@ -50,15 +50,18 @@
                 <td>
                     <div th:replace="fragments.html :: format_currency(${order.total})"></div>
                 </td>
-                <td><span>[[${order.status}]]</span></td>
+                <td><span th:class="'textOrderStatus'+${order.id}">[[${order.status}]]</span></td>
                 <td>
                     <a title="View Details of this order"
                        class="linkDetail"
                      th:href="@{'/orders/detail/'+${order.id}}">
                         <i class="fa fa-file-alt fa-2x icon-green"></i></a>
-                    <th:block th:unless="${order.returnRequested}">
+                    <th:block th:if="${order.returnRequested == false && order.delivered == true && order.returned == false}">
                         &nbsp;&nbsp;&nbsp;
-                        <a title="Return this order">
+                        <a title="Return this order"
+                           th:orderId="${order.id}"
+                           th:classappend="'linkReturn'+${order.id}"
+                           class="linkReturnOrder">
                             <i class="fa fa-undo fa-2x icon-green"></i></a>
                     </th:block>
                 </td>
@@ -82,9 +85,14 @@
                             <div class="col">
                                 <div class="float-right">
                                     <a href=""><i class="fa fa-file-alt fa-2x icon-green"></i></a>
-                                    <th:block th:unless="${order.returnRequested}">
+                                    <th:block th:unless="${order.returnRequested == false && order.delivered == true && order.returned == false}">
                                         &nbsp;
-                                        <a href="" title="Return this order"><i class="fa fa-undo fa-2x icon-dark"></i></a>
+                                        <a href="" title="Return this order"
+                                           th:orderId="${order.id}"
+                                           th:classappend="'linkReturn'+${order.id}"
+                                           class="linkReturnOrder">
+                                            <i class="fa fa-undo fa-2x icon-dark"></i>
+                                        </a>
                                     </th:block>
                                 </div>
                             </div>
@@ -99,7 +107,7 @@
                                 <div th:replace="fragments.html :: format_currency(${order.total})">Total</div>
                             </div>
                             <div class="col">
-                                <span>[[${order.status}]]</span>
+                                <span th:class="'textOrderStatus'+${order.id}">[[${order.status}]]</span>
                             </div>
                         </div>
                         <div><small>
@@ -112,6 +120,7 @@
     </div>
 
     <div th:replace="fragments.html :: pagination('orders', ${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount}, 'Order(s)')"></div>
+    <div th:replace="orders/return_order_modal :: content"></div>
 
     <div class="modal fade" id="orderDetailModal">
         <div class="modal-dialog modal-lg">
@@ -125,6 +134,9 @@
 </body>
 <script type="text/javascript">
     moduleURL = "[[@{/orders}]]";
+    contextPath = "[[@{/}]]";
+    csrfHeaderName = "[[${_csrf.headerName}]]";
+    csrfValue = "[[${_csrf.token}]]";
     function clearFilter() {
         window.location = moduleURL;
     }
@@ -138,4 +150,5 @@
         });
     }
 </script>
+<script th:src="@{/js/return_order.js}"></script>
 </html>
