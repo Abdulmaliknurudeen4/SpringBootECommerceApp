@@ -1,5 +1,6 @@
 package com.shopme.entity.product;
 
+import com.shopme.common.Constants;
 import com.shopme.entity.Brand;
 import com.shopme.entity.Category;
 import jakarta.persistence.*;
@@ -244,8 +245,8 @@ public class Product {
 
     @Transient
     public String getMainImagePath() {
-        if (id == null || mainImage == null) return "/images/image-thumbnail.png";
-        return "/product-images/" + this.id + "/" + this.mainImage;
+        if (id == null || mainImage == null) return Constants.S3_BASE_URI + "/images/image-thumbnail.png";
+        return Constants.S3_BASE_URI+"/product-images/" + this.id + "/" + this.mainImage;
     }
 
     @Transient

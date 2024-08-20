@@ -1,5 +1,6 @@
 package com.shopme.settings;
 
+import com.shopme.common.Constants;
 import com.shopme.entity.setting.Setting;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ public class SettingFilter implements Filter{
             request.setAttribute(setting.getSettingKey(), setting.getValue());
         });
 
+        request.setAttribute("S3_BASE_URI", Constants.S3_BASE_URI);
         chain.doFilter(request, response);
     }
 

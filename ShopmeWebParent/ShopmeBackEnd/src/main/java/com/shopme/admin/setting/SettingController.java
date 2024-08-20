@@ -1,6 +1,7 @@
 package com.shopme.admin.setting;
 
 import com.shopme.admin.FileUploadUtil;
+import com.shopme.common.Constants;
 import com.shopme.entity.Currency;
 import com.shopme.entity.setting.Setting;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,6 +49,7 @@ public class SettingController {
 
         settings.forEach(s -> model.addAttribute(s.getSettingKey(), s.getValue()));
         model.addAttribute("listCurrencies", listCurrencies);
+        model.addAttribute("S3_BASE_URI", Constants.S3_BASE_URI);
 
         return "settings/settings";
     }

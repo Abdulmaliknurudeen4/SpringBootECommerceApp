@@ -1,5 +1,6 @@
 package com.shopme.entity;
 
+import com.shopme.common.Constants;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -139,7 +140,7 @@ public class User extends IdBasedEntity implements Serializable{
         if (id == null || photos == null)
             return "/images/ShopmeAdminSmall.png";
 
-        return "/user-photos/" + this.id + "/" + this.photos;
+        return Constants.S3_BASE_URI+"/user-photos/" + this.id + "/" + this.photos;
     }
 
     @Transient

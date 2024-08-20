@@ -1,5 +1,6 @@
 package com.shopme.entity;
 
+import com.shopme.common.Constants;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -171,7 +172,7 @@ public class Category extends IdBasedEntity implements Serializable{
     public String getPhotosImagePath() {
         if (id == null || photo == null)
             return "/images/ShopmeAdminSmall.png";
-        return "/categories-images/" + this.id + "/" + this.photo;
+        return Constants.S3_BASE_URI+"/categories-images/" + this.id + "/" + this.photo;
     }
 
     public boolean hasChildren() {
