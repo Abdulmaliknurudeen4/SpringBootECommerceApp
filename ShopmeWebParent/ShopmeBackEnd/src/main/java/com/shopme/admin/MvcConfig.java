@@ -13,6 +13,7 @@ import java.util.List;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
+    //disable for AWS
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         exposeDirectory("user-photos", registry);

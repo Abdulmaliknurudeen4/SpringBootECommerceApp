@@ -100,6 +100,10 @@ public class CategoryController {
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, photoMultipart);
 
+            /* //Amazon s3
+            String photoDir = "user-photos/"+id;
+            AmazonS3Util.removeFolder(photoDir);*/
+
         } else {
             if (category.getPhoto().isEmpty())
                 category.setPhoto(null);

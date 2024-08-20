@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class ProductSaveHelper {
+    //Do amazon Upload thing here also
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSaveHelper.class);
 
     public static void deleteExtraImagesWereRemovedOnForm(Product product) {

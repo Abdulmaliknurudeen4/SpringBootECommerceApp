@@ -1,5 +1,6 @@
 package com.shopme.admin.user.controller;
 
+import com.shopme.admin.AmazonS3Util;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.admin.paging.PagingAndSortingParam;
@@ -73,6 +74,10 @@ public class UserController {
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, photoMultipart);
 
+           /* //Amazon Code
+            AmazonS3Util.removeFolder(uploadDir);
+            AmazonS3Util.uploadFile(uploadDir, fileName, photoMultipart.getInputStream());*/
+
         } else {
             if (user.getPhotos().isEmpty())
                 user.setPhotos(null);
@@ -106,6 +111,11 @@ public class UserController {
     public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             service.deleteUser(id);
+
+           /* //Amazon s3
+            String photoDir = "user-photos/"+id;
+            AmazonS3Util.removeFolder(photoDir);*/
+
             String uploadDir = "user-photos/" + ((id != null && id != 0) ? id : 0);
             FileUploadUtil.removeDir(uploadDir);
             redirectAttributes.addFlashAttribute("message",
