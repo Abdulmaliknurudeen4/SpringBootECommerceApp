@@ -44,7 +44,13 @@ function customizeChart(period) {
         }
     };
 
-    let formatter = new google.visualization.NumberFormat({prefix: '$'});
+    let formatter = new google.visualization.NumberFormat({
+        prefix: prefixCurrencySymbol,
+        suffix: suffixCurrencySymbol,
+        decimalSymbol: decimalPointType,
+        groupingSymbol: thousandsPointType,
+        factionDigits: decimalDigit
+    });
     formatter.format(data, 1);
     formatter.format(data, 2);
 
@@ -54,16 +60,23 @@ function drawChart(period) {
 
     let salesChart = new google.visualization.ColumnChart(document.getElementById('chart_sales_by_date'));
     salesChart.draw(data, chartOptions);
-    $('#textTotalGrossSales').text("$" + $.number(totalGrossSales, 2));
-    $('#textTotalNetSales').text("$" + $.number(totalNetSales, 2));
+    $('#textTotalGrossSales').text(formatCurrency(totalGrossSales));
+    $('#textTotalNetSales').text(formatCurrency(totalNetSales));
 
     let denominator = getDenominator(period);
 
-    $('#textAvgGrossSales').text("$" + $.number(totalGrossSales / denominator, 2));
-    $('#textAvgNetSales').text("$" + $.number(totalNetSales / denominator, 2));
+    $('#textAvgGrossSales').text(formatCurrency(totalGrossSales / denominator));
+    $('#textAvgNetSales').text(formatCurrency(totalNetSales / denominator));
     $('#textTotalOrders').text(totalOrders);
 
 
+}
+
+function formatCurrency(amount) {
+    console.log(decimalDigit, decimalPointType, thousandsPointType,prefixCurrencySymbol,suffixCurrencySymbol);
+
+    let formattedAmount = $.number(amount, decimalDigit, decimalPointType, thousandsPointType);
+    return prefixCurrencySymbol + formattedAmount + suffixCurrencySymbol;
 }
 
 function getChartTitle(period) {
@@ -86,12 +99,12 @@ function getDenominator(period) {
 
 function loadSalesReportByDate(period) {
     let requestURL = "";
-    if(period==="custom"){
+    if (period === "custom") {
         let startDate = $('#startDate').val();
         let endDate = $('#endDate').val();
-        requestURL = contextPath + "reports/sales_by_date/" + startDate+"/"+endDate;
+        requestURL = contextPath + "reports/sales_by_date/" + startDate + "/" + endDate;
 
-    }else{
+    } else {
         requestURL = contextPath + "reports/sales_by_date/" + period;
 
     }

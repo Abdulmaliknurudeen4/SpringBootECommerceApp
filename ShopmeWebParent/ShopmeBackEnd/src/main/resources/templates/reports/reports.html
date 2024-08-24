@@ -57,6 +57,17 @@
         th:src="@{/js/common_form.js}"></script>
 <script type="text/javascript">
     contextPath = "[[@{/}]]";
+    currencySymbol = "[[${CURRENCY_SYMBOL}]]";
+    thousandsPointType = "[[${THOUSANDS_POINT_TYPE == 'COMMA' ? ',' : '.'}]]";
+    decimalPointType = "[[${CURRENCY_POINT_TYPE == 'COMMA' ? ',' : '.' }]]";
+    currencySymbolPosition = "[[${CURRENCY_SYMBOL_POSITION}]]";
+    decimalDigit = "[[${DECIMAL_DIGITS}]]";
+
+    prefixCurrencySymbol = (currencySymbolPosition === 'before' ? currencySymbol : '');
+    suffixCurrencySymbol = (currencySymbolPosition === 'after' ? currencySymbol : '');
+
+
+
     $(document).ready(function(){
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(loadSalesReportByDate);
