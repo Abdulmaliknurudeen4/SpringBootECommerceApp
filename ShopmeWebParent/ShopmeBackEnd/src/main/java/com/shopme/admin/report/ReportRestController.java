@@ -10,17 +10,24 @@ import java.util.List;
 @RestController
 public class ReportRestController {
 
-    @Autowired private MasterOrderReportService masterOrderReportService;
+    @Autowired
+    private MasterOrderReportService masterOrderReportService;
 
     @GetMapping("/reports/sales_by_date/{period}")
     public List<ReportItem> getReportDataByDatePeriod(@PathVariable("period") String period) {
         System.out.println("Report period: " + period);
-       return switch (period) {
+        return switch (period) {
             case "last_7_days" -> {
                 yield masterOrderReportService.getReportDataLast7Days();
             }
             case "last_28_days" -> {
                 yield masterOrderReportService.getReportDataLast28Days();
+            }
+            case "last_6_months" -> {
+                yield masterOrderReportService.getReportDataLast6Months();
+            }
+            case "last_year" -> {
+                yield masterOrderReportService.getReportDataLastYear();
             }
             default -> masterOrderReportService.getReportDataLast7Days();
         };
