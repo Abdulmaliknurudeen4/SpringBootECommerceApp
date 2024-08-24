@@ -39,12 +39,24 @@ public class Order extends AbstractAddress {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderDetail> orderDetail = new HashSet<>();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("updatedTime ASC")
     private List<OrderTrack> orderTracks = new ArrayList<>();
+
+    public Order() {
+    }
+
+    public Order(Integer id, Date orderTime, float productCost, float subtotal, float total) {
+        this.id = id;
+        this.total = total;
+        this.subtotal = subtotal;
+        this.productCost = productCost;
+        this.orderTime = orderTime;
+    }
 
     public String getCountry() {
         return country;

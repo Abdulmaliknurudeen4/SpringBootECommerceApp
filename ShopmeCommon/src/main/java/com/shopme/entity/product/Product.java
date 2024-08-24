@@ -74,6 +74,10 @@ public class Product {
         this.id = id;
     }
 
+    public Product(String name) {
+        this.name = name;
+    }
+
     public Set<ProductDetail> getDetails() {
         return details;
     }

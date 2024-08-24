@@ -1,5 +1,6 @@
 package com.shopme.entity.order;
 
+import com.shopme.entity.Category;
 import com.shopme.entity.product.Product;
 import jakarta.persistence.*;
 
@@ -27,6 +28,28 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    public OrderDetail() {
+    }
+
+    public OrderDetail(int quality, String productName, float productCost,
+                       float shippingCost, float subtotal) {
+        this.product = new Product(productName);
+        this.quality = quality;
+        this.productCost = productCost;
+        this.shippingCost = shippingCost;
+        this.subtotal = subtotal;
+    }
+
+    public OrderDetail(String categoryName, int quality, float productCost,
+                       float shippingCost, float subtotal) {
+        this.product = new Product();
+        this.product.setCategory(new Category(categoryName));
+        this.quality = quality;
+        this.productCost = productCost;
+        this.shippingCost = shippingCost;
+        this.subtotal = subtotal;
+    }
 
     public Integer getId() {
         return Id;

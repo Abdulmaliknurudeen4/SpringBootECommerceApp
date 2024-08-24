@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Date;
+import java.util.List;
+
 @SuppressWarnings("ALL")
 public interface OrderRepository extends PagingAndSortingRepository<Order, Integer>, CrudRepository<Order, Integer> {
 
@@ -23,4 +26,8 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Integ
     public Page<Order> findAll(String keyword, Pageable pageable);
 
     public Long countById(Integer id);
+
+    @Query("SELECT NEW com.shopme.entity.order.Order(o.id, o.orderTime, o.productCost, o.subtotal, o.total) FROM Order o " +
+           "WHERE o.orderTime BETWEEN ?1 AND ?2 ORDER BY o.orderTime ASC")
+    public List<Order> findByOrderTimeBetween(Date startTime, Date endTime);
 }
