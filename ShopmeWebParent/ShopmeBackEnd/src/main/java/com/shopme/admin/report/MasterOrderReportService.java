@@ -19,6 +19,10 @@ public class MasterOrderReportService {
     private OrderRepository repo;
     private DateFormat dateFormatter;
 
+    public List<ReportItem> getReportDataByDateRange(Date startTime, Date endTime){
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        return getReportDataByDateRange(startTime, endTime, "days");
+    }
     public List<ReportItem> getReportDataLast7Days(){
         return getReportDataLastXDays(7);
     }
