@@ -19,7 +19,14 @@ public class MasterOrderReportService {
     private OrderRepository repo;
     private DateFormat dateFormatter;
 
-    public List<ReportItem> getReportDataLast7Days(int days) {
+    public List<ReportItem> getReportDataLast7Days(){
+        return getReportDataLastXDays(7);
+    }
+    public List<ReportItem> getReportDataLast28Days(){
+        return getReportDataLastXDays(28);
+    }
+
+    private List<ReportItem> getReportDataLastXDays(int days) {
         Date endTime = new Date();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -(days - 1));

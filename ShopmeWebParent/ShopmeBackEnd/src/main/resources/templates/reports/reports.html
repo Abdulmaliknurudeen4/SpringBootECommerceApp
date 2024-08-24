@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{fragments/fragments :: head('Sales Report - Shopme Admin')}"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="~{fragments/navigation :: topNavBar}"></div>
+
+    <div>
+        <h1>Sales Report</h1>
+    </div>
+
+
+    <div>
+        <ul class="nav nav-tabs" id="reportTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="date-tab" data-toggle="tab" href="#date" role="tab"
+                   aria-controls="date"
+                   aria-selected="true">Sales By Date</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="category-tab" data-toggle="tab" href="#category" role="tab"
+                   aria-controls="category" aria-selected="false">Sales by Category</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="product-tab" data-toggle="tab" href="#product" role="tab"
+                   aria-controls="product" aria-selected="false">Sales by Product</a>
+            </li>
+        </ul>
+
+
+        <div class="tab-content" id="myTabContent">
+
+            <div class="tab-pane drop show active p-3" id="date" role="tabpanel" aria-labelledby="date-tab">
+                <div th:replace="reports/sales_report_by_date :: content"></div>
+            </div>
+
+            <div class="tab-pane drop p-3" id="category" role="tabpanel" aria-labelledby="category-tab">
+                <h2>Sales by Category</h2>
+            </div>
+
+            <div class="tab-pane drop p-3" id="product" role="tabpanel" aria-labelledby="product-tab">
+                <h2>Sales by Product</h2>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <footer th:replace="~{fragments/fragments :: footer}"></footer>
+
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"
+        th:src="@{/js/common_form.js}"></script>
+<script type="text/javascript">
+    contextPath = "[[@{/}]]";
+    $(document).ready(function(){
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(loadSalesReportByDate);
+    });
+</script>
+<script type="text/javascript"
+        th:src="@{/js/sales_report_by_date.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/jquery.number.min.js}"></script>
+</body>
+</html>

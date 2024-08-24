@@ -13,8 +13,16 @@ public class ReportRestController {
     @Autowired private MasterOrderReportService masterOrderReportService;
 
     @GetMapping("/reports/sales_by_date/{period}")
-    public List<ReportItem> getReportDataByDatePeriod(@PathVariable("period") String period){
-        System.out.println(period);
-        return masterOrderReportService.getReportDataLast7Days(7);
+    public List<ReportItem> getReportDataByDatePeriod(@PathVariable("period") String period) {
+        System.out.println("Report period: " + period);
+       return switch (period) {
+            case "last_7_days" -> {
+                yield masterOrderReportService.getReportDataLast7Days();
+            }
+            case "last_28_days" -> {
+                yield masterOrderReportService.getReportDataLast28Days();
+            }
+            default -> masterOrderReportService.getReportDataLast7Days();
+        };
     }
 }
