@@ -32,7 +32,7 @@
         <div class="tab-content" id="myTabContent">
 
             <div class="tab-pane drop show active p-3" id="date" role="tabpanel" aria-labelledby="date-tab">
-                <div th:replace="reports/sales_report_by_date :: content"></div>
+                <div th:replace="reports/sales_report_fragment :: content('_date')"></div>
             </div>
 
             <div class="tab-pane drop p-3" id="category" role="tabpanel" aria-labelledby="category-tab">
@@ -73,6 +73,8 @@
         google.charts.setOnLoadCallback(loadSalesReportByDate);
     });
 </script>
+<script type="text/javascript"
+        th:src="@{/js/sales_report_common.js}"></script>
 <script type="text/javascript"
         th:src="@{/js/sales_report_by_date.js}"></script>
 <script type="text/javascript"

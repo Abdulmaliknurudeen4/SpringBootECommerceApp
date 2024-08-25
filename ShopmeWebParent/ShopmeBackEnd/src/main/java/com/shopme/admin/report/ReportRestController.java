@@ -22,18 +22,18 @@ public class ReportRestController {
         System.out.println("Report period: " + period);
         return switch (period) {
             case "last_7_days" -> {
-                yield masterOrderReportService.getReportDataLast7Days();
+                yield masterOrderReportService.getReportDataLast7Days(ReportType.DAY);
             }
             case "last_28_days" -> {
-                yield masterOrderReportService.getReportDataLast28Days();
+                yield masterOrderReportService.getReportDataLast28Days(ReportType.DAY);
             }
             case "last_6_months" -> {
-                yield masterOrderReportService.getReportDataLast6Months();
+                yield masterOrderReportService.getReportDataLast6Months(ReportType.MONTH);
             }
             case "last_year" -> {
-                yield masterOrderReportService.getReportDataLastYear();
+                yield masterOrderReportService.getReportDataLastYear(ReportType.MONTH);
             }
-            default -> masterOrderReportService.getReportDataLast7Days();
+            default -> masterOrderReportService.getReportDataLast7Days(ReportType.DAY);
         };
     }
 
@@ -42,6 +42,6 @@ public class ReportRestController {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         Date startTime = dateFormatter.parse(startDate);
         Date endTime = dateFormatter.parse(endDate);
-        return masterOrderReportService.getReportDataByDateRange(startTime, endTime);
+        return masterOrderReportService.getReportDataByDateRange(startTime, endTime, ReportType.DAY);
     }
 }
