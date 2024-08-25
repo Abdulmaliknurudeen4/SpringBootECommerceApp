@@ -18,11 +18,9 @@ public class MasterOrderReportService extends AbstractReportService {
 
     protected List<ReportItem> getReportDataByDateRangeInternal(Date startTime, Date endTime, ReportType reportType) {
         List<Order> listOrders = repo.findByOrderTimeBetween(startTime, endTime);
-        printRawData(listOrders);
         List<ReportItem> listReportItems = createReportData(startTime, endTime, reportType);
 
         calculateSalesForReportData(listOrders, listReportItems);
-        printReportData(listReportItems);
 
         return listReportItems;
     }
@@ -43,15 +41,6 @@ public class MasterOrderReportService extends AbstractReportService {
         }
     }
 
-    private void printReportData(List<ReportItem> listReportItems) {
-        listReportItems.forEach(reportItem -> {
-            System.out.printf("%s, %10.2f, %10.2f, %10.2f \n",
-                    reportItem.getIdentifier(),
-                    reportItem.getGrossSales(),
-                    reportItem.getNetSales(),
-                    reportItem.getOrdersCount());
-        });
-    }
 
     private List<ReportItem> createReportData(Date startTime, Date endTime, ReportType reportType) {
         List<ReportItem> listReportItems = new ArrayList<>();
@@ -81,14 +70,5 @@ public class MasterOrderReportService extends AbstractReportService {
 
     }
 
-    private void printRawData(List<Order> listOrders) {
-        listOrders.forEach(order -> {
-            System.out.printf("%-3d | %s | %10.2f | %10.2f \n",
-                    order.getId(),
-                    order.getOrderTime(),
-                    order.getTotal(),
-                    order.getProductCost());
-        });
-    }
 
 }
