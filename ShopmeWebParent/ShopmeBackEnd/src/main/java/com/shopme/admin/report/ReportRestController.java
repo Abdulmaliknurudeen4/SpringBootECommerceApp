@@ -16,23 +16,17 @@ public class ReportRestController {
 
     @Autowired
     private MasterOrderReportService masterOrderReportService;
+    @Autowired
+    private OrderDetailReportService orderDetailReportService;
 
     @GetMapping("/reports/sales_by_date/{period}")
     public List<ReportItem> getReportDataByDatePeriod(@PathVariable("period") String period) {
         System.out.println("Report period: " + period);
         return switch (period) {
-            case "last_7_days" -> {
-                yield masterOrderReportService.getReportDataLast7Days(ReportType.DAY);
-            }
-            case "last_28_days" -> {
-                yield masterOrderReportService.getReportDataLast28Days(ReportType.DAY);
-            }
-            case "last_6_months" -> {
-                yield masterOrderReportService.getReportDataLast6Months(ReportType.MONTH);
-            }
-            case "last_year" -> {
-                yield masterOrderReportService.getReportDataLastYear(ReportType.MONTH);
-            }
+            case "last_7_days" -> masterOrderReportService.getReportDataLast7Days(ReportType.DAY);
+            case "last_28_days" -> masterOrderReportService.getReportDataLast28Days(ReportType.DAY);
+            case "last_6_months" -> masterOrderReportService.getReportDataLast6Months(ReportType.MONTH);
+            case "last_year" -> masterOrderReportService.getReportDataLastYear(ReportType.MONTH);
             default -> masterOrderReportService.getReportDataLast7Days(ReportType.DAY);
         };
     }
@@ -43,5 +37,32 @@ public class ReportRestController {
         Date startTime = dateFormatter.parse(startDate);
         Date endTime = dateFormatter.parse(endDate);
         return masterOrderReportService.getReportDataByDateRange(startTime, endTime, ReportType.DAY);
+    }
+
+    @GetMapping("/reports/{groupBy}/{period}")
+    public List<ReportItem> getReportDataByCategoryOrProduct(
+            @PathVariable("groupBy") String groupBy,
+            @PathVariable("period") String period){
+      ReportType reportType = ReportType.valueOf(groupBy.toUpperCase());
+        return switch (period) {
+            case "last_7_days" -> orderDetailReportService.getReportDataLast7Days(reportType);
+            case "last_28_days" -> orderDetailReportService.getReportDataLast28Days(reportType);
+            case "last_6_months" -> orderDetailReportService.getReportDataLast6Months(reportType);
+            case "last_year" -> orderDetailReportService.getReportDataLastYear(reportType);
+            default -> orderDetailReportService.getReportDataLast7Days(reportType);
+        };
+    }
+
+    @GetMapping("/reports/{groupBy}/{startDate}/{endDate}")
+    public List<ReportItem> getReportDataByCategoryOrProductDateRange(
+            @PathVariable("groupBy") String groupBy,
+            @PathVariable("startDate") String startDate,
+            @PathVariable("endDate") String endDate) throws ParseException {
+        ReportType reportType = ReportType.valueOf(groupBy.toUpperCase());
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date startTime = dateFormatter.parse(startDate);
+        Date endTime = dateFormatter.parse(endDate);
+        return orderDetailReportService.getReportDataByDateRangeInternal(startTime, endTime, reportType);
     }
 }

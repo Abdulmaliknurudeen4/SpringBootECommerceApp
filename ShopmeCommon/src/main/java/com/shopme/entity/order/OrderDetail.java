@@ -36,7 +36,7 @@ public class OrderDetail {
                        float shippingCost, float subtotal) {
         this.product = new Product(productName);
         this.quality = quality;
-        this.productCost = productCost;
+        this.productCost = productCost * quality;
         this.shippingCost = shippingCost;
         this.subtotal = subtotal;
     }
@@ -46,7 +46,7 @@ public class OrderDetail {
         this.product = new Product();
         this.product.setCategory(new Category(categoryName));
         this.quality = quality;
-        this.productCost = productCost;
+        this.productCost = productCost * quality;
         this.shippingCost = shippingCost;
         this.subtotal = subtotal;
     }
@@ -72,7 +72,7 @@ public class OrderDetail {
     }
 
     public void setProductCost(float productCost) {
-        this.productCost = productCost;
+        this.productCost = productCost * getQuality();
     }
 
     public float getShippingCost() {

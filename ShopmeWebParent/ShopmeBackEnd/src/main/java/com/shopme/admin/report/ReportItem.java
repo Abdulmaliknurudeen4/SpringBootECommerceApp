@@ -14,11 +14,19 @@ public class ReportItem {
     private float grossSales;
     private float netSales;
     private float ordersCount;
+    private int productsCount;
 
     public ReportItem(String identifier, float grossSales, float netSales) {
         this.identifier = identifier;
         this.grossSales = grossSales;
         this.netSales = netSales;
+    }
+
+    public ReportItem(String identifier, float grossSales, float netSales, int productsCount) {
+        this.identifier = identifier;
+        this.grossSales = grossSales;
+        this.netSales = netSales;
+        this.productsCount = productsCount;
     }
 
     public ReportItem() {
@@ -47,7 +55,11 @@ public class ReportItem {
         this.netSales += amount;
     }
 
-    public void increateOrdersCount() {
+    public void increaseOrdersCount() {
         this.ordersCount++;
+    }
+
+    public void increaseProductCount(int count) {
+        this.productsCount += productsCount;
     }
 }

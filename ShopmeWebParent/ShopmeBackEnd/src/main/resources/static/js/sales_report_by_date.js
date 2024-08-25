@@ -1,9 +1,9 @@
 //Sales Report by Date
-let data;
-let chartOptions;
+/*let data;
+let chartOptions;*/
 let totalGrossSales;
 let totalNetSales;
-let totalOrders;
+let totalItems;
 
 
 function prepareChartDataForSalesByDate(responseJSON) {
@@ -15,13 +15,13 @@ function prepareChartDataForSalesByDate(responseJSON) {
 
     totalGrossSales = 0.0;
     totalNetSales = 0.0;
-    totalOrders = 0.0;
+    totalItems = 0.0;
 
     $.each(responseJSON, function (index, reportItem) {
         data.addRows([[reportItem.identifier, reportItem.grossSales, reportItem.netSales, reportItem.ordersCount]]);
         totalGrossSales += parseFloat(reportItem.grossSales);
         totalNetSales += parseFloat(reportItem.netSales);
-        totalOrders += parseFloat(reportItem.ordersCount);
+        totalItems += parseFloat(reportItem.ordersCount);
     });
 
 }
@@ -68,7 +68,7 @@ function loadSalesReportByDate(period) {
         customizeChartForSalesByDate(period);
         formatChartData(data, 1, 2);
         drawChartForSalesByDate(period);
-        setSalesAmount(period, '_date', "Total Items");
+        setSalesAmount(period, '_date', "Total Orders");
     });
 }
 
