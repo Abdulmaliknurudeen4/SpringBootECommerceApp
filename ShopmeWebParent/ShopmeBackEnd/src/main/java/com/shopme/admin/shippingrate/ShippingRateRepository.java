@@ -6,10 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
-public interface ShippingRateRepository extends SearchRepository<ShippingRate, Integer>,
-        CrudRepository<ShippingRate, Integer> {
+public interface ShippingRateRepository extends SearchRepository<ShippingRate, Integer> {
 
     @Query("SELECT sr FROM ShippingRate sr WHERE sr.country.Id = ?1 AND sr.state = ?2")
     ShippingRate findByCountryAndState(Integer countryId, String State);

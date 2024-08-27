@@ -7,13 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CategoryRepository extends CrudRepository<Category, Integer>, SearchRepository<Category, Integer> {
+public interface CategoryRepository extends SearchRepository<Category, Integer> {
     @Query("SELECT c from Category c WHERE c.parent IS NULL")
     Iterable<Category> getParentCategories();
 
@@ -30,6 +28,7 @@ public interface CategoryRepository extends CrudRepository<Category, Integer>, S
     Category getCategoriesByName(@Param("name") String name);
 
     Category findByName(String name);
+
     Category findByAlias(String alias);
 
     @Query("SELECT c FROM Category c WHERE c.parent.id is NULL")

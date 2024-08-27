@@ -7,7 +7,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 @NoRepositoryBean
-public interface SearchRepository<T, ID> extends PagingAndSortingRepository<T, ID>{
+public interface SearchRepository<T, ID> extends PagingAndSortingRepository<T, ID>, CrudRepository<T, ID>{
 
     Page<?> findAll(String keyword, Pageable pageable);
 }

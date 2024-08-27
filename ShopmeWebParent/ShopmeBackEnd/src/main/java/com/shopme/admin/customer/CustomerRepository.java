@@ -6,9 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
-public interface CustomerRepository extends CrudRepository<Customer, Integer>, SearchRepository<Customer, Integer> {
+public interface CustomerRepository extends SearchRepository<Customer, Integer> {
 
     Long countById(Integer id);
 
