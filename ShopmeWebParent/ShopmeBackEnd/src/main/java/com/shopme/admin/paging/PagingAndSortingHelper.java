@@ -1,5 +1,6 @@
 package com.shopme.admin.paging;
 
+import lombok.Getter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +13,11 @@ public class PagingAndSortingHelper {
     private final ModelAndViewContainer model;
     private final String listName;
 
+    @Getter
     private final String sortField;
+    @Getter
     private final String keyword;
+    @Getter
     private final String sortDir;
 
     public PagingAndSortingHelper(ModelAndViewContainer model,
@@ -27,22 +31,10 @@ public class PagingAndSortingHelper {
         this.keyword = keyword;
     }
 
-    public String getSortField() {
-        return sortField;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public String getSortDir() {
-        return sortDir;
-    }
-
     public void udpateModelAttributes(int pageNum, Page<?> page) {
         List<?> listItems = page.getContent();
         int pageSize = page.getSize();
-        pageNum = (pageNum <= 0) ? 0 : pageNum;
+        pageNum = Math.max(pageNum, 0);
 
         long startCount = (long) (pageNum - 1) * pageSize + 1;
         long endCount = startCount + pageSize - 1;
@@ -71,6 +63,8 @@ public class PagingAndSortingHelper {
         Page<?> page = null;
         if (keyword != null) {
             page = repo.findAll(keyword, pageable);
+        }else {
+            page = repo.findAll(pageable);
         }
         udpateModelAttributes(pageNum, page);
     }
