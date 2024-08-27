@@ -38,7 +38,7 @@ public class WebSecurityConfig implements Serializable {
                 .authorizeHttpRequests()
                 .requestMatchers("/customer", "/cart/**", "/account_details",
                         "/orders/**", "/update_account_details", "/address_book/**",
-                        "/checkout/**", "/place_order", "/process_paypal_order").authenticated()
+                        "/checkout/**", "/place_order", "/process_paypal_order", "/reviews/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
