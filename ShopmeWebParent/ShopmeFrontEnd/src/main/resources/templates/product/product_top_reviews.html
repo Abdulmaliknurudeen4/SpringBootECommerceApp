@@ -20,7 +20,7 @@
     </div>
 
     <div class="row m-1 ml-3">
-        <a href="">View all [[${product.reviewCount}]] ratings</a>
+        <a th:href="@{'/ratings/'+${product.alias}}">View all [[${product.reviewCount}]] ratings</a>
     </div>
 
     <div class="row">
