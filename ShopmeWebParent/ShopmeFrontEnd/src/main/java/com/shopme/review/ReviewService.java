@@ -2,7 +2,9 @@ package com.shopme.review;
 
 import com.shopme.entity.Customer;
 import com.shopme.entity.Review;
+import com.shopme.entity.order.OrderStatus;
 import com.shopme.entity.product.Product;
+import com.shopme.order.OrderDetailRepository;
 import com.shopme.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,9 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReviewService {
     public static final int REVIEWS_PER_PAGE = 5;
 
-    @Autowired private ReviewRepository reviewRepo;
-    //@Autowired private OrderDetailRepository orderDetailRepo;
-    @Autowired private ProductRepository productRepo;
+    @Autowired
+    private ReviewRepository reviewRepo;
+    @Autowired
+    private OrderDetailRepository orderDetailRepo;
+    @Autowired
+    private ProductRepository productRepo;
 
     public Page<Review> listByCustomerByPage(Customer customer, String keyword, int pageNum,
                                              String sortField, String sortDir) {
@@ -49,6 +54,7 @@ public class ReviewService {
 
         return reviewRepo.findByProduct(product, pageable);
     }
+
     public Page<Review> listByProduct(Product product, int pageNum, String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
@@ -56,10 +62,6 @@ public class ReviewService {
 
         return reviewRepo.findByProduct(product, pageable);
     }
-
-    /*
-
-
 
     public boolean didCustomerReviewProduct(Customer customer, Integer productId) {
         Long count = reviewRepo.countByCustomerAndProduct(customer.getId(), productId);
@@ -71,13 +73,22 @@ public class ReviewService {
         return count > 0;
     }
 
-    public Review save(Review review) {
+
+    /*
+
+ public Review save(Review review) {
         review.setReviewTime(new Date());
         Review savedReview = reviewRepo.save(review);
 
         Integer productId = savedReview.getProduct().getId();
-        productRepo.updateReviewCountAndAverageRating(productId);
+        productRepo.(productId);
 
         return savedReview;
-    }*/
+    }
+
+
+
+
+
+    */
 }

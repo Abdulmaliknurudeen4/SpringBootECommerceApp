@@ -87,14 +87,12 @@
                     </div>
                 </div>
 
-                <th:block th:if="${isVisibleForAdminOrSalesperson}">
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label"></label>
                         <div class="col-sm-10">
                             TOTAL = Subtotal + Shipping Cost + Tax
                         </div>
                     </div>
-                </th:block>
 
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Payment Method: </label>
@@ -135,15 +133,25 @@
                             <div class="text-wrap">
                                 <b>[[${product.name}]]</b>
                             </div>
-                            <th:block th:if="${isVisibleForAdminOrSalesperson}">
 
                                 <div>
                                     Subtotal: [[${detail.quality}]] X
                                     <div th:replace="fragments/fragments :: format_currency(${detail.unitPrice})"></div>
                                     =
                                     <div th:replace="fragments/fragments :: format_currency(${detail.subtotal})"></div>
+
+                                   <div th:if="${!product.reviewedByCustomer && product.customerCanReview}">
+                                       <a href="" class="btn btn-info">Write Review</a>
+                                   </div>
+
+                                    <div th:if="${product.reviewedByCustomer}">
+                                        <a
+                                                target="_blank"
+                                                th:href="@{'/reviews/page/1?sortField=reviewTime&sortDir=desc&keyword='+${#strings.substring(product.shortName, 0, 20)}}" class="btn btn-info">See your Review</a>
+                                    </div>
+
+
                                 </div>
-                            </th:block>
                         </div>
 
                     </div>
