@@ -2,7 +2,6 @@ package com.shopme.review;
 
 import com.shopme.entity.Customer;
 import com.shopme.entity.Review;
-import com.shopme.entity.order.OrderStatus;
 import com.shopme.entity.product.Product;
 import com.shopme.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 @Service
 @Transactional
@@ -46,12 +43,13 @@ public class ReviewService {
         return review;
     }
 
-    /*public Page<Review> list3MostVotedReviewsByProduct(Product product) {
-        Sort sort = Sort.by("votes").descending();
+    public Page<Review> list3MostRecentlyReviewsByProduct(Product product) {
+        Sort sort = Sort.by("reviewTime").descending();
         Pageable pageable = PageRequest.of(0, 3, sort);
 
         return reviewRepo.findByProduct(product, pageable);
     }
+    /*
 
     public Page<Review> listByProduct(Product product, int pageNum, String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);

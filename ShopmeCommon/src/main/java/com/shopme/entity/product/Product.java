@@ -322,4 +322,9 @@ public class Product {
     public int hashCode() {
         return Objects.hash(id, name, alias);
     }
+
+    @Transient
+    public String getURI(){
+        return "/p/"+this.alias;
+    }
 }

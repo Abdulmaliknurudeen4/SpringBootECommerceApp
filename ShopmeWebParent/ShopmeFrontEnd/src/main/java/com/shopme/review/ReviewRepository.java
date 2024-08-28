@@ -1,6 +1,7 @@
 package com.shopme.review;
 
 import com.shopme.entity.Review;
+import com.shopme.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
     @Query("SELECT r FROM Review r WHERE r.customer.id = ?1 AND r.id = ?2")
     Review findByCustomerAndId(Integer customerId, Integer reviewId);
+
+    Page<Review> findByProduct(Product product, Pageable pageable);
 }

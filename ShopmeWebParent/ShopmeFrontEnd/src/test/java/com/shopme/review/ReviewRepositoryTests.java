@@ -1,6 +1,7 @@
 package com.shopme.review;
 
 import com.shopme.entity.Review;
+import com.shopme.entity.product.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -8,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,5 +55,16 @@ public class ReviewRepositoryTests {
 
         assertThat(review).isNotNull();
 
+    }
+
+    @Test
+    public void testFindByProduct(){
+        Product product = new Product(23);
+        Pageable pageable = PageRequest.of(0,3);
+        Page<Review> page = repo.findByProduct(product, pageable);
+
+        assertThat(page.getTotalElements()).isGreaterThan(1);
+        List<Review> content = page.getContent();
+        content.forEach(System.out::println);
     }
 }

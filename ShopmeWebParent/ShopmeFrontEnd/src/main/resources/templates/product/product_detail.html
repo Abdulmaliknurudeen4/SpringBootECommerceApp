@@ -60,7 +60,7 @@
                     th:value="${product.averageRating}" readonly />
                 </div>
                 <div class="col-xs ml-1 mt-3">
-                    [[${product.reviewCount}]] rating(s)
+                    <a th:href="@{${product.URI} + '#review'}" target="_self">[[${product.reviewCount}]] rating(s)</a>
                 </div>
             </div>
             <div>
@@ -134,10 +134,13 @@
         </div>
     </div>
 
+    <div th:replace="product/product_top_reviews :: content"></div>
+
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
     <div th:replace="~{product/images_carousel :: content}"></div>
     <div th:replace="~{navigation :: footer_menu}"></div>
 
+    <script th:src="@{/js/jquery.number.min.js}"></script>
     <script th:src="@{/js/quantity_control.js}"></script>
     <script th:src="@{/js/add_to_cart.js}"></script>
     <script th:src="@{/js/common.js}"></script>
@@ -146,6 +149,9 @@
         productId = "[[${product.id}]]";
         csrfHeaderName = "[[${_csrf.headerName}]]";
         csrfValue = "[[${_csrf.token}]]";
+
+        decimalSeperator = "[[${CURRENCY_POINT_TYPE} == 'COMMA' ? ',' : '.']]";
+        thousandSeperator = "[[${THOUSANDS_POINT_TYPE} == 'COMMA' ? ',' : '.']]";
         $(document).ready(function () {
             let bigImage = $("#bigImage");
             $(".image-thumbnail").mouseover(function () {
@@ -163,7 +169,7 @@
                 $("#carouselExampleIndicators").carousel(imageIndex);
             });
 
-
+            formatRatingNumber();
 
         });
 
@@ -174,6 +180,12 @@
             theme: 'krajee-svg'
         });
 
+        function formatRatingNumber(){
+            ratingText = $('#ratingNumber').text();
+            formattedRating = $.number(ratingText, 2, decimalSeperator, thousandSeperator);
+            $('#ratingNumber').text(formattedRating);
+
+        }
 
     </script>
 

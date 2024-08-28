@@ -12,6 +12,7 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -117,6 +118,13 @@ public class ProductRepositoryTest {
     public void testUpdateReviewCountAndAverageRating(){
         Integer productId = 1;
         productRepository.updateReviewCountAndAverageRating(productId);
+    }
+
+    @Test
+    public void testUpdateReviewCountAndAverageRatingForAllProduct(){
+        productRepository.findAll().forEach(product -> {
+            productRepository.updateReviewCountAndAverageRating(product.getId());
+        });
     }
 
 }
