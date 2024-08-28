@@ -30,4 +30,11 @@ public interface ProductRepository extends SearchRepository<Product, Integer> {
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
     Page<Product> searchProductByName(String keyword, Pageable pageable);
 
+    @Query("""
+            UPDATE Product p SET p.averageRating = CAST(COALESCE((SELECT AVG(r.rating) FROM Review r WHERE r.product.id = ?1),0) AS float ),
+            p.reviewCount = (SELECT COUNT(r.id) FROM Review r WHERE r.product.id =?1) WHERE p.id = ?1
+            """)
+    @Modifying
+    void updateReviewCountAndAverageRating(Integer productId);
+
 }

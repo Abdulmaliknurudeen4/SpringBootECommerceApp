@@ -72,7 +72,7 @@ public class WebSecurityConfig implements Serializable {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.debug(false)
                 .ignoring()
-                .requestMatchers("/images/**", "/js/**", "/webjars/**", "/styles/**");
+                .requestMatchers("/images/**", "/js/**", "/webjars/**", "/styles/**", "/rating-star/**");
     }
 
 
