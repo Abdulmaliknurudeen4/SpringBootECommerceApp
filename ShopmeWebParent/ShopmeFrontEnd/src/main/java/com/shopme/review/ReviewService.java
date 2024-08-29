@@ -65,7 +65,7 @@ public class ReviewService {
 
     public boolean didCustomerReviewProduct(Customer customer, Integer productId) {
         Long count = reviewRepo.countByCustomerAndProduct(customer.getId(), productId);
-        return count > 0;
+        return count > 0.0;
     }
 
     public boolean canCustomerReviewProduct(Customer customer, Integer productId) {

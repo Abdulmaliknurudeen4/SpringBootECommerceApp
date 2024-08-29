@@ -1,12 +1,16 @@
 package com.shopme.product;
 
+import com.shopme.Utility;
 import com.shopme.category.CategoryService;
+import com.shopme.customer.CustomerService;
 import com.shopme.entity.Category;
+import com.shopme.entity.Customer;
 import com.shopme.entity.Review;
 import com.shopme.entity.product.Product;
 import com.shopme.exception.CategoryNotFoundException;
 import com.shopme.exception.ProductNotFoundException;
 import com.shopme.review.ReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +30,8 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("/c/{category_alias}")
     public String viewCategoryFirstPage(@PathVariable("category_alias") String alias, Model model) {
@@ -80,11 +86,20 @@ public class ProductController {
     }
 
     @GetMapping("/p/{product_alias}")
-    public String viewProductDetial(@PathVariable("product_alias") String alias, Model model) {
+    public String viewProductDetial(@PathVariable("product_alias") String alias, Model model, HttpServletRequest request) {
         try {
             Product product = productService.getProduct(alias);
             List<Category> listCategoryParents = categoryService.getCategoryParents(product.getCategory());
             Page<Review> listReviews = reviewService.list3MostRecentlyReviewsByProduct(product);
+
+            Customer authenticatedCustomer = getAuthenticatedCustomer(request);
+            boolean customerReviewed = reviewService.didCustomerReviewProduct(authenticatedCustomer, product.getId());
+            if(customerReviewed){
+                model.addAttribute("customerReviewed", customerReviewed);
+            }else{
+                boolean customerCanReview = reviewService.canCustomerReviewProduct(authenticatedCustomer, product.getId());
+                model.addAttribute("customerCanReview", customerCanReview);
+            }
 
             model.addAttribute("listCategoryParents", listCategoryParents);
             model.addAttribute("product", product);
@@ -129,5 +144,11 @@ public class ProductController {
         model.addAttribute("keyword", keyword);
 
         return "product/search_result";
+    }
+
+    private Customer getAuthenticatedCustomer(HttpServletRequest request) {
+        String email = Utility.getEmailOfAuthenticationUser(request);
+        // The email is always not null.
+        return customerService.getCustomerByEmail(email);
     }
 }
