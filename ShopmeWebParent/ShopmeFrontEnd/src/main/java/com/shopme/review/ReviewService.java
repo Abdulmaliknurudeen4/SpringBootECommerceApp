@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional
 public class ReviewService {
@@ -73,22 +75,13 @@ public class ReviewService {
         return count > 0;
     }
 
-
-    /*
-
- public Review save(Review review) {
+    public Review save(Review review) {
         review.setReviewTime(new Date());
         Review savedReview = reviewRepo.save(review);
 
         Integer productId = savedReview.getProduct().getId();
-        productRepo.(productId);
+        productRepo.updateReviewCountAndAverageRating(productId);
 
         return savedReview;
     }
-
-
-
-
-
-    */
 }

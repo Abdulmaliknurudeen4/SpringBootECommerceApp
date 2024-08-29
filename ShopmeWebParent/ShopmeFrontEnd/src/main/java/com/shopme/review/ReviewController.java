@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -156,6 +157,25 @@ public class ReviewController {
         model.addAttribute("review", review);
 
         return "reviews/reviews_form";
+    }
+
+    @PostMapping("/post_review")
+    public String saveReview(Model model, Review review, Integer productId, HttpServletRequest request){
+        Customer customer = getAuthenticatedCustomer(request);
+
+        Product product = null;
+        try{
+            product = productService.getProductById(productId);
+        }catch (ProductNotFoundException e){
+            return "error/404";
+        }
+        review.setProduct(product);
+        review.setCustomer(customer);
+
+        Review savedReview = reviewService.save(review);
+
+        model.addAttribute("review", review);
+        return "reviews/review_done";
     }
 
 }

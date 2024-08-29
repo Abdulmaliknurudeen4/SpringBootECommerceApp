@@ -3,6 +3,7 @@ package com.shopme.product;
 import com.shopme.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -17,4 +18,12 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     public Page<Product> search(String keyword, Pageable pageable);
 
     Product findById(Integer id);
+    @Query("""
+            UPDATE Product p SET p.averageRating = CAST(COALESCE((SELECT AVG(r.rating) FROM Review r WHERE r.product.id = ?1),0) AS float ),
+            p.reviewCount = (SELECT COUNT(r.id) FROM Review r WHERE r.product.id =?1) WHERE p.id = ?1
+            """)
+    @Modifying
+    void updateReviewCountAndAverageRating(Integer productId);
+
+
 }
