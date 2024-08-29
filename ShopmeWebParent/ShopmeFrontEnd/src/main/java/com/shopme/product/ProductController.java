@@ -1,5 +1,6 @@
 package com.shopme.product;
 
+import com.shopme.ControllerHelper;
 import com.shopme.Utility;
 import com.shopme.category.CategoryService;
 import com.shopme.customer.CustomerService;
@@ -31,7 +32,7 @@ public class ProductController {
     @Autowired
     private ReviewService reviewService;
     @Autowired
-    private CustomerService customerService;
+    private ControllerHelper controllerHelper;
 
     @GetMapping("/c/{category_alias}")
     public String viewCategoryFirstPage(@PathVariable("category_alias") String alias, Model model) {
@@ -92,13 +93,15 @@ public class ProductController {
             List<Category> listCategoryParents = categoryService.getCategoryParents(product.getCategory());
             Page<Review> listReviews = reviewService.list3MostRecentlyReviewsByProduct(product);
 
-            Customer authenticatedCustomer = getAuthenticatedCustomer(request);
-            boolean customerReviewed = reviewService.didCustomerReviewProduct(authenticatedCustomer, product.getId());
-            if(customerReviewed){
-                model.addAttribute("customerReviewed", customerReviewed);
-            }else{
-                boolean customerCanReview = reviewService.canCustomerReviewProduct(authenticatedCustomer, product.getId());
-                model.addAttribute("customerCanReview", customerCanReview);
+            Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
+            if (authenticatedCustomer != null) {
+                boolean customerReviewed = reviewService.didCustomerReviewProduct(authenticatedCustomer, product.getId());
+                if (customerReviewed) {
+                    model.addAttribute("customerReviewed", customerReviewed);
+                } else {
+                    boolean customerCanReview = reviewService.canCustomerReviewProduct(authenticatedCustomer, product.getId());
+                    model.addAttribute("customerCanReview", customerCanReview);
+                }
             }
 
             model.addAttribute("listCategoryParents", listCategoryParents);
@@ -144,11 +147,5 @@ public class ProductController {
         model.addAttribute("keyword", keyword);
 
         return "product/search_result";
-    }
-
-    private Customer getAuthenticatedCustomer(HttpServletRequest request) {
-        String email = Utility.getEmailOfAuthenticationUser(request);
-        // The email is always not null.
-        return customerService.getCustomerByEmail(email);
     }
 }

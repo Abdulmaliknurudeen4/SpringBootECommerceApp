@@ -1,5 +1,6 @@
 package com.shopme.address;
 
+import com.shopme.ControllerHelper;
 import com.shopme.Utility;
 import com.shopme.customer.CustomerService;
 import com.shopme.entity.Address;
@@ -25,10 +26,12 @@ public class AddressController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private ControllerHelper controllerHelper;
 
     @GetMapping("/address_book")
     public String showAddressBook(Model model, HttpServletRequest request) {
-        Customer authenticatedCustomer = getAuthenticatedCustomer(request);
+        Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
         List<Address> addresses = addressService.listAddressBook(authenticatedCustomer);
 
         boolean usePrimaryAddressAsDefault = true;
@@ -59,7 +62,7 @@ public class AddressController {
     @PostMapping("/address_book/save")
     public String saveAddress(Address address, HttpServletRequest request,
                               RedirectAttributes ra) {
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
         address.setCustomer(customer);
         addressService.save(address);
 
@@ -83,7 +86,7 @@ public class AddressController {
     public String editAddress(@PathVariable("id") Integer addressId, Model model,
                               HttpServletRequest request) {
 
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
         List<Country> listCountries = customerService.listAllCountry();
 
         Address address = addressService.get(addressId, customer.getId());
@@ -99,7 +102,7 @@ public class AddressController {
     @GetMapping("/address_book/delete/{id}")
     public String deleteAddress(@PathVariable("id") Integer addressId, RedirectAttributes ra,
                                 HttpServletRequest request) {
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
         addressService.delete(addressId, customer.getId());
 
         ra.addFlashAttribute("message", "The address ID " + addressId + " has been deleted.");
@@ -107,16 +110,10 @@ public class AddressController {
         return "redirect:/address_book";
     }
 
-    private Customer getAuthenticatedCustomer(HttpServletRequest request) {
-        String email = Utility.getEmailOfAuthenticationUser(request);
-        // The email is always not null.
-        return customerService.getCustomerByEmail(email);
-    }
-
     @GetMapping("/address_book/default/{id}")
     public String setDefaultAddress(@PathVariable("id") Integer addressId,
                                     HttpServletRequest request) {
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
         addressService.setDefaultAddress(addressId, customer.getId());
 
         String redirectOption = request.getParameter("redirect");

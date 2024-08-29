@@ -1,5 +1,6 @@
 package com.shopme.cart;
 
+import com.shopme.ControllerHelper;
 import com.shopme.Utility;
 import com.shopme.address.AddressService;
 import com.shopme.customer.CustomerService;
@@ -21,7 +22,7 @@ public class ShoppingCartController {
     @Autowired
     private ShoppingCartService shoppingCartService;
     @Autowired
-    private CustomerService customerService;
+    private ControllerHelper controllerHelper;
     @Autowired
     private ShippingRateService shippingRateService;
     @Autowired
@@ -29,7 +30,7 @@ public class ShoppingCartController {
 
     @GetMapping("/cart")
     public String viewCart(Model model, HttpServletRequest request) {
-        Customer authenticatedCustomer = getAuthenticatedCustomer(request);
+        Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
         List<CartItem> cartItems = shoppingCartService.listCartItems(authenticatedCustomer);
 
         float estimatedtotal = 0;
@@ -58,11 +59,5 @@ public class ShoppingCartController {
         model.addAttribute("estimatedTotal", estimatedtotal);
 
         return "cart/shopping_cart";
-    }
-
-    private Customer getAuthenticatedCustomer(HttpServletRequest request) {
-        String email = Utility.getEmailOfAuthenticationUser(request);
-        // The email is always not null.
-        return customerService.getCustomerByEmail(email);
     }
 }

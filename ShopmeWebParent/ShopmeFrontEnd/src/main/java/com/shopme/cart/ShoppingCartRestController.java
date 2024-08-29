@@ -1,5 +1,6 @@
 package com.shopme.cart;
 
+import com.shopme.ControllerHelper;
 import com.shopme.Utility;
 import com.shopme.customer.CustomerNotFoundExcpetion;
 import com.shopme.customer.CustomerService;
@@ -16,18 +17,17 @@ public class ShoppingCartRestController {
     @Autowired
     private ShoppingCartService cartService;
     @Autowired
-    private CustomerService customerService;
+    private ControllerHelper controllerHelper;
+
 
     @PostMapping("/cart/add/{productId}/{quantity}")
     public String addProductToCart(@PathVariable("productId") Integer productId,
                                    @PathVariable("quantity") Integer quantity,
                                    HttpServletRequest request) {
         try {
-            Customer authenticatedCustomer = getAuthenticatedCustomer(request);
+            Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
             Integer addedProduct = cartService.addProduct(productId, quantity, authenticatedCustomer);
             return addedProduct + " item(s) of this product added to your shopping cart";
-        } catch (CustomerNotFoundExcpetion excpetion) {
-            return "You must login to add product to cart";
         } catch (ShoppingCartException e) {
             return "You cannot Add more than 5 products of this product";
         }
@@ -37,31 +37,15 @@ public class ShoppingCartRestController {
     public String updateProductFromCart(@PathVariable("productId") Integer productId,
                                         @PathVariable("quantity") Integer quantity,
                                         HttpServletRequest request){
-        try {
-            Customer authenticatedCustomer = getAuthenticatedCustomer(request);
-            float subtotal = cartService.updateQuantity(productId, quantity, authenticatedCustomer);
-            return String.valueOf(subtotal);
-        } catch (CustomerNotFoundExcpetion excpetion) {
-            return "You must login to add product to cart";
-        }
+        Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
+        float subtotal = cartService.updateQuantity(productId, quantity, authenticatedCustomer);
+        return String.valueOf(subtotal);
     }
 
     @DeleteMapping("/cart/remove/{productId}")
     public String removeProduct(@PathVariable("productId") Integer productId, HttpServletRequest request){
-        try {
-            Customer customer = getAuthenticatedCustomer(request);
-            cartService.removeProduct(productId, customer);
-            return "The product has been removed from your shopping cart";
-        } catch (CustomerNotFoundExcpetion e) {
-            return "You must login to remove product from cart";
-        }
-    }
-
-    private Customer getAuthenticatedCustomer(HttpServletRequest request) throws CustomerNotFoundExcpetion {
-        String email = Utility.getEmailOfAuthenticationUser(request);
-        if (email == null) {
-            throw new CustomerNotFoundExcpetion("No Authenticated Customer with email");
-        }
-        return customerService.getCustomerByEmail(email);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
+        cartService.removeProduct(productId, customer);
+        return "The product has been removed from your shopping cart";
     }
 }

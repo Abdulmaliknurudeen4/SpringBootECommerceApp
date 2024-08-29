@@ -1,5 +1,6 @@
 package com.shopme.checkout;
 
+import com.shopme.ControllerHelper;
 import com.shopme.Utility;
 import com.shopme.address.AddressService;
 import com.shopme.cart.ShoppingCartController;
@@ -39,7 +40,7 @@ import java.util.List;
 public class CheckoutController {
 
     @Autowired private CheckoutService checkoutService;
-    @Autowired private CustomerService customerService;
+    @Autowired private ControllerHelper controllerHelper;
     @Autowired private AddressService addressService;
     @Autowired private ShippingRateService shipService;
     @Autowired private ShoppingCartService cartService;
@@ -50,7 +51,7 @@ public class CheckoutController {
     @GetMapping("/checkout")
     public String showCheckoutPage(Model model, HttpServletRequest request){
 
-        Customer authenticatedCustomer = getAuthenticatedCustomer(request);
+        Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
 
         //get default address
         Address defaultAddress = addressService.getDefaultAddress(authenticatedCustomer);
@@ -86,17 +87,11 @@ public class CheckoutController {
         return "checkout/checkout";
     }
 
-    private Customer getAuthenticatedCustomer(HttpServletRequest request) {
-        String email = Utility.getEmailOfAuthenticationUser(request);
-        // The email is always not null.
-        return customerService.getCustomerByEmail(email);
-    }
-
     @PostMapping("/place_order")
     public String placeOrder(HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         String paymentType = request.getParameter("paymentMethod");
         PaymentMethod paymentMethod = PaymentMethod.valueOf(paymentType);
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
 
         //get default address
         Address defaultAddress = addressService.getDefaultAddress(customer);

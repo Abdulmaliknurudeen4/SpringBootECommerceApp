@@ -1,5 +1,6 @@
 package com.shopme.review;
 
+import com.shopme.ControllerHelper;
 import com.shopme.Utility;
 import com.shopme.customer.CustomerService;
 import com.shopme.entity.Customer;
@@ -26,7 +27,7 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
     @Autowired
-    private CustomerService customerService;
+    private ControllerHelper controllerHelper;
     @Autowired
     private ProductService productService;
 
@@ -39,7 +40,7 @@ public class ReviewController {
     public String listReviewsByCustomerByPage(Model model, HttpServletRequest request,
                                               @PathVariable(name = "pageNum") int pageNum,
                                               String keyword, String sortField, String sortDir) {
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
         Page<Review> page = reviewService.listByCustomerByPage(customer, keyword, pageNum, sortField, sortDir);
         List<Review> listReviews = page.getContent();
 
@@ -68,16 +69,10 @@ public class ReviewController {
         return "reviews/reviews_customer";
     }
 
-    private Customer getAuthenticatedCustomer(HttpServletRequest request) {
-        String email = Utility.getEmailOfAuthenticationUser(request);
-        // The email is always not null.
-        return customerService.getCustomerByEmail(email);
-    }
-
     @GetMapping("/reviews/detail/{id}")
     public String viewReview(@PathVariable("id") Integer id, Model model,
                              RedirectAttributes ra, HttpServletRequest request) {
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
         try {
             Review review = reviewService.getByCustomerAndId(customer, id);
             model.addAttribute("review", review);
@@ -141,7 +136,7 @@ public class ReviewController {
         }catch (ProductNotFoundException e){
             return "error/404";
         }
-        Customer authenticatedCustomer = getAuthenticatedCustomer(request);
+        Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
         boolean customerReviewed = reviewService.didCustomerReviewProduct(authenticatedCustomer, product.getId());
         if(customerReviewed){
             model.addAttribute("customerReviewed", customerReviewed);
@@ -161,7 +156,7 @@ public class ReviewController {
 
     @PostMapping("/post_review")
     public String saveReview(Model model, Review review, Integer productId, HttpServletRequest request){
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
 
         Product product = null;
         try{

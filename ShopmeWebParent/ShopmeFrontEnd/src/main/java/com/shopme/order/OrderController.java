@@ -1,5 +1,6 @@
 package com.shopme.order;
 
+import com.shopme.ControllerHelper;
 import com.shopme.Utility;
 import com.shopme.customer.CustomerService;
 import com.shopme.entity.Customer;
@@ -24,7 +25,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private CustomerService customerService;
+    private ControllerHelper controllerHelper;
     @Autowired
     private ReviewService reviewService;
 
@@ -38,7 +39,7 @@ public class OrderController {
                              @PathVariable(name = "pageNum") int pageNum,
                              String sortField, String sortDir, String orderKeyword) {
 
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
         Page<Order> page = orderService.listForCustomerByPage(customer, pageNum, sortField, sortDir, orderKeyword);
         List<Order> listOrders = page.getContent();
 
@@ -66,16 +67,11 @@ public class OrderController {
 
     }
 
-    private Customer getAuthenticatedCustomer(HttpServletRequest request) {
-        String email = Utility.getEmailOfAuthenticationUser(request);
-        return customerService.getCustomerByEmail(email);
-    }
-
     @GetMapping("/orders/detail/{id}")
     public String viewOrderDetails(Model model,
                                    @PathVariable(name = "id") Integer id,
                                    HttpServletRequest request){
-        Customer customer = getAuthenticatedCustomer(request);
+        Customer customer = controllerHelper.getAuthenticatedCustomer(request);
 
         Order order = orderService.getOrder(id, customer);
         
