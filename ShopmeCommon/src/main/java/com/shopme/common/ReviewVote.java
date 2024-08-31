@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table(name = "reviews_vote")
 public class ReviewVote extends IdBasedEntity {
     private static final int VOTE_UP_POINT = 1;
-    private static final int VOTE_DOWN_POINT =2;
+    private static final int VOTE_DOWN_POINT =-1;
 
     private int votes;
 
