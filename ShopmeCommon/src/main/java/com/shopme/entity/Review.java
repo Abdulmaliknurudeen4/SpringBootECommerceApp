@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="reviews")
-public class Review extends IdBasedEntity{
+@Table(name = "reviews")
+public class Review extends IdBasedEntity {
 
     @Column(length = 128, nullable = false)
     private String headline;
@@ -16,6 +16,7 @@ public class Review extends IdBasedEntity{
     private String comment;
 
     private int rating;
+    private int votes;
 
     @Column(nullable = false)
     private Date reviewTime;
@@ -27,6 +28,17 @@ public class Review extends IdBasedEntity{
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    @Transient
+    private boolean upvotedByCurrentCustomer;
+    @Transient
+    private boolean downvotedByCurrentCustomer;
+
+    public Review() {
+    }
+
+    public Review(int ID) {
+        this.id = ID;
+    }
 
     public String getHeadline() {
         return headline;
@@ -76,6 +88,14 @@ public class Review extends IdBasedEntity{
         this.customer = customer;
     }
 
+    public int getVotes() {
+        return votes;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
+
     @Override
     public String toString() {
         return "Review{" +
@@ -87,4 +107,43 @@ public class Review extends IdBasedEntity{
                ", headline='" + headline + '\'' +
                '}';
     }
+
+    public boolean isUpvotedByCurrentCustomer() {
+        return upvotedByCurrentCustomer;
+    }
+
+    public void setUpvotedByCurrentCustomer(boolean upvotedByCurrentCustomer) {
+        this.upvotedByCurrentCustomer = upvotedByCurrentCustomer;
+    }
+
+    public boolean isDownvotedByCurrentCustomer() {
+        return downvotedByCurrentCustomer;
+    }
+
+    public void setDownvotedByCurrentCustomer(boolean downvotedByCurrentCustomer) {
+        this.downvotedByCurrentCustomer = downvotedByCurrentCustomer;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Review other = (Review) obj;
+        if (id == null) {
+            return other.id == null;
+        } else return id.equals(other.id);
+    }
+
 }
