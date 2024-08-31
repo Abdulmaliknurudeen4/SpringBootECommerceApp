@@ -82,10 +82,11 @@
     <div th:replace="~{fragments/fragments :: pagination(${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
 
     <footer th:replace="~{fragments/fragments :: footer}"></footer>
-<script th:src="@{/js/common_list.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/common_list.js}"></script>
     <script type="application/javascript">
         moduleURL = "[[@{/reviews}]]";
-        $(document).ready(function(){
+        $(document).ready(function () {
             handleDetailLinkClick(".link-detail-review", "#reviewDetailModal");
         });
     </script>

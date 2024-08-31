@@ -11,10 +11,10 @@ function clearFilter() {
     window.location = moduleURL;
 }
 
-function showModalDialog(message) {
+/*function showModalDialog(message) {
     $('#modalBody').text(message);
     $('#modalDialog').modal();
-}
+}*/
 
 function handleDetailLinkClick(cssClass, modalId) {
     $(cssClass).on('click', function (e) {

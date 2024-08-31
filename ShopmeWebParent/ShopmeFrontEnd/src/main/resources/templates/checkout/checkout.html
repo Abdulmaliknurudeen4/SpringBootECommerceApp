@@ -110,6 +110,7 @@
     <div th:replace="~{fragments/modal :: modal_dialog}"></div>
 
 </div>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
 <script th:src="@{https://sandbox.paypal.com/sdk/js(client-id=${paypalClientId}, currency=${currencyCode})}"></script>
 <script type="text/javascript">
     contextPath = "[[@{/}]]";
@@ -187,7 +188,6 @@
 
 
 </script>
-<script type="text/javascript" th:src="@{/js/common.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
 </body>
 </html>

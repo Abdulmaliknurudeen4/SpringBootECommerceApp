@@ -9,13 +9,16 @@
     <!---->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/css/star-rating.css" media="all"
+          rel="stylesheet" type="text/css"/>
 
     <!-- optionally if you need to use a theme, then include the theme file as mentioned below -->
-    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/themes/krajee-svg/theme.css"
+          media="all" rel="stylesheet" type="text/css"/>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/js/star-rating.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/js/star-rating.js"
+            type="text/javascript"></script>
 
     <!-- optionally if you need to use a theme, then include the theme file as mentioned below -->
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.0.7/themes/krajee-svg/theme.js"></script>
@@ -31,13 +34,14 @@
 
     <div class="row m-2">
         <div class="col-xs-4">
-            <img th:src="@{${product.mainImagePath}}" width="150" />
+            <img th:src="@{${product.mainImagePath}}" width="150"/>
         </div>
         <div class="col-xs-8">
             <div><h3>[[${product.name}]]</h3></div>
             <div class="row m-1">
                 <div class="col-xs">
-                    <input type="text" class="product-detail-rating-star" dir="ltr" data-size="md" th:value="${product.averageRating}">
+                    <input type="text" class="product-detail-rating-star" dir="ltr" data-size="md"
+                           th:value="${product.averageRating}">
                 </div>
                 <div class="col-xs ml-1 mt-3"><span id="ratingNumber">[[${product.averageRating}]]</span> of 5</div>
             </div>
@@ -51,56 +55,27 @@
         </div>
     </div>
 
-    <div class="row m-2">
-        <div class="col">
-            <th:block th:each="review : ${listReviews}">
-
-                <div class="row">
-                    <div class="col-xs"><input type="text" class="product-detail-rating-star" dir="ltr" data-size="3" th:value="${review.rating}" /></div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs">
-                        <b>[[${review.headline}]]</b>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs">
-                        [[${review.comment}]]
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs">
-                        <small>[[${review.customer.fullName}]]</small>,
-                        <div th:replace="fragments.html :: format_time(${review.reviewTime})"></div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <hr/></div>
-                </div>
-
-            </th:block>
-        </div>
-    </div>
-
-
-
+    <div th:replace="reviews/reviews_votes :: content"></div>
+    <div th:replace="~{fragments/modal :: modal_dialog}"></div>
 
 
     <div th:replace="~{fragments/fragments :: pagination(${totalPages}, ${currentPage}, ${totalItems}, ${startCount}, ${endCount})}"></div>
 
     <footer th:replace="~{fragments/fragments :: footer}"></footer>
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/common_list.js}"></script>
-    <script th:src="@{/js/common_rating.js}"></script>
-    <script type="application/javascript">
-        decimalSeperator = "[[${CURRENCY_POINT_TYPE} == 'COMMA' ? ',' : '.']]";
-        thousandSeperator = "[[${THOUSANDS_POINT_TYPE} == 'COMMA' ? ',' : '.']]";
-
-    </script>
 </div>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/jquery.number.min.js}"></script>
+<script th:src="@{/js/common_list.js}"></script>
+<script th:src="@{/js/common_rating.js}"></script>
+<script th:src="@{/js/review_vote.js}"></script>
+
+
+<script type="application/javascript">
+    decimalSeperator = "[[${CURRENCY_POINT_TYPE} == 'COMMA' ? ',' : '.']]";
+    thousandSeperator = "[[${THOUSANDS_POINT_TYPE} == 'COMMA' ? ',' : '.']]";
+    contextPath = "[[@{/}]]";
+    csrfHeaderName = "[[${_csrf.headerName}]]";
+    csrfValue = "[[${_csrf.token}]]";
+</script>
 </body>
+</html>

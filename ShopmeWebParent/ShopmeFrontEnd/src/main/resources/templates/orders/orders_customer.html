@@ -131,7 +131,8 @@
     <div th:replace="~{navigation :: footer_menu}"></div>
 
 </div>
-</body>
+
+<script th:src="@{/js/common.js}"></script>
 <script type="text/javascript">
     moduleURL = "[[@{/orders}]]";
     contextPath = "[[@{/}]]";
@@ -151,4 +152,6 @@
     }
 </script>
 <script th:src="@{/js/return_order.js}"></script>
+</body>
+
 </html>
