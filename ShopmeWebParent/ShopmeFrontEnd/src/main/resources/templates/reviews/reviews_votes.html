@@ -18,7 +18,8 @@
                     <a class="linkVoteReview"
                        th:reviewId="${review.id}"
                        th:id="'linkVoteUp-'+${review.id}"
-                       th:href="@{'/vote_review/'+${review.id} + '/up'}"><i class="fas fa-thumbs-up" aria-hidden="true"></i></a>
+                       th:href="@{'/vote_review/'+${review.id} + '/up'}">
+                        <i th:classappend="${review.upvotedByCurrentCustomer ? 'fas' : 'far'}" class="fa-thumbs-up"></i></a>
                 </div>
 
                 <div class="col-xs ml-2">
@@ -30,7 +31,8 @@
                     <a class="linkVoteReview"
                        th:reviewId="${review.id}"
                        th:id="'linkVoteDown-'+${review.id}"
-                       th:href="@{'/vote_review/'+${review.id} + '/down'}"><i class="fas fa-thumbs-down" aria-hidden="true"></i></a>
+                       th:href="@{'/vote_review/'+${review.id} + '/down'}">
+                        <i th:classappend="${review.downvotedByCurrentCustomer ? 'fas' : 'far'}" class="fa-thumbs-down"></i></a>
                 </div>
             </div>
 

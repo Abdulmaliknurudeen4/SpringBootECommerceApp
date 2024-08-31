@@ -3,7 +3,10 @@ package com.shopme.common;
 import com.shopme.entity.Customer;
 import com.shopme.entity.IdBasedEntity;
 import com.shopme.entity.Review;
+import com.shopme.entity.Role;
 import jakarta.persistence.*;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "reviews_vote")
@@ -67,5 +70,21 @@ public class ReviewVote extends IdBasedEntity {
     @Transient
     public boolean isDownvoted() {
         return this.votes == VOTE_DOWN_POINT;
+    }
+
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Role other = (Role) obj;
+        return Objects.equals(id, other.getId());
     }
 }

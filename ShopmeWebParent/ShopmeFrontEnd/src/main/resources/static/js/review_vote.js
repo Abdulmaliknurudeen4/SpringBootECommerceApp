@@ -32,24 +32,6 @@ function voteReview(currentLink) {
 
 function updateVoteCountAndIcons(currentLink, voteResult) {
     let reviewId = currentLink.attr("reviewId");
-    let voteUpLink = $("#linkVoteUp-" + reviewId+" i");
-    let voteDownLink = $("#linkVoteDown-" + reviewId+" i");
-
-    $("#voteCount-" + reviewId).text(voteResult.voteCount + " Votes");
-
-    let message = voteResult.message;
-
-    if (message.includes("successfully voted up")) {
-        highlightVoteUpIcon(currentLink, voteDownLink);
-    } else if (message.includes("successfully voted down")) {
-        highlightVoteDownIcon(currentLink, voteUpLink);
-    } else if (message.includes("unvoted down")) {
-        unhighlightVoteDownIcon(voteDownLink);
-    } else if (message.includes("unvoted up")) {
-        unhighlightVoteDownIcon(voteUpLink);
-    }
-
-   /* let reviewId = currentLink.attr("reviewId");
     let voteUpLink = $("#linkVoteUp-" + reviewId);
     let voteDownLink = $("#linkVoteDown-" + reviewId);
 
@@ -65,42 +47,27 @@ function updateVoteCountAndIcons(currentLink, voteResult) {
         unhighlightVoteDownIcon(voteDownLink);
     } else if (message.includes("unvoted up")) {
         unhighlightVoteDownIcon(voteUpLink);
-    }*/
+    }
 }
 
 function highlightVoteUpIcon(voteUpLink, voteDownLink) {
-
-     voteUpLink.removeClass("far").addClass("fas");
+    voteUpLink.children("i").removeClass("far").addClass("fas");
     voteUpLink.attr("title", "Undo vote up this review");
-    voteDownLink.removeClass("fas").addClass("far");
-
-   /* voteUpLink.removeClass("far").addClass("fa");
-    voteUpLink.attr("title", "Undo vote up this review");
-    voteDownLink.removeClass("fas").addClass("far");*/
+    voteDownLink.children("i").removeClass("fas").addClass("far");
 }
 
 function highlightVoteDownIcon(voteDownLink, voteUpLink) {
-    voteDownLink.removeClass("far").addClass("fas");
-     voteDownLink.attr("title", "Undo vote down this review");
-     voteUpLink.removeClass("fas").addClass("far");
-
-    /*voteDownLink.removeClass("far").addClass("fa");
+    voteDownLink.children("i").removeClass("far").addClass("fas");
     voteDownLink.attr("title", "Undo vote down this review");
-    voteUpLink.removeClass("fas").addClass("far");*/
+    voteUpLink.children("i").removeClass("fas").addClass("far");
 }
 
 function unhighlightVoteDownIcon(voteDownLink) {
-     voteDownLink.attr("title", "Vote down this review");
-     voteDownLink.removeClass("fas").addClass("far");
-
-   /* voteDownLink.attr("title", "Vote down this review");
-    voteDownLink.removeClass("fa").addClass("far");*/
+    voteDownLink.attr("title", "Vote down this review");
+    voteDownLink.children("i").removeClass("fas").addClass("far");
 }
 
 function unhighlightVoteUpIcon(voteUpLink) {
     voteUpLink.attr("title", "Vote up this review");
-   voteUpLink.removeClass("fas").addClass("far");
-
-    /*voteUpLink.attr("title", "Vote up this review");
-    voteUpLink.removeClass("fas").addClass("far");*/
+    voteUpLink.children("i").removeClass("fas").addClass("far");
 }

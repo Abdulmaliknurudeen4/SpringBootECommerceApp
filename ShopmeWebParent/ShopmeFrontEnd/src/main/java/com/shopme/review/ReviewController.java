@@ -1,13 +1,12 @@
 package com.shopme.review;
 
 import com.shopme.ControllerHelper;
-import com.shopme.Utility;
-import com.shopme.customer.CustomerService;
 import com.shopme.entity.Customer;
 import com.shopme.entity.Review;
 import com.shopme.entity.product.Product;
 import com.shopme.exception.ProductNotFoundException;
 import com.shopme.product.ProductService;
+import com.shopme.review.vote.ReviewVoteService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +29,8 @@ public class ReviewController {
     private ControllerHelper controllerHelper;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ReviewVoteService reviewVoteService;
 
     @GetMapping("/reviews")
     public String listFirstPage(Model model) {
@@ -88,7 +89,7 @@ public class ReviewController {
     public String listByProduct(Model model,
                                 @PathVariable("productAlias") String productAlias,
                                 @PathVariable("pageNum") int pageNum,
-                                String sortField, String sortDir) {
+                                String sortField, String sortDir, HttpServletRequest request) {
         Product product = null;
         try {
             product = productService.getProduct(productAlias);
@@ -97,6 +98,11 @@ public class ReviewController {
         }
         Page<Review> page = reviewService.listByProduct(product, pageNum, sortField, sortDir);
         List<Review> listReviews = page.getContent();
+
+        Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
+        if (authenticatedCustomer != null) {
+            reviewVoteService.markReviewsVotedForProductByCustomer(listReviews, product.getId(), authenticatedCustomer.getId());
+        }
 
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
@@ -124,27 +130,28 @@ public class ReviewController {
     }
 
     @GetMapping("/ratings/{productAlias}")
-    public String listByProductFirstPage(@PathVariable(name = "productAlias") String productAlias, Model model) {
-        return listByProduct(model, productAlias, 1, "reviewTime", "desc");
+    public String listByProductFirstPage(@PathVariable(name = "productAlias") String productAlias, Model model, HttpServletRequest request) {
+        return listByProduct(model, productAlias, 1, "reviewTime", "desc", request);
     }
+
     @GetMapping("/write_review/product/{productId}")
-    public String showViewForm(@PathVariable("productId") Integer productId, Model model, HttpServletRequest request){
+    public String showViewForm(@PathVariable("productId") Integer productId, Model model, HttpServletRequest request) {
         Review review = new Review();
         Product product = null;
         try {
             product = productService.getProductById(productId);
-        }catch (ProductNotFoundException e){
+        } catch (ProductNotFoundException e) {
             return "error/404";
         }
         Customer authenticatedCustomer = controllerHelper.getAuthenticatedCustomer(request);
         boolean customerReviewed = reviewService.didCustomerReviewProduct(authenticatedCustomer, product.getId());
-        if(customerReviewed){
+        if (customerReviewed) {
             model.addAttribute("customerReviewed", customerReviewed);
-        }else{
+        } else {
             boolean customerCanReview = reviewService.canCustomerReviewProduct(authenticatedCustomer, product.getId());
-            if(customerCanReview) {
+            if (customerCanReview) {
                 model.addAttribute("customerCanReview", customerCanReview);
-            }else {
+            } else {
                 model.addAttribute("NoReviewPermission", true);
             }
         }
@@ -155,13 +162,13 @@ public class ReviewController {
     }
 
     @PostMapping("/post_review")
-    public String saveReview(Model model, Review review, Integer productId, HttpServletRequest request){
+    public String saveReview(Model model, Review review, Integer productId, HttpServletRequest request) {
         Customer customer = controllerHelper.getAuthenticatedCustomer(request);
 
         Product product = null;
-        try{
+        try {
             product = productService.getProductById(productId);
-        }catch (ProductNotFoundException e){
+        } catch (ProductNotFoundException e) {
             return "error/404";
         }
         review.setProduct(product);
